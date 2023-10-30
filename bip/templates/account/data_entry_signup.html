@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+{% extends 'partials/base.html' %}
+  {% block titlte %}Register{% endblock %} 
+{% load crispy_forms_tags %} {% block content %}
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Register</title>
+  <style type="text/css">
+    body {
+      color: #aa082e;
+      background: rgb(230, 227, 227);;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 80px;
+      background: black;
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+      background: white;
+
+    }
+
+    .form-control {
+      {% comment %} border-radius: 1.5rem; {% endcomment %}
+    }
+
+    .btnSubmit {
+      border: none;
+      {% comment %} border-radius: 1.5rem; {% endcomment %}
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+  </style>
+
+</head>
+
+
+<body>
+<br>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container register-form">
+      <div class="form">
+        <div class="note">
+          <p>Data Entry</p>
+        </div>
+
+        <div class="form-content">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
+              </div>
+              <div class="form-group">
+                {% render_field userForm.username class="form-control" placeholder="Username" %}
+              </div>
+              <div class="form-group">
+                {% render_field caseManagerForm.address class="form-control" placeholder="Address" %}
+              </div>
+        
+           
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
+              </div>
+              <div class="form-group">
+                {% render_field userForm.password class="form-control" placeholder="Password" %}
+              </div>
+              <div class="form-group">
+                {% render_field userForm.email class="form-control" placeholder="email" %}
+              </div>
+              <div class="form-group">
+                {% render_field dataEntryForm.assignedCaseManagerSlug class="form-control" placeholder="Case Manager" %}
+              </div>
+              <div class="form-group">
+                {% render_field dataEntryForm.assignedStudentSlug class="form-control" placeholder="Student" %}
+              </div>
+
+            </div>
+          </div>
+          <button type="submit" class="btnSubmit">Register</button>
+          <div class="text-center">Already have an account? <a href="data_entry_login">Login here</a></div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+</body>
+
+
+</html>
+{% endblock %} 

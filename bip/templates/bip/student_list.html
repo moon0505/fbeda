@@ -1,0 +1,22 @@
+{% extends 'partials/base.html' %}
+
+{% block content %}
+
+<title>{% block title %}List View{% endblock %}</title>
+
+<div class="container">
+  <p class="text-center pt-3" id="welcome">
+      <h3>Click on <span id="blue">Name</span> or Add Case:</i><i class="fas fa-users"></h2>
+  </p>
+  <br>
+  <ol>
+     {% for list in student_list %}
+        <h2> <li class="students">
+           <a href="{% url 'bip:dashboard' pk=list.pk  %}"> {{ list.studentname }}</li>
+          </h2>
+       <hr/> 
+      {% endfor %} 
+  </ol>
+</div>
+{% endblock %} 
+

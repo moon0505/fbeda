@@ -1,0 +1,33 @@
+
+
+
+{% extends 'partials/base.html' %} {% block content %}
+<br>
+<div class="container">
+      <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">
+          Dashboard
+      </a>
+      <br>
+      <div class="row">
+          <div class="card card-body">
+              <h2>
+                  <p>
+                      All data associated with this student will be <b>DELETED PERMANENTLY</b>.
+                      Are you sure you want to <b>DELETE</b> this student: <b>{{ student.studentname }}</b>??
+                  </p>
+              </h2>
+              <p>
+                  <strong>Consider downloading Spreadsheet before deleting:</strong>
+                  <a href="{% url 'bip:export' student.id %}" class="card-link">Download Spreadsheet</a>
+              </p>
+              <form action="{% url 'bip:delete_student' student.id %}" method="POST">
+                  {% csrf_token %}
+                  {% comment %}
+                  <a class="btn btn-warning" href="{% url 'bip:dashboard' incident.student.pk %}">Cancel</a>
+                  {% endcomment %}
+                  <input class="btn btn-danger" type="submit" name="confirm" value="Confirm">
+              </form>
+          </div>
+      </div>
+  </div>
+{% endblock %}

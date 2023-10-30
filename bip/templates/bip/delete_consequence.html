@@ -1,0 +1,30 @@
+
+
+
+{% extends 'partials/base.html' %} {% block content %}
+<div class="container">
+<div class ="row">
+      <div class="card card-body">
+
+<h2>
+    <p> Are you sure you want to <b>DELETE</b> this Behavior: <b>{{item}}</b>  </p>
+
+
+    <form action="{% url 'bip:delete_consequence' item.id %}" method="POST">
+      
+      {% csrf_token %}
+
+{% comment %} 
+      <a  class="btn btn-warning" href="{% url 'bip:dashboard' incident.student.pk %}">Cancel</a> {% endcomment %}
+
+    <input class="btn btn-danger" type="submit" name="Confirm">  </h1>
+
+   </form>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -39,8 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bip',
+    'crispy_forms',
+    'widget_tweaks',
+    'crispy_bootstrap4',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# AUTH_USER_MODEL = 'account.MyUser'  #add this
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,6 +71,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'bip.context_processors.user_context',  
+
             ],
         },
     },
@@ -140,6 +148,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media',
                           "static_cdn", "media_root")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = "bip:user_login"
-LOGOUT_REDIRECT_URL = "bip:user_login"
+LOGIN_REDIRECT_URL='/afterlogin'
 

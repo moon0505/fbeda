@@ -1,0 +1,23 @@
+
+
+{% extends 'partials/base.html' %} 
+{% block content %}
+
+<br><br><br>
+
+
+<div class="container">
+       <!--#####################START HERE######################-->
+   
+       <!-- JUMBOTRON -->
+       <div class="jumbotron text-center">
+         <h1 class="display-4">Welcome {{user.username }}</h1>
+         <p class="lead">Create Functional Behavior Observation Form and/or Exploratory Data Analysis </p>
+         <hr>
+         <p>Begin your analysis here:</p>
+         <a class="btn btn-primary btn-lg" href="{% url 'bip:for_user' username=user.username %}#" role="button">Start</a>
+       </div>
+   
+
+
+{% endblock %} 

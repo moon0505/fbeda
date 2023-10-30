@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+
+{% extends 'partials/base.html' %}
+  {% block titlte %}Register{% endblock %} 
+{% load crispy_forms_tags %} {% block content %}
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Logint</title>
+
+
+  <style type="text/css">
+    body {
+      color: #aa082e;
+      background: rgb(230, 227, 227);;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 60px;
+      background: black;
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+      margin-top: 2%;
+
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+      background: white;
+
+    }
+
+    .form-control {
+      {% comment %} border-radius: 1.5rem; {% endcomment %}
+    }
+
+    .btnSubmit {
+      border: none;
+      {% comment %} border-radius: 1.5rem; {% endcomment %}
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+    }
+  </style>
+
+</head>
+
+<body>
+  {% comment %} {% include "hospital/navbar.html" %} {% endcomment %}
+  <br>
+  <br>
+  <br><br>
+
+{% comment %} login page for patient by admin(sumit)  {% endcomment %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="container register-form">
+      <div class="form">
+        <div class="note">
+          <h3><p>Data Recorder Login</p></h3>
+        </div>
+
+        <div class="form-content">
+          <div class="row">
+            <div class="col-md-6">
+
+              <div class="form-group">
+                {% render_field form.username class="form-control" placeholder="Username" %}
+              </div>
+
+            </div>
+            <div class="col-md-6">
+
+              <div class="form-group">
+                {% render_field form.password class="form-control" placeholder="Password" %}
+              </div>
+
+            </div>
+          </div>
+          <button type="submit" class="btnSubmit">Login</button>
+          {% comment %} <div class="text-center">Do not have account? <a href="">Signup here</a></div> {% endcomment %}
+
+          
+        </div>
+
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+  <br><br><br>
+  <!--
+  developed By : sumit kumar
+  facebook : fb.com/sumit.luv
+  youtube : youtube.com/lazycoders
+  -->
+
+  {% comment %} {% include "hospital/footer.html" %} {% endcomment %}
+</body>
+
+</html>
+{% endblock %} 

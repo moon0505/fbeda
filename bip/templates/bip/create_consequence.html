@@ -1,0 +1,113 @@
+
+
+{% extends 'partials/base.html' %} 
+{% block content %}
+{%load crispy_forms_tags %}
+
+<body>
+  <div id="container" >
+    <div class="form-wrap" >
+      <h1>Consequence of Behavior</h1>
+       
+ 
+      <form method="POST" class"btn btn-primary mt-3">
+        {% csrf_token %}
+        <div class='row'>
+          <div class='col-6'><b> {{ form.behaviorconsequence|as_crispy_field }}</b></div>
+        </div>
+        <button class="btn btn-primary mt-3" type="submit" style='width:90px'>Submit</button>
+      </form>
+      
+    </div>
+  </div>
+
+</body>
+
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  #container {
+    margin: 30px auto;
+    max-width: 800px;
+    
+    padding: 10px;
+  }
+
+  .form-wrap {
+    background: #fff;
+    padding: 15px 25px;
+    color: #333;
+    margin-top: px;
+  }
+
+  .form-wrap h1,
+  .form-wrap p {
+    text-align: center;
+  }
+
+  .form-wrap .form-group {
+    margin-top: 5px;
+  }
+
+  .form-wrap .form-group label {
+    display: block;
+    color: #666;
+  }
+
+  .form-wrap .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: #ddd 1px solid;
+    border-radius: 5px;
+  }
+
+  .form-wrap button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    {% comment %} background: #17a2b8; {% endcomment %}
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .form-wrap button:hover {
+    background: #37a08e;
+  }
+
+  .form-wrap .bottom-text {
+    font-size: 13px;
+    margin-top: 5px;
+  }
+
+  table.center {
+    margin-left: auto; 
+    margin-right: auto;
+  }
+
+  table  {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+  }
+  
+  th, td {
+    padding: 15px;
+    padding-left: 35px;
+    padding-bottom: 1px;
+
+  }
+</style>
+  {% endblock %}
+
+
+  

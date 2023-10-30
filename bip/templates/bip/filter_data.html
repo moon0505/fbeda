@@ -1,0 +1,135 @@
+
+
+
+
+{% extends 'partials/base.html' %} 
+{% block content %}
+
+<br>
+
+<div class="container ">
+
+
+<a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"
+>Dashboard</a>
+<div class="container text-center">
+
+<h3>Filter Data</h3>
+      
+<form method="GET" action=".">
+      
+      
+      <div class="form-row">
+         
+       <div class="form-group col-md-3">
+            <label for="behavior">Behavior</label>
+            <select id="behavior" class="form-control" name="behavior">
+              <option selected>Choose Behavior</option>
+              {% for beh in behaviorset %}
+              <option value="{{ beh}}">{{ beh }}</option>
+              {% endfor %}
+            </select>
+          </div> 
+
+          <div class="form-group col-md-3">
+            <label for="anticedent">Anticedent</label>
+            <select id="anticedent" class="form-control" name="anticedent">
+              <option selected>Choose Anticedent</option>
+              {% for ant in anticedentset %}
+              <option value="{{ ant }}">{{ ant }}</option>
+              {% endfor %}
+            </select>
+          </div>  
+
+
+
+          <div class="form-group col-md-3">
+            <label for="function">Consequence</label>
+            <select id="function" class="form-control" name="consequence">
+              <option selected>Choose Function</option>
+              {% for con in consequenceset %}
+              <option value="{{ con }}">{{ con }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div> 
+
+
+          <div class="form-group col-md-3">
+            <label for="function">Function</label>
+            <select id="function" class="form-control" name="function">
+              <option selected>Choose Function</option>
+              {% for func in functionset %}
+              <option value="{{ func }}">{{ func }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div> 
+
+      
+
+
+        <div class="form-row">
+
+        <div class="form-group col-md-2 col-lg-2">
+          <label for="publishDateMin">Publish date minimum</label>
+          <input type="date" class="form-control" id="pdate_cteatedublishDateMin" name="date_min">
+        </div>
+        <div class="form-group col-md-2 col-lg-2">
+          <label for="publishDateMax">Publish date maximum</label>
+          <input type="date" class="form-control" id="publishDateMax" name="date_max">
+        </div>
+      </div> 
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div> 
+
+
+
+
+    
+    </div> 
+     
+      <br>
+      <div class= 'container'>
+      <div>   <p><h31>Count Query: <b>{{qs_count}}</b>/{{total_beh}};
+        
+         {{beh_devide|floatformat:1}}% of all behaviors </h3></p></div>
+  
+      <div class="row">
+        <div class="col-md">
+          <div class="card card-body">
+            <table class="table table-sm">
+              <tr>
+                <th>Behavior</th>
+                <th>Anticedent</th>
+                <th>Consequence</th>
+                <th>Function</th>
+                <th>Date</th>
+              
+              </tr>
+              {% for atrributes in queryset %}
+                    <tr>
+      
+          
+                <td>{{ atrributes.behavior }}</td>
+              <td> {{ atrributes.anticedent }}</td>
+                <td>{{atrributes.consequence}}</td>
+                <td>{{atrributes.function}}</td>
+
+                <td>{{atrributes.date_created|date:'m-d-Y'}}</td> 
+      
+      
+               {% endfor%}
+             
+              </tr>
+            </table>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+{%endblock%}

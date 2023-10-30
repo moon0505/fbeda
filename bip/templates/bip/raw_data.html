@@ -1,0 +1,58 @@
+ 
+{% extends 'partials/base.html' %} 
+{% block content %}
+
+
+<a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"
+>Dashboard</a>
+
+<div class='container' >
+  <h1> A-B-C-F Frequency Count</h1>
+    {{unique_abcf_count | safe}}  
+   </div>
+  <br>
+<div class='container'>
+  <h1> A-B-C Frequency Count</h1>
+    {{unique_abc_count | safe}}  
+   </div>
+  <br>
+<div class='container'>
+  <h1> A-B-F Frequency Count</h1>
+      {{unique_abf_count | safe}}  
+     </div>
+    <br>
+
+    <div class='container'>
+      <h1> A-B Frequency Count</h1>
+      {{unique_ab_count | safe}}  
+         </div>
+        <br>
+
+
+
+        <div class='container'>
+          <h1>Frequency of Behavior</h1>
+            {{frequency_behavior_sum | safe}}  
+           </div>
+          <br>
+
+
+
+        <div class='container'>
+          <h1>Average  Frequncy of Behavior</h1>
+            {{frequency_behavior | safe}}  
+           </div>
+          <br>
+
+
+        <div class='container'>
+            <h1>Average Duration of Behavior</h1>
+              {{duration_behavior | safe}}  
+             </div>
+            <br>
+
+        
+
+          
+
+            {% endblock %}

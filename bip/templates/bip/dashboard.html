@@ -1,0 +1,140 @@
+
+
+{% extends 'partials/base.html' %} 
+{% block content %}
+<br>
+
+
+<div class="container">
+
+  <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:create_incident' student.id %}"
+        >Create Incident</a> 
+
+<br/>
+
+
+
+<div class="row">
+  <div class="col-md">
+    <div class="card card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Create Form</h5>
+        <p class="card-text">Must create Behavior, Anticedent, and Function  before Creating incident:</p>
+              <ul class="list-group list-group-flush">
+                      <li class="list-group-item"><a  href="{% url 'bip:create_behavior' student.id %}" class="card-link">Behavior</a></li>
+                      <li class="list-group-item"><a href="{% url 'bip:create_anticedent' student.id %}" class="card-link">Anticedent</a></li>
+                      <li class="list-group-item"><a href="{% url 'bip:create_consequence' student.id %}" class="card-link">Consequence</a></li>
+                      <li class="list-group-item"><a a href="{% url 'bip:create_function' student.id %}" class="card-link">Function</a></li> 
+                      <li class="list-group-item"><a a href="{% url 'bip:student_profile' student.id %}" class="card-link">Student</a></li> 
+
+                     
+
+
+
+                      <li class="list-group-item"><a a href="{% url 'bip:abc' student.id %}" class="card-link">Edit Case</a></li>
+              </ul>
+    </div>
+  </div>
+</div> 
+
+ 
+
+
+
+  <div class="col-md">
+    <div class="card card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Exploratory Data Analysis</h5>
+        <p class="card-text"> Data Visualization and Data Analysis.</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="{% url 'bip:snapshot' student.id %}" class="card-link">Snap Shot</a></li>
+        <li class="list-group-item"><a href="{% url 'bip:function' student.pk %}" class="card-link">Function</a></li>
+        <li class="list-group-item"><a href="{% url 'bip:anticedent' student.pk %}" class="card-link">Anticedent</a></li>
+     
+        <li class="list-group-item"><a a href="{% url 'bip:chart' student.id %}" class="card-link">Visual Data</a></li>  
+       <li class="list-group-item"><a a href="{% url 'bip:filter_data' student.id %}" class="card-link">Data Analysis</a></li>  
+      
+       <li class="list-group-item"><a a href="{% url 'bip:raw_data' student.id %}" class="card-link">Data Tables</a></li>  
+
+      </ul>
+   
+ 
+    </div>
+  </div> 
+
+  <div class="col-md">
+    <div class="card card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Overview</h5>
+        <p class="card-text">Download as csv file for excel, numbers, google sheet, Assign a data entry</p>
+      </div>
+      {% comment %} <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="#" class="card-link">Visual Spreadsheet</a></li> {% endcomment %}
+        <li class="list-group-item"><a href="{% url 'bip:export' student.id %}" class="card-link">Download Spreadsheet</a></li>
+    
+       <li class="list-group-item"><a  href="{% url 'bip:assign_data_entry' student.id %}">Add Data Collector</a></li> 
+      </ul>
+    
+    </div>
+  </div>
+</div>
+
+
+{% comment %} Use this for html of form below {% endcomment %}
+<br>
+<div class="row">
+  <div class="col-md">
+    <div class="card card-body">
+      <table class="table table-striped">
+        <tr>
+          <th>Behavior (Frequency)</th>
+          <th>Anticedent</th>
+          <th>Consequence</th>
+          <th>Function</th>
+
+          <th>Duration (Min:Sec)</th>
+
+          <th>Date</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+        {% for incident in student_behaviors %}
+        <tr>
+    
+          <td>{{incident.behavior }}
+            
+            
+            ({{incident.frequency }})</td>
+          <td>{{incident.anticedent}}</td>
+         
+          <td>{{incident.consequence}}</td>
+          <td>{{incident.function}}</td>
+
+          
+          {% if incident.duration%}
+          <td>{{incident.time_change}}</td>
+          {% endif %}
+
+          <td>{{incident.date_created|date:'m-d-Y'}}</td> 
+
+          <td> <a class="btn btn-warning" href="{% url 'bip:updatepost' pk=incident.pk student_id=incident.student_id %}" >Update</a></td> 
+
+
+
+          <td> <a class="btn btn-danger" href="{% url 'bip:delete_post' pk=incident.pk  %}">Delete</a></td>  
+           
+           {% endfor%}
+
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+
+{% endblock %}

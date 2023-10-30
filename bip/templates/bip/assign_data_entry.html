@@ -1,0 +1,35 @@
+
+{% extends 'partials/base.html' %} 
+{% block content %}
+{%load crispy_forms_tags %}
+<div class="container mt-4">
+  <h2>Add Individual to Input Data</h2>
+  <div class="row">
+      <div class="col-md-8">
+          <div class="card mb-3">
+              <div class="card-body">
+                  <h5 class="card-title">To assign an idividual to input data you must create a unique identifier for yourself and the case. The person inputting the data will be limited to the Functional Behaivior Observation Form only and wil not have access to the other components of the website i.e.,  dashboard, data analysis and so fourth. </h5>
+                  <p class="card-text"></p>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-md-8">
+          <div class="card mb-3">
+              <div class="card-body">
+                  <h5 class="card-title">Follow the steps below:</h5>
+                  <p class="card-text"><ol>
+                    <li>Click on the following link to create your unique identifier: <a a href="{% url 'bip:case_manager_unique_identifier' student.id %}" class="card-link">Unique Identifier</a></li>
+                    <li>Click on the following link to create the cases' unique identifier:<a a href="{% url 'bip:updateunique_case_identifier' student.id %}" class="card-link">Unique Identifier</a>  ({{student.slug}})</li>
+                    <li>Provide the individual who will be inputting the data both unique identifiers and the folloiwng link: <a a href="{% url 'bip:data_entry_signup'  %}" class="card-link">Register</a> </li>
+                    <li>The individual will then need to create thier account and provide the unique identifiers to access the case</li>
+                    <li>Once provided, check the follwing link to aprove/reject the indivudal access to the FBO form</li>
+                    <li>Click on the following link to create your unique identifier: <a a href="{% url 'bip:case_manager_dashboard'  %}" class="card-link">Confirmation</a></li>
+                </ol></p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}

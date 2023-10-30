@@ -1,0 +1,36 @@
+
+
+<!DOCTYPE html>
+
+{% extends 'partials/base.html' %}
+  {% block titlte %}Not Approved{% endblock %} 
+{% load crispy_forms_tags %} {% block content %}
+{% load widget_tweaks %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Not Approved</title>
+
+
+
+  <br>
+
+  <div class="jumbotron" style="margin-top: 0px;
+    margin-bottom: 0px;">
+    <h1 class="display-4">Hello {{request.user.first_name}}</h1>
+    <p class="lead">  <h1><br> Soon your account will be confirmed!!!</h1> </p>
+   
+    <hr class="my-4">
+    <p class="lead">Check Later</p>
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="/logout" role="button">Logout For Now</a>
+    </p>
+  </div>
+
+
+
+</html>
+{% endblock %} 
+

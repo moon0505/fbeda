@@ -1,0 +1,43 @@
+
+ 
+{% extends 'partials/base.html' %} 
+{% block content %}
+<br>
+<a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"
+>Dashboard</a>
+
+<br>
+<div class="container">
+
+<div class="row">
+  <div class="col-md">
+    <div class="card card-body">
+      <table class="table table-striped">
+            <tr>
+              <th>Name</th>
+              <th>Unique Identifer</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+           
+            <tr>
+            <td>{{student.studentname }}</td>
+            <td>{{student.slug }}</td>
+           
+           <td><a class="btn btn-warning" href="{% url 'bip:update_student' student.id%}">Update</a></td> 
+
+            <td><a class="btn btn-danger" href="{% url 'bip:delete_student' student.id %}">Delete?</a></td> 
+          </tr> 
+     
+ 
+  </div>
+</div>
+</div>
+
+<br>
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,61 @@
+
+
+{% extends 'partials/base.html' %} 
+{% block content %}
+<br>
+<body> 
+  <div class="container text-center">
+
+<div class="container">
+  <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+  <br/>
+
+  <div class="container" >
+    <img src="data:image/png;base64, {{ bar_graph | safe }}">
+  </div>
+  <br>
+
+  {% if multiple_line_plot_five %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_five | safe }}">
+    </div>
+  {% elif multiple_line_plot_four %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_four | safe }}">
+    </div>
+  {% elif multiple_line_plot_three %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_three | safe }}">
+    </div>
+  {% elif multiple_line_plot_two %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_two | safe }}">
+    </div>
+  {% elif multiple_line_plot_one %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_one | safe }}">
+    </div>
+  {% endif %}
+
+  <br>
+
+  <div class="container">
+    {% if iclustermap_graph %}
+      <img src="data:image/png;base64, {{ iclustermap_graph | safe }}">
+    {% endif %}
+  </div>
+
+  <br>
+</div>
+
+</div>
+</body>
+<style>
+  body {
+    {% comment %} background: white; {% endcomment %}
+  }
+  img {
+    border: 2px solid #555;
+  }
+  </style>
+{% endblock %}

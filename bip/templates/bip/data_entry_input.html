@@ -1,0 +1,123 @@
+
+{% extends 'partials/base.html' %} 
+{% block content %}
+<br>
+
+
+<div class="container">
+
+
+  <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:create_incident' student.id %}"
+  >Create Incident</a> 
+{% comment %} 
+  <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:create_incident' student.id %}"
+        >Create Incident</a>  {% endcomment %}
+
+<br/>
+
+
+{% comment %} XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX {% endcomment %}
+
+{% comment %} 
+<div class="row">
+  <div class="col-md">
+    <div class="card card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Create Form</h5>
+        <p class="card-text">Must create Behavior, Anticedent, and Function  before Creating incident:</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a  href="{% url 'bip:create_behavior' student.id %}" class="card-link">Behavior</a></li>
+        <li class="list-group-item"><a href="{% url 'bip:create_anticedent' student.id %}" class="card-link">Anticedent</a></li>
+        <li class="list-group-item"><a a href="{% url 'bip:create_function' student.id %}" class="card-link">Function</a></li>
+      </ul>
+     
+      
+    </div>
+  </div> {% endcomment %}
+{% comment %} 
+ 
+
+
+
+  <div class="col-md">
+    <div class="card card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Exploratory Data Analysis</h5>
+        <p class="card-text"> Data Visualization and Data Analysis.</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="{% url 'bip:my_chart_view' student.id %}" class="card-link">Visual Analysis</a>   <a href="{% url 'bip:chart_view' student.id %}" class="card-link">Visual Analysis</a>            </li>
+        <li class="list-group-item"><a href="{% url 'bip:filter_data' student.pk %}" class="card-link">Data Analysis</a></li>
+        <li class="list-group-item"><a href="" class="btn btn-hidden"></a></li>
+        <li class="list-group-item"><a a href="{% url 'bip:case_fbo' student.id %}" class="card-link">Student</a></li>
+      </ul>
+   
+ 
+    </div>
+  </div> {% endcomment %}
+{% comment %} 
+  <div class="col-md">
+    <div class="card card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Overview</h5>
+        <p class="card-text">View in table form and download as csv file for excel, numbers, google sheet</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="#" class="card-link">Visual Spreadsheet</a></li>
+        <li class="list-group-item"><a href="{% url 'bip:export' student.id %}" class="card-link">Download Spreadsheet</a></li>
+        <li class="list-group-item"><a href="#" class="btn btn-hidden"></a></li>
+      </ul>
+    
+    </div>
+  </div>
+</div> {% endcomment %}
+
+
+
+<div class="row">
+  <div class="col-md">
+    <div class="card card-body">
+      <table class="table table-striped">
+        <tr>
+          <th>Behavior</th>
+          <th>Anticedent</th>
+          <th>Function</th>
+
+          {% if case.duration %}
+          <th>Duration (Min:Sec)</th>
+          {% endif %}
+
+
+          <th>Date</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+        {% for incident in student_behaviors %}
+        <tr>
+    
+          <td>{{incident.behavior }}</td>
+          <td>{{incident.anticedent}}</td>
+          <td>{{incident.function}}</td>
+          
+          {% if incident.duration%}
+          <td>{{incident.time_change}}</td>
+          {% endif %}
+
+          <td>{{incident.date_created|date:'m-d-Y'}}</td> 
+
+{% comment %} <td> <a class="btn btn-warning" href="{% url 'bip:updatepost' pk=incident.pk student_id=incident.student_id %}" >Update</a></td> {% endcomment %}
+
+
+
+           {% comment %} <td> <a class="btn btn-danger" href="{% url 'bip:delete_behavior' pk=incident.pk  %}">Delete</a></td>  {% endcomment %}
+           
+           {% endfor%}
+
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock%}

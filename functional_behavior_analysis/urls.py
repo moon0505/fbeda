@@ -21,11 +21,15 @@ from django.conf.urls.static import static
 from django.conf import settings
 from bip import views
 
+
+
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('bip/', include('bip.urls')),
-    # path('accounts/', include(("accounts.urls", "accounts"))),
-    # path('accounts/', include("django.contrib.auth.urls")),
+    path('', include('bip.urls')),
+  
 ]
 
 

@@ -1,0 +1,33 @@
+
+
+
+{% extends 'partials/base.html' %} {% block content %}
+<br><br>
+<div class="container">
+<div class ="row">
+      <div class="card card-body">
+
+<h2>
+    <p> Are you sure want to delete this incident:  {{incident.behavior}} on  {{incident.date_created}}?</p>
+
+
+    <form action="{% url 'bip:delete_behavior' incident.id %}" method="POST">
+      
+      {% csrf_token %}
+
+
+      <a  class="btn btn-warning" href="{% url 'bip:dashboard' incident.student.pk %}">Cancel</a>
+
+    <input class="btn btn-danger" type="submit" name="Confirm">
+
+   </form>
+
+  </div>
+
+</div>
+
+</div>
+
+
+
+{% endblock %}

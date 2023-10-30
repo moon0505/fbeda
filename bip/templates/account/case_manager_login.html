@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+{% extends 'partials/base.html' %}
+  {% block titlte %}Register{% endblock %} 
+{% load crispy_forms_tags %}{% load widget_tweaks %}
+{% block content %}
+
+
+  <div id="container">
+    <div class="form-wrap">
+      <h1>Functional Behavior Analysis</h1>
+      <p>Login</p>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          {% render_field form.username class="form-control" placeholder="Username" %}
+        </div>
+        <div class="form-group">
+          {% render_field form.password class="form-control" placeholder="Password" %}
+        </div>
+        <button   type="submit" class="btn btn-primary">Sign In</button>
+
+      
+        <p class="bottom-text">
+          Please contact
+          <a href="mailto:krstngonzalez@gmail.com">administrator</a> if unable to
+          login. <a href="#">Terms & Conditions</a> and
+          <a href="#">Privacy Policy</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</body>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: "Raleway", sans-serif;
+    {% comment %} background: #17a2b8; {% endcomment %}
+    color: #fff;
+    line-height: 1.8;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  #container {
+    margin: 30px auto;
+    max-width: 400px;
+    
+    padding: 20px;
+  }
+
+  .form-wrap {
+    background: #fff;
+
+    
+    padding: 15px 25px;
+    color: #333;
+    margin-top: 50px;
+  }
+
+  .form-wrap h1,
+  .form-wrap p {
+    text-align: center;
+  }
+
+  .form-wrap .form-group {
+    margin-top: 15px;
+  }
+
+  .form-wrap .form-group label {
+    display: block;
+    color: #666;
+  }
+
+  .form-wrap .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: #ddd 1px solid;
+    border-radius: 5px;
+  }
+
+  .form-wrap button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .form-wrap button:hover {
+    background: #37a08e;
+  }
+
+  .form-wrap .bottom-text {
+    font-size: 13px;
+    margin-top: 20px;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  footer a {
+    color: #49c1a2;
+  }
+
+  .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'partials/base.html' %}
+  {% block titlte %}Signup{% endblock %} 
+{% load crispy_forms_tags %} {% block content %}
+
+<br>
+<div class="container content-section">
+    <form method="POST" class="form-group">
+          {% csrf_token %}
+          <legend class="border-bottom mb-3">Create an Account-Functional Behavioral Analysis</legend>
+          {{form|crispy}} 
+          <button name="submit" , type="submit" , class="btn btn-success">
+            Sign Up
+          </button>
+    </form>
+</div>
+{% endblock %} 
+
