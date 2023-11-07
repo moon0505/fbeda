@@ -13,7 +13,7 @@
 <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"
 >Dashboard</a>
 <div class="container text-center">
-
+<br>
 <h3>Filter Data</h3>
       
 <form method="GET" action=".">
@@ -21,7 +21,7 @@
       
       <div class="form-row">
          
-       <div class="form-group col-md-3">
+       <div class="form-group col-md-2">
             <label for="behavior">Behavior</label>
             <select id="behavior" class="form-control" name="behavior">
               <option selected>Choose Behavior</option>
@@ -31,7 +31,7 @@
             </select>
           </div> 
 
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-2">
             <label for="anticedent">Anticedent</label>
             <select id="anticedent" class="form-control" name="anticedent">
               <option selected>Choose Anticedent</option>
@@ -43,19 +43,18 @@
 
 
 
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-2">
             <label for="function">Consequence</label>
             <select id="function" class="form-control" name="consequence">
-              <option selected>Choose Function</option>
+              <option selected>Choose Consequence</option>
               {% for con in consequenceset %}
               <option value="{{ con }}">{{ con }}</option>
               {% endfor %}
             </select>
           </div>
-        </div> 
 
 
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-2">
             <label for="function">Function</label>
             <select id="function" class="form-control" name="function">
               <option selected>Choose Function</option>
@@ -80,7 +79,7 @@
           <input type="date" class="form-control" id="publishDateMax" name="date_max">
         </div>
       </div> 
-      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="submit" class="btn btn-primary">Aggragate Data</button>
     </form>
   </div> 
 

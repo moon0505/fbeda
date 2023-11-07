@@ -38,13 +38,23 @@
   {% endif %}
 
   <br>
-
+<br>
   <div class="container">
     {% if iclustermap_graph %}
       <img src="data:image/png;base64, {{ iclustermap_graph | safe }}">
     {% endif %}
   </div>
 
+  <br>
+
+  <br>
+
+  <div class="container">
+    {% if iheat_graph %}
+      <img src="data:image/png;base64, {{ iheat_graph | safe }}">
+    {% endif %}
+  </div>
+  <br>
   <br>
 </div>
 

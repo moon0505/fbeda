@@ -945,7 +945,7 @@ def snapshot_view(request, pk):
         print("Selected y column is empty or does not exist.")
   
   
-    # correlation matrixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    # cluster heatmapcorrelation matrixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     
     behavior = pd.get_dummies(cases_df['Behavior'])
    
@@ -959,6 +959,8 @@ def snapshot_view(request, pk):
     df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
         
     matrix = df_matrix.corr().round(2) 
+
+    print(matrix)
   
 
     iclustermap_graph = None
@@ -969,7 +971,39 @@ def snapshot_view(request, pk):
     except:
         pass
   
+
+
+# heatmap correaltion matrix
+    behavior = pd.get_dummies(cases_df['Behavior'])
+   
+    anticedent = pd.get_dummies(cases_df['Anticedent'])
+    
+    function = pd.get_dummies(cases_df['Function'])
+    
+    
+    df_matrix = pd.concat([cases_df,behavior, anticedent,function], axis=1)
+    
+    df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
+        
+    matrix = df_matrix.corr().round(2) 
+
+    # print(matrix)
   
+
+    
+    iheat_graph = None
+    
+    try:
+        iheat_graph = get_heatmap(data=matrix)
+
+    except:
+        pass
+  
+
+
+
+
+
   
   
   
@@ -977,6 +1011,7 @@ def snapshot_view(request, pk):
     
         'student':student,
         'bar_graph':bar_graph,
+        'iheat_graph':iheat_graph,
         'iclustermap_graph':iclustermap_graph, 
         'multiple_line_plot_one':multiple_line_plot_one,
         'multiple_line_plot_two':multiple_line_plot_two,
