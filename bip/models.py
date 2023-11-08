@@ -49,6 +49,8 @@ class Student(models.Model):
             "*Unique Identifier allows another to use FBO form if provided by you only"
         ),
     )
+        # casemanager =  models.ForeignKey(CaseManager,on_delete=models.CASCADE, default=None)
+
 
         user_student = models.ForeignKey(User, on_delete=models.CASCADE,  default=None,related_name="postts")     
 

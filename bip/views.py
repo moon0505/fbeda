@@ -1923,15 +1923,21 @@ def assign_data_entry(request, pk):
         
     behavior = Behavior.objects.all()
 
+    casemanager = models.CaseManager.objects.all()
+
     case = Case.objects.all()
-    user = User.objects.get(id=pk)
+
+    studentcurrent = Student.objects.get(id=pk)
+
+    # check this after ereasing the data 11/6
+    # user = User.objects.get(id=pk)
 
           
     context = {
     'student_behaviors':student_behaviors,
     "student":student,
     'case':case,
-    'user':user,
+    # 'user':user,
     
                }
     
@@ -1986,8 +1992,17 @@ def updateunique_case_identifier(request, pk):
 
 
 def case_manager_unique_identifier(request, pk):
-        
-    userupdate = User.objects.get(id=pk)
+    
+    # is it user or casemanager it think it is casemanager??????????
+    # may need to create updae CaseMangerUSer form not Casemangerform in forms
+    userupdate = models.CaseManager.objects.get(id=pk)
+    
+    
+    # userupdate = User.objects.get(id=pk)
+
+
+
+
 
     form = UpdateCaseManagerForm(instance=userupdate)
     

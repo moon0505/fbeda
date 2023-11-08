@@ -20,7 +20,7 @@
               <div class="card-body">
                   <h5 class="card-title">Follow the steps below:</h5>
                   <p class="card-text"><ol>
-                    <li>Click on the following link to create your unique identifier: <a a href="{% url 'bip:case_manager_unique_identifier' student.id %}" class="card-link">Unique Identifier</a></li>
+                    <li>Click on the following link to create your unique identifier: <a a href="{% url 'bip:case_manager_unique_identifier' request.user.casemanager.id %}" class="card-link">Unique Identifier   ({{request.user.casemanager.slug}})</a></li>
                     <li>Click on the following link to create the cases' unique identifier:<a a href="{% url 'bip:updateunique_case_identifier' student.id %}" class="card-link">Unique Identifier</a>  ({{student.slug}})</li>
                     <li>Provide the individual who will be inputting the data both unique identifiers and the folloiwng link: <a a href="{% url 'bip:data_entry_signup'  %}" class="card-link">Register</a> </li>
                     <li>The individual will then need to create thier account and provide the unique identifiers to access the case</li>
