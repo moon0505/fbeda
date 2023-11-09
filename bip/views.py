@@ -373,7 +373,14 @@ def behavior_form_view(request, pk):
             instance.student = student
 
             instance.save()   
-            return redirect("bip:dashboard", student.id)
+
+            if is_data_entry:
+                return redirect("bip:data_entry_input", student.id)
+            else:
+                return redirect("bip:dashboard", student.id)
+
+                
+
     else:
         form = BehaviorForm()                                            
         form.fields["behavior"].queryset=behaviorset
@@ -1993,16 +2000,7 @@ def updateunique_case_identifier(request, pk):
 
 def case_manager_unique_identifier(request, pk):
     
-    # is it user or casemanager it think it is casemanager??????????
-    # may need to create updae CaseMangerUSer form not Casemangerform in forms
     userupdate = models.CaseManager.objects.get(id=pk)
-    
-    
-    # userupdate = User.objects.get(id=pk)
-
-
-
-
 
     form = UpdateCaseManagerForm(instance=userupdate)
     
@@ -2015,7 +2013,7 @@ def case_manager_unique_identifier(request, pk):
           
           instance.save()  
           
-          return redirect("bip:assign_data_entry", userupdate.id)
+          return redirect("bip:for_user", userupdate.user)
     
    
     context = {'form':form}

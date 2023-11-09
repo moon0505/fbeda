@@ -12,7 +12,7 @@ from django.utils.text import slugify
 class CaseManager(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     slug = models.SlugField(max_length=150,null=False,unique=False,blank=False,
-        verbose_name=("slug"))
+        verbose_name=("Unique Identification"))
     status=models.BooleanField(default=False)
     @property
     
