@@ -212,8 +212,12 @@ def data_entry_input_view(request, pk):
   
     student = get_object_or_404(Student, pk=pk)
     
-    student_behaviors = student.case_set.all() 
-        
+    student_behaviors = student.case_set.all()[:10] 
+    
+
+    # products = Product.objects.all()[:10]
+
+
     behavior = Behavior.objects.all()
    
       
@@ -1007,11 +1011,6 @@ def snapshot_view(request, pk):
         pass
   
 
-
-
-
-
-  
   
   
     context= {
@@ -1032,6 +1031,79 @@ def snapshot_view(request, pk):
 
 
 
+
+
+# xxxxxxxxxxx
+
+def snapshot_data_entry_view(request, pk):
+    
+    student = get_object_or_404(Student, pk=pk)
+    student_cases = student.case_set.all() 
+
+    
+    
+    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
+    
+
+    cases_df = pd.DataFrame(data)
+
+    # print(cases_df)
+      
+    
+    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+  
+  
+    df1 = cases_df['Date'].value_counts()
+
+    # print(df1)
+
+    df1 = df1.to_frame().reset_index() 
+
+    # print(df1)
+
+    df2 = df1.reset_index()
+
+    # print(df2)
+
+
+    df2 = df2.sort_values(by=['index'])
+
+    # print(df2)
+
+
+    df3 = df2['Date']
+
+    # print(df3)
+    
+    df4 = df2['count']
+
+    print(df4)
+
+    bar_graph = get_bar_chart(x=df3, y = df4)
+  
+    
+  
+    
+    context= {
+    
+        'student':student,
+        'bar_graph':bar_graph,
+       
+    }
+    
+    return render(request, 'bip/data_entry_chart_view.html', context)
+
+
+
+
+
+
+# xxxxxxxx
 
 
 def function_view(request,pk):

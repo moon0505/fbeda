@@ -9,9 +9,8 @@
 
   <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:create_incident' student.id %}"
   >Create Incident</a> 
-{% comment %} 
-  <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:create_incident' student.id %}"
-        >Create Incident</a>  {% endcomment %}
+
+ 
 
 <br/>
 
@@ -119,5 +118,8 @@
     </div>
   </div>
 </div>
+<br>
+<a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:snapshot_data_entry' student.id %}"
+>Graph</a>  
 
 {% endblock%}

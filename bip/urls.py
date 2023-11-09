@@ -121,6 +121,8 @@ urlpatterns = [
     
     
     path('snapshot/<pk>/', views.snapshot_view, name='snapshot'),
+    path('snapshot_data_entry/<pk>/', views.snapshot_data_entry_view, name='snapshot_data_entry'),
+
     
     path('function/<pk>/', views.function_view, name='function'),
     
