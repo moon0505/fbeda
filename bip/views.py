@@ -551,7 +551,7 @@ def updateBehavior(request, pk):
           
           instance.save()  
           
-          return redirect("bip:abc", behupdate.student.id)
+          return redirect("bip:edit_behavior", behupdate.student.id)
     
    
     context = {'form':form}
@@ -781,6 +781,25 @@ def abc_view(request, pk ):
     
     return render(request, 'bip/abc.html', context)
 
+
+@login_required(login_url='case_manager_login')
+@user_passes_test(is_case_manager)
+def edit_behavior_view(request, pk ):
+    student = Student.objects.get(id=pk) 
+    
+    behaviors = Behavior.objects.all()
+    behaivorpest  = Behavior.objects.filter(user=request.user)
+    behaviorset = student.behavior_set.all()
+    
+     
+     
+    context= {
+        'behaviorset':behaviorset,
+       
+        'student':student,  
+    }
+    
+    return render(request, 'bip/edit_behavior.html', context)
 
 
 

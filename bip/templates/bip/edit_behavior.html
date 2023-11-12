@@ -1,0 +1,42 @@
+
+ 
+{% extends 'partials/base.html' %} 
+{% block content %}
+<br>
+<a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"
+>Dashboard</a>
+
+<br>
+<div class="container">
+
+<div class="row">
+  <div class="col-md">
+    <div class="card card-body">
+      <table class="table table-striped">
+            <tr>
+              <th>Behavior</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+            {% for behavior_incidents in behaviorset %}
+            <tr>
+            <td>{{behavior_incidents }}</td>
+            <td><a class="btn btn-warning" href="{% url 'bip:update_behavior' behavior_incidents.id%}">Update</a></td> 
+            <td><a class="btn btn-danger" href="{% url 'bip:delete_behavior' behavior_incidents.id %}">Delete</a></td> 
+          </tr>
+      {% endfor%} 
+      </table>
+ 
+  </div>
+</div>
+</div>
+
+
+
+</div>
+<br> 
+
+
+
+
+{% endblock %}

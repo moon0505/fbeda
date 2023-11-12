@@ -94,6 +94,9 @@ urlpatterns = [
     
     path('abc/<pk>/', views.abc_view, name='abc'),
 
+    path('edit_behavior/<pk>/', views.edit_behavior_view, name='edit_behavior'),
+
+
     path('create_anticedent/<pk>/', views.create_anticedent, name='create_anticedent'),
     path('update_anticedent/<pk>/',views.updateAnticedent,name='update_anticedent'),
     path('delete_anticedent/<pk>/', views.deleteAnticedent, name='delete_anticedent'),

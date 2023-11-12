@@ -26,6 +26,11 @@ class CaseManager(models.Model):
     
 class DataEntry(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
+
+
+    # user=models.OneToOneField(User, on_delete=models.SET_NULL,blank=True, null=True)
+    # user=models.OneToOneField(User, default=26, on_delete=models.SET_DEFAULT,  null=True, blank=True)
+
     assignedCaseManagerSlug = models.CharField(max_length=20,blank=True,null=True)
     assignedStudentSlug = models.CharField(max_length=20,blank=True,null=True)
 
