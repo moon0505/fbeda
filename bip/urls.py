@@ -95,6 +95,9 @@ urlpatterns = [
     path('abc/<pk>/', views.abc_view, name='abc'),
 
     path('edit_behavior/<pk>/', views.edit_behavior_view, name='edit_behavior'),
+    path('edit_anticedent/<pk>/', views.edit_anticedent_view, name='edit_anticedent'),
+    path('edit_consequence/<pk>/', views.edit_consequence_view, name='edit_consequence'),
+    path('edit_function/<pk>/', views.edit_function_view, name='edit_function'),
 
 
     path('create_anticedent/<pk>/', views.create_anticedent, name='create_anticedent'),

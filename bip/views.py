@@ -802,6 +802,63 @@ def edit_behavior_view(request, pk ):
     return render(request, 'bip/edit_behavior.html', context)
 
 
+@login_required(login_url='case_manager_login')
+@user_passes_test(is_case_manager)
+def edit_anticedent_view(request, pk ):
+    student = Student.objects.get(id=pk) 
+   
+    anticedent = Anticedent.objects.all()
+    anticedentset = student.anticedent_set.all()
+  
+    context= {
+        'anticedentset':anticedentset,   
+        'student':student,  
+    }
+    
+    return render(request, 'bip/edit_anticedent.html', context)
+
+
+
+@login_required(login_url='case_manager_login')
+@user_passes_test(is_case_manager)
+def edit_consequence_view(request, pk ):
+    student = Student.objects.get(id=pk) 
+    
+    
+    
+     
+    consequence = Consequence.objects.all()
+    consequencepest  = Consequence.objects.filter(user=request.user)
+    conseqenceset = student.consequence_set.all()
+    
+    
+     
+    context= {
+       
+        'conseqenceset':conseqenceset,
+        'student':student,  
+    }
+    
+    return render(request, 'bip/edit_consequence.html', context)
+
+@login_required(login_url='case_manager_login')
+@user_passes_test(is_case_manager)
+def edit_function_view(request, pk ):
+    student = Student.objects.get(id=pk) 
+    
+    function = Function.objects.all()
+    functionset = student.function_set.all()
+
+    context= {
+       
+        'functionset': functionset,
+       
+        'student':student,  
+    }
+    
+    return render(request, 'bip/edit_function.html', context)
+
+
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
