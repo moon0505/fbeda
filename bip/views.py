@@ -44,6 +44,7 @@ from .utils import  (
     get_pie__chart_function,
     get_duration_bar_chart,
     get_pie__chart_consequence,
+    get_box_plot_function,
     
     
     )
@@ -1206,7 +1207,7 @@ def function_view(request,pk):
     df_function = cases_df['Function']
     
     
-    box_graph = get_box_plot( x= df_function, data=cases_df) 
+    box_graph_function = get_box_plot_function( x= df_function, data=cases_df) 
     
     
     # correationxxxxxxxxxxxxxx
@@ -1228,7 +1229,7 @@ def function_view(request,pk):
 
 
     try:
-        filterDX = matrix[((matrix >= 0.0)) & (matrix != 1.000)]
+        filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
     
         iheat_graph = get_heatmap(data=filterDX)
     except:
@@ -1247,7 +1248,7 @@ def function_view(request,pk):
 
     context= {'student':student,'iclustermap_graph':iclustermap_graph, 
     'iheat_graph':iheat_graph, 
-    'box_graph':box_graph,}
+    'box_graph_function':box_graph_function,}
     
     
     return render(request, 'bip/function.html', context)
@@ -1297,7 +1298,7 @@ def anticedent_view(request,pk):
   
 
     try:
-        filterDX = matrix[((matrix >= 0.0)) & (matrix != 1.000)]
+        filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
     
         iheat_graph = get_heatmap(data=filterDX)
     except:
@@ -1879,16 +1880,27 @@ def raw_data(request, pk):
 
     
 
+    unique_abcf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence','Function']).size().reset_index(name='Frequency')
 
-    unique_abf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Function']).size().reset_index(name='counts')
+    unique_abcf_count = unique_abcf_count.sort_values(by=['Frequency'], ascending=False)
 
-    unique_abc_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence']).size().reset_index(name='counts')
 
-    unique_abcf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence','Function']).size().reset_index(name='counts')
 
-    unique_ab_count = cases_df_duplicate.groupby(['Behavior','Anticedent']).size().reset_index(name='counts')
-    
-    unique_bf_count = cases_df_duplicate.groupby(['Behavior','Function']).size().reset_index(name='counts')
+    unique_abf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Function']).size().reset_index(name='Frequency')
+
+    unique_abf_count = unique_abf_count.sort_values(by=['Frequency'], ascending=False)
+
+
+    unique_abc_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence']).size().reset_index(name='Frequency')
+
+    unique_abc_count = unique_abc_count.sort_values(by=['Frequency'], ascending=False)
+
+
+    unique_ab_count = cases_df_duplicate.groupby(['Behavior','Anticedent']).size().reset_index(name='Frequency')
+    unique_ab_count = unique_ab_count.sort_values(by=['Frequency'], ascending=False)
+
+    unique_bf_count = cases_df_duplicate.groupby(['Behavior','Function']).size().reset_index(name='Frequency')
+    unique_bf_count = unique_bf_count.sort_values(by=['Frequency'], ascending=False)
 
 
     
@@ -1900,7 +1912,7 @@ def raw_data(request, pk):
     box_duration_graph = None
 
     
-    
+
     try:
         duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
         
@@ -1926,10 +1938,6 @@ def raw_data(request, pk):
 
     # Frequency of behavior:
 
-
-
-
-
     data_frequency = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','frequency')
     
     cases_df_frequency = pd.DataFrame(data_frequency)
@@ -1944,15 +1952,7 @@ def raw_data(request, pk):
         
         df_frequency = frequency_behavior['behavior__behaviorincident']
 
-        # print(df_duration)
-        
-        # dfy_duration = duration_behavior['duration']
-        
-        # print(dfy_duration)
-
-        
-        
-        # duration_behavior = duration_behavior.set_index('behavior__behaviorincident')
+      
         
     except:
         
@@ -1978,8 +1978,16 @@ def raw_data(request, pk):
         
         frequency_behavior_sum = frequency_behavior_sum.to_frame().reset_index()        
         
+
+
+
         
-        df_frequency_sum= frequency_behavior_sum['behavior__behaviorincident']
+        frequency_behavior_sum = frequency_behavior_sum.sort_values(by=['frequency'], ascending=False)
+
+
+        
+        df_frequency_sum= frequency_behavior_sum['behavior__behaviorincident'].sort_values()
+
 
         # print(df_duration)
         

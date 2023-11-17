@@ -123,6 +123,29 @@ def get_clustermap( *args, **kwargs):
 
 
 
+def get_box_plot_function( *args, **kwargs):
+    plt.switch_backend('AGG')    
+    fig = plt.figure()
+    
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+    title = "Function and Behavior"
+    plt.title(title)
+
+    sns.countplot(x=x, hue='Behavior', data=data)
+
+    plt.xticks(rotation=45)
+    plt.xlabel('Function')
+    plt.ylabel('Frequency')
+    plt.tight_layout()
+    plt.legend(title='Behavior')
+    
+    box_graph_function = get_image()
+
+    return box_graph_function
+
+
 def get_box_plot( *args, **kwargs):
     plt.switch_backend('AGG')    
     fig = plt.figure()
