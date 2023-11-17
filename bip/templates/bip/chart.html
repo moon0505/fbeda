@@ -79,6 +79,15 @@
 </div>
 <br>
 
+
+
+<div class='container'>
+  <img src="data:image/png;base64, {{ pie_consequence_graph | safe}}">
+</div>
+<br>
+
+
+
 <div class='container'>
   <img src="data:image/png;base64, {{ box_duration_graph | safe}}">
 </div>
@@ -87,7 +96,7 @@
 </body>
 <style>
   body {
-    {% comment %} background: white; {% endcomment %}
+ background: white; 
   }
   img {
     border: 2px solid #555;

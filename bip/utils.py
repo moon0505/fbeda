@@ -130,13 +130,13 @@ def get_box_plot( *args, **kwargs):
     x = kwargs.get('x')
     y = kwargs.get('y')
     data = kwargs.get('data')
-    title = "Function and Behavior"
+    title = "Antecedent and Behavior"
     plt.title(title)
 
     sns.countplot(x=x, hue='Behavior', data=data)
 
     plt.xticks(rotation=45)
-    plt.xlabel('Function')
+    plt.xlabel('Antecedent')
     plt.ylabel('Frequency')
     plt.tight_layout()
     plt.legend(title='Behavior')
@@ -748,7 +748,7 @@ def get_pie__chart_anticedent( *args, **kwargs):
 
         
         plt.pie(x, labels=labels, autopct='%1.0f%%')
-        plt.title("Anticedent")
+        plt.title("Antecedent")
         pie_anticedent_graph = get_image()
         
         return pie_anticedent_graph
@@ -774,7 +774,21 @@ def get_pie__chart_function( *args, **kwargs):
         return pie_function_graph
     
     
-    
+def get_pie__chart_consequence( *args, **kwargs):
+
+        plt.switch_backend('AGG')
+        x  = kwargs.get('x')
+        y = kwargs.get('y')
+        labels = kwargs.get('labels')
+        data = kwargs.get('data')
+       
+        fig = plt.figure()
+        # myexplode = [0.05, 0, 0, ]
+        plt.pie(x, labels=labels, autopct='%1.0f%%')
+        plt.title("Consequence")
+        pie_consequence_graph = get_image()
+        
+        return pie_consequence_graph  
     
     
 

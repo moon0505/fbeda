@@ -43,6 +43,7 @@ from .utils import  (
     get_pie__chart_anticedent,
     get_pie__chart_function,
     get_duration_bar_chart,
+    get_pie__chart_consequence,
     
     
     )
@@ -378,10 +379,10 @@ def behavior_form_view(request, pk):
 
             instance.save()   
 
-            if is_data_entry:
-                return redirect("bip:data_entry_input", student.id)
-            else:
-                return redirect("bip:dashboard", student.id)
+            # if is_data_entry:
+            #     return redirect("bip:data_entry_input", student.id)
+            # else:
+            return redirect("bip:dashboard", student.id)
 
                 
 
@@ -563,7 +564,7 @@ def updateBehavior(request, pk):
 
 def deleteBehavior(request, pk):
     
-    behdelete = Case.objects.get(id=pk)
+    behdelete = Behavior.objects.get(id=pk)
     print(behdelete)
     
     if request.method == "POST":
@@ -1101,6 +1102,7 @@ def snapshot_view(request, pk):
         'multiple_line_plot_four':multiple_line_plot_four,
         'multiple_line_plot_five':multiple_line_plot_five, 
         'multiple_line_plot_chatgpt':multiple_line_plot_chatgpt,
+        'matrix':matrix.to_html(),    
     }
     
     return render(request, 'bip/snapshot.html', context)
@@ -1669,13 +1671,15 @@ def chart_view(request, pk):
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
     
-    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
+    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'consequence__behaviorconsequence','date_created','time','id')
     
     cases_df = pd.DataFrame(data)
       
     cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
     cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
     cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+    cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+
     cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
     cases_df.columns = cases_df.columns.str.replace('time', 'Time')
     cases_df.columns = cases_df.columns.str.replace('id', 'ID')
@@ -1782,7 +1786,10 @@ def chart_view(request, pk):
 
     pie_function_graph = get_pie__chart_function( x=df4, labels=df4.index)
     
-    
+
+    df5 = cases_df['Consequence'].value_counts()
+
+    pie_consequence_graph = get_pie__chart_consequence( x=df5, labels=df5.index)
     
     # Duration of behavior
     data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
@@ -1816,6 +1823,9 @@ def chart_view(request, pk):
         pass
 
     
+
+    # correltion table
+    
     context = {
         'student':student,
         'beh_count_graph':beh_count_graph,
@@ -1827,6 +1837,7 @@ def chart_view(request, pk):
         'pie_graph':pie_graph,
         'pie_anticedent_graph':pie_anticedent_graph,
         'pie_function_graph':pie_function_graph,
+        'pie_consequence_graph':pie_consequence_graph,
         'box_duration_graph':box_duration_graph,
 
         }
@@ -1876,6 +1887,8 @@ def raw_data(request, pk):
     unique_abcf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence','Function']).size().reset_index(name='counts')
 
     unique_ab_count = cases_df_duplicate.groupby(['Behavior','Anticedent']).size().reset_index(name='counts')
+    
+    unique_bf_count = cases_df_duplicate.groupby(['Behavior','Function']).size().reset_index(name='counts')
 
 
     
@@ -1885,6 +1898,8 @@ def raw_data(request, pk):
     cases_df_duration = pd.DataFrame(data_duration)
 
     box_duration_graph = None
+
+    
     
     try:
         duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
@@ -1981,8 +1996,7 @@ def raw_data(request, pk):
         pass
 
     
-
-
+    # correaltion
 
 
     context = {
@@ -1991,10 +2005,11 @@ def raw_data(request, pk):
 
         'unique_abc_count':unique_abc_count.to_html(),
         'unique_abf_count':unique_abf_count.to_html(),
+        'unique_bf_count':unique_bf_count.to_html(),
         'duplicateRows':duplicateRows.to_html(),
         'unique_ab_count':unique_ab_count.to_html(),
 
-        'duration_behavior':duration_behavior.to_html(),
+        # 'duration_behavior':duration_behavior.to_html(),
         'frequency_behavior':frequency_behavior.to_html(),
 
         'frequency_behavior_sum':frequency_behavior_sum.to_html(),

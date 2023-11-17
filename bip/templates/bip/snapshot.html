@@ -3,7 +3,8 @@
 {% extends 'partials/base.html' %} 
 {% block content %}
 <br>
-<body> 
+<body>
+  
   <div class="container text-center">
 
 <div class="container">
@@ -45,9 +46,7 @@
     {% endif %}
   </div>
 
-  <br>
-
-  <br>
+<br><br>
 
   <div class="container">
     {% if iheat_graph %}
@@ -56,13 +55,27 @@
   </div>
   <br>
   <br>
+
+
+  <br>
+
+   
+
+  <br>
+
 </div>
 
 </div>
-</body>
+<div  class="container-fluid">
+  <h1> Correlation Matrix</h1>
+  {{matrix | safe}}  
+  <br>
+    </div>
+<br><br>
+  </body>
 <style>
   body {
-    {% comment %} background: white; {% endcomment %}
+   background: white; 
   }
   img {
     border: 2px solid #555;
