@@ -368,22 +368,25 @@ def behavior_form_view(request, pk):
     anticedentset = student.anticedent_set.all()
     functionset = student.function_set.all()
     consequset = student.consequence_set.all()
-        
+    
+
     if request.method == 'POST':
         form = BehaviorForm(instance=student) 
-
         form = BehaviorForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = request.user
             instance.student = student
-
             instance.save()   
 
-            # if is_data_entry:
-            #     return redirect("bip:data_entry_input", student.id)
-            # else:
-            return redirect("bip:dashboard", student.id)
+
+            if is_case_manager(request.user):
+                return redirect("bip:dashboard", student.id)
+
+            elif is_data_entry(request.user):
+                return redirect("bip:data_entry_input", student.id)
+            
+            
 
                 
 
@@ -1944,6 +1947,8 @@ def raw_data(request, pk):
 
     
     try:
+
+        
         frequency_behavior = cases_df_frequency.groupby('behavior__behaviorincident')['frequency'].mean().round(1) 
         
         
@@ -1971,13 +1976,19 @@ def raw_data(request, pk):
     
     cases_df_frequency_sum = pd.DataFrame(data_frequency)
 
+
+
+
+
     
     try:
+
+        
         frequency_behavior_sum = cases_df_frequency.groupby('behavior__behaviorincident')['frequency'].sum()
-        
-        
+
+
         frequency_behavior_sum = frequency_behavior_sum.to_frame().reset_index()        
-        
+
 
 
 
@@ -1985,7 +1996,6 @@ def raw_data(request, pk):
         frequency_behavior_sum = frequency_behavior_sum.sort_values(by=['frequency'], ascending=False)
 
 
-        
         df_frequency_sum= frequency_behavior_sum['behavior__behaviorincident'].sort_values()
 
 
@@ -2034,17 +2044,20 @@ def raw_data(request, pk):
 
 
 def export(request,pk):
+
+
+
     response = HttpResponse(content_type='text/csv')
     
     writer = csv.writer(response)
     
-    writer.writerow(["Case","Behavior", "Anticedent","Consequence","Function","Duration(Sec)","Date Created"])
+    writer.writerow(["Case","Behavior", "Antecedent","Consequence","Function", "Duration(Sec)","Date"])
     
     for case in  Case.objects.filter(student__id=pk).values_list('student__studentname','behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction','duration','date_created'):
         writer.writerow(case)    
 
     
-    response['Content-Disposition'] = 'attachment; filename="FBA Data.csv"'
+    response['Content-Disposition'] = 'attachment; filename= "FBA Data.csv"'
     
     
     return response
