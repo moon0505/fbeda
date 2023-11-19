@@ -158,7 +158,7 @@ def get_box_plot_consequence( *args, **kwargs):
     title = "Consequence and Behavior"
     plt.title(title)
 
-    sns.countplot(x=x, hue='Consequence', data=data)
+    sns.countplot(x=x, hue='Behavior', data=data)
 
     plt.xticks(rotation=45)
     plt.xlabel('Consequence')
