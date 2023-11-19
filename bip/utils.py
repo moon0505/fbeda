@@ -146,6 +146,30 @@ def get_box_plot_function( *args, **kwargs):
     return box_graph_function
 
 
+
+
+def get_box_plot_consequence( *args, **kwargs):
+    plt.switch_backend('AGG')    
+    fig = plt.figure()
+    
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+    title = "Consequence and Behavior"
+    plt.title(title)
+
+    sns.countplot(x=x, hue='Consequence', data=data)
+
+    plt.xticks(rotation=45)
+    plt.xlabel('Consequence')
+    plt.ylabel('Frequency')
+    plt.tight_layout()
+    plt.legend(title='Behavior')
+    
+    box_graph_consequence = get_image()
+
+    return box_graph_consequence
+
 def get_box_plot( *args, **kwargs):
     plt.switch_backend('AGG')    
     fig = plt.figure()

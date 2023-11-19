@@ -131,7 +131,10 @@ urlpatterns = [
 
     
     path('function/<pk>/', views.function_view, name='function'),
-    
+    path('consequence/<pk>/', views.consequence_view, name='consequence'),
+
+
+
     path('anticedent/<pk>/', views.anticedent_view, name='anticedent'),
     
     

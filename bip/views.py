@@ -45,6 +45,7 @@ from .utils import  (
     get_duration_bar_chart,
     get_pie__chart_consequence,
     get_box_plot_function,
+    get_box_plot_consequence,
     
     
     )
@@ -342,20 +343,28 @@ def list_view(request,pk):
 def dashboard(request, pk):
   
     student = get_object_or_404(Student, pk=pk)
-    
+
     student_behaviors = student.case_set.all() 
-        
+
+    student_duration = Case.objects.filter(student__id=pk).values('duration')
+
+
+    firstduration = student_duration.first()
+
+    print(firstduration)
+
+
+
     behavior = Behavior.objects.all()
 
-    case = Case.objects.all()
           
     context = {
     'student_behaviors':student_behaviors,
     "student":student,
-    'case':case,
+    'student_duration':student_duration,
+    'firstduration':firstduration,
     
                }
-    
     
     return render(request, 'bip/dashboard.html',context, )
 
@@ -1255,6 +1264,81 @@ def function_view(request,pk):
     
     
     return render(request, 'bip/function.html', context)
+
+
+
+def consequence_view(request,pk):
+     
+    student = get_object_or_404(Student, pk=pk)
+    student_cases = student.case_set.all() 
+
+    
+    
+    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'consequence__behaviorconsequence','date_created','time','id')
+    
+    cases_df = pd.DataFrame(data)
+      
+    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+    cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+    
+    
+    df_consequence = cases_df['Consequence']
+    
+    
+    box_graph_consequence = get_box_plot_consequence( x= df_consequence, data=cases_df) 
+    
+    
+    # correationxxxxxxxxxxxxxx
+    
+    behavior = pd.get_dummies(cases_df['Behavior'])
+   
+    anticedent = pd.get_dummies(cases_df['Anticedent'])
+    
+    function = pd.get_dummies(cases_df['Function'])
+    
+    consequence = pd.get_dummies(cases_df['Consequence'])
+
+    
+    df_matrix = pd.concat([cases_df,behavior,consequence], axis=1)
+    
+    df_matrix.drop(['Behavior','Anticedent','Function', 'Consequence', 'Date','Time','ID'],axis=1,inplace=True)
+        
+    matrix = df_matrix.corr().round(2) 
+  
+# stopped here
+
+
+    try:
+        filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    
+        iheat_graph = get_heatmap(data=filterDX)
+    except:
+        pass
+    
+
+    iclustermap_graph = None
+    
+    try:
+        iclustermap_graph = get_clustermap(data=matrix)
+
+    except:
+        pass
+  
+  
+
+    context= {'student':student,'iclustermap_graph':iclustermap_graph, 
+    'iheat_graph':iheat_graph, 
+    'box_graph_consequence':box_graph_consequence,}
+    
+    
+    return render(request, 'bip/consequence.html', context)
+
+
 
 
 def anticedent_view(request,pk):
