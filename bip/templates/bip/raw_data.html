@@ -6,18 +6,43 @@
 <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"
 >Dashboard</a>
 
+<body>
+  
+
+    <!-- JUSTIFY CONTENT - CONTENT CENTER -->
+    <div class="d-flex justify-content-center row-hl">
+      
+      <div class="p-4 item-hl"><h4 >A-B-C-F Frequency </h4>{{unique_abcf_count | safe}}</div>
+    </div>
+
+
+
+
+ <!-- HEADER, FOOTER, CENTERED -->
+ <div class="card text-center">
+  
+  <div class="card-body">
+      <h4 class="card-title">A-B-C-F Frequency </h4>
+
+      <p class="card-text">{{unique_abcf_count | safe}}  </p>
+  </div>
+  <div class="card-footer text-muted">
+      2 Days Ago
+  </div>
+</div>
+
 <div class='container' >
-  <h1> A-B-C-F Frequency Count</h1>
+  <h1> A-B-C-F Frequency </h1>
     {{unique_abcf_count | safe}}  
    </div>
   <br>
 <div class='container'>
-  <h1> A-B-C Frequency Count</h1>
+  <h1> A-B-C Frequency </h1>
     {{unique_abc_count | safe}}  
    </div>
   <br>
 <div class='container'>
-  <h1> A-B-F Frequency Count</h1>
+  <h1> A-B-F Frequency </h1>
       {{unique_abf_count | safe}}  
      </div>
     <br>
@@ -25,13 +50,13 @@
 
 
     <div class='container'>
-      <h1> B-F Frequency Count</h1>
+      <h1> B-F Frequency </h1>
       {{unique_bf_count | safe}}  
          </div>
         <br>
 
     <div class='container'>
-      <h1> A-B Frequency Count</h1>
+      <h1> A-B Frequency </h1>
       {{unique_ab_count | safe}}  
          </div>
         <br>
@@ -52,15 +77,42 @@
            </div>
           <br>
 
-
+        {% if duration_behavior%}
         <div class='container'>
             <h1>Average Duration of Behavior</h1>
               {{duration_behavior | safe}}  
              </div>
             <br>
+        {% endif %}
 
-        
+           
 
-          
+  
+
+
+<div class="box">
+<h1>Correlation Matrix (A-B-C-F)</h1>
+  {{matrix | safe}}
+
+</div>
+
+
+              </body>
+
+
+<style>
+.box {
+  /* width: 99%; */
+  height: 100%;
+  border: 1px solid black;
+  background-color: #fff;
+  padding: 20px;
+  margin: 5px;
+  overflow: auto;
+}
+
+  
+</style>
+
 
             {% endblock %}
