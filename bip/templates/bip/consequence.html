@@ -10,7 +10,10 @@
 <div class="container">
   <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
   <br/>
-
+  <div class='container'>
+    <img src="data:image/png;base64, {{ box_graph_consequence | safe}}">
+  </div>
+  <br>
 
   <div class='container'>
     {% if iheat_graph %}
@@ -27,10 +30,7 @@
   <br>
 
 <br>
-<div class='container'>
-  <img src="data:image/png;base64, {{ box_graph_consequence | safe}}">
-</div>
-<br>
+
 </div>
 
 

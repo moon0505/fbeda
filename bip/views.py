@@ -19,8 +19,8 @@ from django.views import generic
 
 from django.contrib.auth.decorators import login_required,user_passes_test
 
-from .models import   Student, Behavior, Case, Anticedent, Function, Consequence
-from .forms import BehaviorForm, StudentForm,StudentUpdateForm, CreateBehaviorForm,CreateAnticedentForm,CreateFunctionForm, CreateConsequenceForm, StudentFormSlug, UpdateCaseManagerForm
+from .models import   Student, Behavior, Case, Anticedent, Function, Consequence,Enviroment
+from .forms import BehaviorForm, StudentForm,StudentUpdateForm, CreateBehaviorForm,CreateAnticedentForm,CreateFunctionForm, CreateConsequenceForm, StudentFormSlug, UpdateCaseManagerForm,CreateEnviromentForm
 from .utils import  (
     get_bar_chart,
     get_clustermap,
@@ -379,6 +379,8 @@ def behavior_form_view(request, pk):
     anticedentset = student.anticedent_set.all()
     functionset = student.function_set.all()
     consequset = student.consequence_set.all()
+    enviromentset = student.enviroment_set.all()
+
     
 
     if request.method == 'POST':
@@ -406,8 +408,9 @@ def behavior_form_view(request, pk):
         form.fields["behavior"].queryset=behaviorset
         form.fields["anticedent"].queryset=anticedentset
         form.fields["consequence"].queryset=consequset
-
         form.fields["function"].queryset=functionset
+        form.fields["enviroment"].queryset=enviromentset
+
         
     return render(request, 'bip/fbo_form.html', {'form': form,'student':student})
 
@@ -797,6 +800,55 @@ def abc_view(request, pk ):
     
     return render(request, 'bip/abc.html', context)
 
+@login_required
+def create_setting_view(request,pk):
+    user = User.objects.get(pk=request.user.id)
+    
+    student = Student.objects.get(id=pk) 
+
+    form = CreateEnviromentForm()
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            form = CreateEnviromentForm(request.POST)
+        
+            for field in form:
+                print(field.value())
+            
+            if form.is_valid():
+                 obj = form.save(commit=False)
+                 obj.user = User.objects.get(pk=request.user.id)
+                 obj.student = student
+                 obj.save()
+                 return redirect("bip:dashboard", student.id)                              
+                
+            else:
+                print("ERROR In Form") 
+
+    return render(request, 'bip/create_setting.html', {'form': form})
+
+
+def updateSetting(request, pk):
+        
+    enviromentupdate = Enviroment.objects.get(id=pk)
+
+    form = CreateEnviromentForm(instance=enviromentupdate)
+    
+    if request.method == 'POST': 
+      form = CreateEnviromentForm(request.POST, instance=enviromentupdate) 
+      
+      if form.is_valid():
+          instance = form.save(commit=False)
+          instance.user = request.user  
+          instance.save()  
+          
+          return redirect("bip:update_setting", enviromentupdate.student.id)
+    context = {'form':form}
+    
+    return render(request, "bip/create_setting.html", context)
+
+
+
+
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
@@ -940,7 +992,7 @@ def snapshot_view(request, pk):
     
     df4 = df2['count']
 
-    print(df4)
+    # print(df4)
 
     bar_graph = get_bar_chart(x=df3, y = df4)
   
@@ -1059,7 +1111,7 @@ def snapshot_view(request, pk):
         
     matrix = df_matrix.corr().round(2) 
 
-    print(matrix)
+    # print(matrix)
   
 
     iclustermap_graph = None

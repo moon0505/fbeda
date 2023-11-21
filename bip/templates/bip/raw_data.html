@@ -5,71 +5,44 @@
 
 <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"
 >Dashboard</a>
-
+<br>
 <body>
-  
 
-    <!-- JUSTIFY CONTENT - CONTENT CENTER -->
-    <div class="d-flex justify-content-center row-hl">
-      
-      <div class="p-4 item-hl"><h4 >A-B-C-F Frequency </h4>{{unique_abcf_count | safe}}</div>
+  <!-- JUSTIFY CONTENT - CONTENT AROUND -->
+  <div class="d-flex justify-content-center row-hl">
+    <div class="p-4 item-hl"><b>Behavior</b> {{frequency_behavior_sum | safe}}  
     </div>
-
-
-
-
- <!-- HEADER, FOOTER, CENTERED -->
- <div class="card text-center">
   
-  <div class="card-body">
-      <h4 class="card-title">A-B-C-F Frequency </h4>
+    <div class="p-4 item-hl"> <b>Behavior-Function</b> {{unique_bf_count | safe}}  
+    </div>
+    <div class="p-4 item-hl"><b>Antecedent-Behavior</b>       {{unique_ab_count | safe}}  
 
-      <p class="card-text">{{unique_abcf_count | safe}}  </p>
+    </div>
   </div>
-  <div class="card-footer text-muted">
-      2 Days Ago
+
+
+  <!-- JUSTIFY CONTENT - CONTENT AROUND -->
+  <div class="d-flex justify-content-center row-hl">
+   
+    <div class="p-4 item-hl"><b>Antecedent-Behavior-Consequence</b> {{unique_abc_count | safe}}  
+    </div>
+    <div class="p-4 item-hl"><b>Antecedent-Behavior-Consequence-Function</b> {{unique_abcf_count | safe}}  
+    </div>
+  
+    
+    
   </div>
-</div>
-
-<div class='container' >
-  <h1> A-B-C-F Frequency </h1>
-    {{unique_abcf_count | safe}}  
-   </div>
-  <br>
-<div class='container'>
-  <h1> A-B-C Frequency </h1>
-    {{unique_abc_count | safe}}  
-   </div>
-  <br>
-<div class='container'>
-  <h1> A-B-F Frequency </h1>
-      {{unique_abf_count | safe}}  
-     </div>
-    <br>
 
 
 
-    <div class='container'>
-      <h1> B-F Frequency </h1>
-      {{unique_bf_count | safe}}  
-         </div>
-        <br>
-
-    <div class='container'>
-      <h1> A-B Frequency </h1>
-      {{unique_ab_count | safe}}  
-         </div>
-        <br>
 
 
 
-        <div class='container'>
-          <h1>Frequency of Behavior</h1>
-            {{frequency_behavior_sum | safe}}  
-           </div>
-          <br>
 
 
+
+
+       
 
         <div class='container'>
           <h1>Average  Frequncy of Behavior</h1>

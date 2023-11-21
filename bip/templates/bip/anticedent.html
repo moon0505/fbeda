@@ -11,6 +11,12 @@
   <br/>
 
 
+  <br>
+  <div class='container'>
+    <img src="data:image/png;base64, {{ box_graph | safe}}">
+  </div>
+  <br>
+  
   <div class='container'>
     {% if iheat_graph %}
     <img src="data:image/png;base64, {{ iheat_graph | safe}}">
@@ -25,11 +31,6 @@
 
   <br>
 
-<br>
-<div class='container'>
-  <img src="data:image/png;base64, {{ box_graph | safe}}">
-</div>
-<br>
 </div>
 
 

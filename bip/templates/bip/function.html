@@ -7,9 +7,17 @@
   
   <div class="container text-center">
 
+
 <div class="container">
   <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
   <br/>
+
+  <div class='container'>
+    <img src="data:image/png;base64, {{ box_graph_function | safe}}">
+  </div>
+  <br>
+  </div>
+  
 
 
   <div class='container'>
@@ -27,11 +35,6 @@
   <br>
 
 <br>
-<div class='container'>
-  <img src="data:image/png;base64, {{ box_graph_function | safe}}">
-</div>
-<br>
-</div>
 
 
 </div>

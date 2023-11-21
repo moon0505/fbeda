@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from bip import models
 from django.forms import ModelForm
-from .models import  Case, Behavior, Function, Student,Anticedent,Consequence
+from .models import  Case, Behavior, Function, Student,Anticedent,Consequence, Enviroment
 from django import forms
 # from accounts.models import MyUser
 
@@ -58,15 +58,25 @@ class BehaviorForm(forms.ModelForm):
  
     class Meta():
         model = Case
-        fields = ('behavior','anticedent','consequence','function','date_created','time','duration','frequency','context')
+        fields = ('behavior','anticedent','consequence','function','date_created','time','duration','frequency','enviroment')
         widgets = {
             'date_created': DateInput(),
             'behavior':forms.RadioSelect(),
             'anticedent':forms.RadioSelect(),
             'function':forms.RadioSelect(),
             'consequence':forms.RadioSelect(),
+            # 'enviroment':forms.RadioSelect(),
+            'enviroment': forms.Select(attrs={'class': 'form-control'}),  
+
+
+            
 
         }
+
+
+   
+
+
    
 class StudentForm(ModelForm):
     class Meta():
@@ -110,7 +120,10 @@ class CreateConsequenceForm(ModelForm):
 
 
 
-
+class CreateEnviromentForm(ModelForm):
+    class Meta():
+        model = Enviroment
+        fields = ('behaviorenviroment',)
 
 class StudentBehaviorForm(ModelForm):
     class Meta():

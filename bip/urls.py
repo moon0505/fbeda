@@ -107,9 +107,6 @@ urlpatterns = [
     
     path('create_function/<pk>/', views.create_function, name='create_function'),
     
-    
-    
-     
     path('update_function/<pk>/',views.updatFunction,name='update_function'),
     
     path('delete_function/<pk>/', views.deleteFunction, name='delete_function'),
@@ -122,7 +119,9 @@ urlpatterns = [
     path('update_consequence/<pk>/',views.updateConsequence,name='update_consequence'),
     path('delete_consequence/<pk>/', views.deleteConsequence, name='delete_consequence'),
     
-    
+    path('create_setting/<pk>/', views.create_setting_view, name='setting'),
+    path('update_setting/<pk>/',views.updateSetting,name='update_setting'),
+
     
     
     

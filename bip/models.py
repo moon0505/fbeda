@@ -28,8 +28,6 @@ class DataEntry(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
 
 
-    # user=models.OneToOneField(User, on_delete=models.SET_NULL,blank=True, null=True)
-    # user=models.OneToOneField(User, default=26, on_delete=models.SET_DEFAULT,  null=True, blank=True)
 
     assignedCaseManagerSlug = models.CharField(max_length=20,blank=True,null=True)
     assignedStudentSlug = models.CharField(max_length=20,blank=True,null=True)
@@ -108,18 +106,32 @@ class Consequence(models.Model):
           return self.behaviorconsequence  
 
 
+
+class Enviroment(models.Model):
+        behaviorenviroment = models.CharField(max_length=50, null=True, blank=True,verbose_name= 'Setting')
+        student= models.ForeignKey(Student,on_delete=models.CASCADE)
+        user = models.ForeignKey(User, on_delete=models.CASCADE,  default=None)
+
+        def __str__(self):
+          return self.behaviorenviroment  
+
 class Case(models.Model):
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         behavior = models.ForeignKey(Behavior, on_delete=models.CASCADE)
         user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-        anticedent = models.ForeignKey(Anticedent,on_delete=models.CASCADE)
+        anticedent = models.ForeignKey(Anticedent,on_delete=models.CASCADE, verbose_name='Antecedent')
         function = models.ForeignKey(Function,on_delete=models.CASCADE)
         consequence = models.ForeignKey(Consequence,on_delete=models.CASCADE)
+        enviroment = models.ForeignKey(Enviroment,on_delete=models.CASCADE, verbose_name='Setting')
+
+        
         date_created = models.DateField(null=True, blank=True, default=timezone.now)
         duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='Duration')
         time = models.TimeField(null=True, blank=True)
-        frequency = models.PositiveIntegerField(null=True, blank=True, verbose_name='Frequency')
-        context = models.CharField(max_length=200,verbose_name= 'Context', null=True, blank=True)
+        frequency = models.PositiveIntegerField(null=True, blank=True,  default=1, verbose_name='Frequency')
+
+       
+       
        
         class Meta:
             ordering = ['-date_created']
