@@ -128,9 +128,6 @@ urlpatterns = [
     path('edit_setting/<pk>/', views.edit_enviroment_view, name='edit_setting'),
     path('delete_setting/<pk>/', views.deleteEnviroment, name='delete_setting'),
 
-
-    
-    
     
     path('snapshot/<pk>/', views.snapshot_view, name='snapshot'),
     path('snapshot_data_entry/<pk>/', views.snapshot_data_entry_view, name='snapshot_data_entry'),
@@ -142,6 +139,9 @@ urlpatterns = [
 
 
     path('anticedent/<pk>/', views.anticedent_view, name='anticedent'),
+
+    path('setting/<pk>/', views.enviroment_view, name='setting'),
+
     
     
     path('filter_data/<pk>/', views.filter_data, name='filter_data'),

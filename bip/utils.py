@@ -193,6 +193,28 @@ def get_box_plot( *args, **kwargs):
     return box_graph
 
 
+def get_box_plot_setting( *args, **kwargs):
+    plt.switch_backend('AGG')    
+    fig = plt.figure()
+    
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+    title = "Setting and Behavior"
+    plt.title(title)
+
+    sns.countplot(x=x, hue='Behavior', data=data)
+
+    plt.xticks(rotation=45)
+    plt.xlabel('Setting')
+    plt.ylabel('Frequency')
+    plt.tight_layout()
+    plt.legend(title='Behavior')
+    
+    box_graph_setting = get_image()
+
+    return box_graph_setting
+
 
 def get_multiple_line_plot_five( *args, **kwargs):
     plt.switch_backend('AGG')

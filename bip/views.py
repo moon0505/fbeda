@@ -46,6 +46,7 @@ from .utils import  (
     get_pie__chart_consequence,
     get_box_plot_function,
     get_box_plot_consequence,
+    get_box_plot_setting,
     
     
     )
@@ -1492,7 +1493,76 @@ def anticedent_view(request,pk):
     
     return render(request, 'bip/anticedent.html', context)
 
+    
 
+# Setting enviroment
+def enviroment_view(request,pk):
+     
+    student = get_object_or_404(Student, pk=pk)
+    student_cases = student.case_set.all() 
+
+    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'enviroment__behaviorenviroment','date_created','time','id')
+    
+    cases_df = pd.DataFrame(data)
+      
+    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+    cases_df.columns = cases_df.columns.str.replace('enviroment__behaviorenviroment', 'Enviroment')
+    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+    
+    df_enviroment = cases_df['Enviroment']
+
+    box_graph_setting = get_box_plot_setting( x= df_enviroment, data=cases_df) 
+
+
+
+    # correationxxxxxxxxxxxxxx
+    
+    behavior = pd.get_dummies(cases_df['Behavior'])
+   
+    anticedent = pd.get_dummies(cases_df['Anticedent'])
+    
+    function = pd.get_dummies(cases_df['Function'])
+
+    enviroment = pd.get_dummies(cases_df['Enviroment'])
+
+    df_matrix = pd.concat([cases_df,behavior,enviroment], axis=1)
+    
+    df_matrix.drop(['Behavior','Anticedent','Function', 'Enviroment','Date','Time','ID'],axis=1,inplace=True)
+        
+    matrix = df_matrix.corr().round(2) 
+  
+
+    try:
+        filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    
+        iheat_graph = get_heatmap(data=filterDX)
+    except:
+        pass
+    
+
+    iclustermap_graph = None
+    
+    try:
+        iclustermap_graph = get_clustermap(data=matrix)
+
+    except:
+        pass
+  
+  
+
+    context= {'student':student,'iclustermap_graph':iclustermap_graph, 
+    'iheat_graph':iheat_graph, 
+    'box_graph_setting':box_graph_setting,}
+    
+    
+    return render(request, 'bip/setting.html', context)
+
+
+# end of enviroment setting
 
 def is_valid_queryparam(param):
     return param != '' and param is not None
