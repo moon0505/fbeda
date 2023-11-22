@@ -67,6 +67,14 @@ def home(request):
 
 
 
+
+def luna(request):
+  
+  
+    return render(request,'bip/home.html')
+
+
+
 def description_view(request):
   
   
@@ -846,8 +854,33 @@ def updateSetting(request, pk):
     
     return render(request, "bip/create_setting.html", context)
 
+def deleteEnviroment(request, pk):
+    
+    envdelete = Enviroment.objects.get(id=pk)
+    
+    if request.method == "POST":
+        envdelete.delete()
+        return redirect("bip:edit_setting", envdelete.student.id)
+    
+    context = {'item':envdelete}
+    return render(request, "bip/delete_setting.html", context)
+
+@login_required(login_url='case_manager_login')
+@user_passes_test(is_case_manager)
+def edit_enviroment_view(request, pk ):
+    student = Student.objects.get(id=pk) 
+   
+    enviroment = Enviroment.objects.all()
+    enviromentset = student.enviroment_set.all()
 
 
+  
+    context= {
+        'enviromentset':enviromentset,   
+        'student':student,  
+    }
+    
+    return render(request, 'bip/edit_setting.html', context)
 
 
 @login_required(login_url='case_manager_login')
@@ -872,6 +905,7 @@ def edit_behavior_view(request, pk ):
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
+
 def edit_anticedent_view(request, pk ):
     student = Student.objects.get(id=pk) 
    

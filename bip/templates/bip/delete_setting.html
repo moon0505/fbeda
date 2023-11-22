@@ -1,0 +1,29 @@
+
+
+
+{% extends 'partials/base.html' %} {% block content %}
+<br><br>
+<div class="container">
+<div class ="row">
+      <div class="card card-body">
+
+<h2>
+    <p> Are you sure you want to <b>DELETE</b> this Setting: <b>{{item}}</b>  </p>
+
+
+    <form action="{% url 'bip:delete_setting' item.id %}" method="POST">
+      
+      {% csrf_token %}
+
+
+    <input class="btn btn-danger" type="submit" name="Confirm">  </h1>
+
+   </form>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
