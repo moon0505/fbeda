@@ -1,15 +1,11 @@
-
-
 {% extends 'partials/base.html' %} 
 {% block content %}
 <br>
-
 
 <div class="container">
 
   <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:create_incident' student.id %}"
         >Create Incident</a> 
-
 <br/>
 
 <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
@@ -58,22 +54,16 @@
                       <li class="list-group-item"><a href="{% url 'bip:create_anticedent' student.id %}" class="card-link">Antecedent/</a><a href="{% url 'bip:edit_anticedent' student.id %}">Edit</a></li>
                       <li class="list-group-item"><a href="{% url 'bip:create_consequence' student.id %}" class="card-link">Consequence/</a><a href="{% url 'bip:edit_consequence' student.id %}">Edit</a></li>
                       <li class="list-group-item"><a  href="{% url 'bip:create_function' student.id %}" class="card-link">Function/</a><a  href="{% url 'bip:edit_function' student.id %}">Edit</a></li>
-                      <li class="list-group-item"><a  href="{% url 'bip:setting' student.id %}" class="card-link">Setting</a>/<a  href="{% url 'bip:edit_setting' student.id %}">Edit</a></li> 
+                      <li class="list-group-item"><a  href="{% url 'bip:create_setting' student.id %}" class="card-link">Setting</a>/<a  href="{% url 'bip:edit_setting' student.id %}">Edit</a></li> 
                       <li class="list-group-item"><a  href="{% url 'bip:student_profile' student.id %}" class="card-link">Student</a></li> 
 
-                     
-
-
-
+                  
               </ul>
     </div>
   </div>
 </div> 
 
  
-
-
-
   <div class="col-md">
     <div class="card card" style="width: 18rem;">
       <div class="card-body">

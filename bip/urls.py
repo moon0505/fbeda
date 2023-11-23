@@ -123,7 +123,7 @@ urlpatterns = [
     path('update_consequence/<pk>/',views.updateConsequence,name='update_consequence'),
     path('delete_consequence/<pk>/', views.deleteConsequence, name='delete_consequence'),
     
-    path('create_setting/<pk>/', views.create_setting_view, name='setting'),
+    path('create_setting/<pk>/', views.create_setting_view, name='create_setting'),
     path('update_setting/<pk>/',views.updateSetting,name='update_setting'),
     path('edit_setting/<pk>/', views.edit_enviroment_view, name='edit_setting'),
     path('delete_setting/<pk>/', views.deleteEnviroment, name='delete_setting'),

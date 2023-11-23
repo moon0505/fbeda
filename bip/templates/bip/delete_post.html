@@ -11,7 +11,7 @@
     <p> Are you sure want to delete this incident:  {{incident.behavior}} on  {{incident.date_created}}?</p>
 
 
-    <form action="{% url 'bip:delete_behavior' incident.id %}" method="POST">
+    <form action="{% url 'bip:delete_post' incident.id %}" method="POST">
       
       {% csrf_token %}
 

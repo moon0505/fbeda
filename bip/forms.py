@@ -65,7 +65,7 @@ class BehaviorForm(forms.ModelForm):
             'anticedent':forms.RadioSelect(),
             'function':forms.RadioSelect(),
             'consequence':forms.RadioSelect(),
-            'enviroment': forms.Select(attrs={'class': 'form-control'}),  
+            'enviroment': forms.Select(),  
 
 
             

@@ -114,6 +114,9 @@ class Enviroment(models.Model):
 
         def __str__(self):
           return self.behaviorenviroment  
+        
+
+        
 
 class Case(models.Model):
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
@@ -122,7 +125,7 @@ class Case(models.Model):
         anticedent = models.ForeignKey(Anticedent,on_delete=models.CASCADE, verbose_name='Antecedent')
         function = models.ForeignKey(Function,on_delete=models.CASCADE)
         consequence = models.ForeignKey(Consequence,on_delete=models.CASCADE)
-        enviroment = models.ForeignKey(Enviroment,on_delete=models.CASCADE, verbose_name='Setting')
+        enviroment = models.ForeignKey(Enviroment,on_delete=models.CASCADE, null=True, blank=True, verbose_name='Setting')
 
         
         date_created = models.DateField(null=True, blank=True, default=timezone.now)

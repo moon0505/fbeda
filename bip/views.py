@@ -994,14 +994,21 @@ def snapshot_view(request, pk):
 
     # print(cases_df)
       
+    try:
+        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        # cases_df.columns = cases_df.columns.astype(str).str.replace('behavior__behaviorincident', 'Behavior')
+
+        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+    except:
+        return redirect("bip:dashboard", student.id)
+
+
+
     
-    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
-  
   
     df1 = cases_df['Date'].value_counts()
 
