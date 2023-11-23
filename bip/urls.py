@@ -128,7 +128,8 @@ urlpatterns = [
     path('edit_setting/<pk>/', views.edit_enviroment_view, name='edit_setting'),
     path('delete_setting/<pk>/', views.deleteEnviroment, name='delete_setting'),
 
-    
+    path('error_page/<pk>/', views.error_page, name='error_page'),
+
     path('snapshot/<pk>/', views.snapshot_view, name='snapshot'),
     path('snapshot_data_entry/<pk>/', views.snapshot_data_entry_view, name='snapshot_data_entry'),
 

@@ -1,0 +1,24 @@
+
+
+{% extends 'partials/base.html' %} 
+{% block content %}
+
+<br><br><br>
+<div class="container">
+    <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+    <br/>
+  
+
+<div class="container">
+       <!--#####################START HERE######################-->
+   
+       <!-- JUMBOTRON -->
+       <div class="jumbotron text-center">
+         <h1 class="display-4"> {{user.username }}</h1>
+         <p class="lead"> <h1> Must Create Incident first to view the data. Please return to Dashboard </h1></p>
+         <hr>
+       </div>
+   
+
+
+{% endblock %} 

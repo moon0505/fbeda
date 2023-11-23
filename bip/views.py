@@ -70,11 +70,19 @@ def home(request):
 
 
 def luna(request):
-  
-  
+    
     return render(request,'bip/home.html')
 
 
+def error_page(request,  pk):
+  
+    student = get_object_or_404(Student, pk=pk)
+    student_cases = student.case_set.all()
+  
+
+    context ={"student_cases":student_cases,'student':student}
+
+    return render(request,'bip/error_page.html',context)
 
 def description_view(request):
   
@@ -1004,7 +1012,7 @@ def snapshot_view(request, pk):
         cases_df.columns = cases_df.columns.str.replace('time', 'Time')
         cases_df.columns = cases_df.columns.str.replace('id', 'ID')
     except:
-        return redirect("bip:dashboard", student.id)
+        return redirect("bip:error_page", student.id)
 
 
 
