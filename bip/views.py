@@ -2127,35 +2127,43 @@ def raw_data(request, pk):
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
     
-    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction', 'date_created','time','id')
+    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction', 'enviroment__behaviorenviroment','date_created','time','id')
+
 
     cases_df_duplicate = pd.DataFrame(data1)
+
+    print(cases_df_duplicate)
+
     try:
         cases_df_duplicate = pd.DataFrame(data1).drop(['time','id','date_created'], axis=1) 
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('function__behaviorfunction', 'Function')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+        cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
+
+
+        # print(cases_df_duplicate)
     except:
         return redirect("bip:error_page", student.id)
 
 
     # duplicateRows = cases_df_duplicate[cases_df_duplicate[['behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction']].duplicated()== False]
             
-    duplicateRows = cases_df_duplicate[cases_df_duplicate.duplicated(['Behavior','Anticedent','Function']) == False].sort_values('Behavior')
+    duplicateRows = cases_df_duplicate[cases_df_duplicate.duplicated(['Behavior','Anticedent','Function',]) == False].sort_values('Behavior')
           
+   
     behavior_count = cases_df_duplicate['Behavior'].value_counts()
+
+    unique_b_count = cases_df_duplicate.groupby(['Behavior']).size().reset_index(name='Frequency')
+    unique_b_count = unique_b_count.sort_values(by=['Frequency'], ascending=False)
+
+    
+
 
     unique_abcf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence','Function']).size().reset_index(name='Frequency')
 
-
-
-
-
     unique_abcf_count = unique_abcf_count.sort_values(by=['Frequency'], ascending=False)
-
-
-
 
     unique_abf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Function']).size().reset_index(name='Frequency')
 
@@ -2171,6 +2179,10 @@ def raw_data(request, pk):
     unique_bf_count = cases_df_duplicate.groupby(['Behavior','Function']).size().reset_index(name='Frequency')
     unique_bf_count = unique_bf_count.sort_values(by=['Frequency'], ascending=False)
   
+    unique_bs_count = cases_df_duplicate.groupby(['Behavior','Setting']).size().reset_index(name='Frequency')
+    unique_bs_count = unique_bs_count.sort_values(by=['Frequency'], ascending=False)
+
+
     # Duration of behavior
     data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
     
@@ -2227,30 +2239,6 @@ def raw_data(request, pk):
     # add up the freeuency"
 
 
-    data_frequency_sum = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','frequency')
-    
-    cases_df_frequency_sum = pd.DataFrame(data_frequency)
-
-
-    
-    try:
-
-        
-        frequency_behavior_sum = cases_df_frequency.groupby('behavior__behaviorincident')['frequency'].sum()
-
-
-        frequency_behavior_sum = frequency_behavior_sum.to_frame().reset_index()        
-
-        
-        frequency_behavior_sum = frequency_behavior_sum.sort_values(by=['frequency'], ascending=False)
-
-
-        df_frequency_sum= frequency_behavior_sum['behavior__behaviorincident'].sort_values()
-
-
-    except:
-        
-        pass
 
     
     # correaltion
@@ -2259,7 +2247,9 @@ def raw_data(request, pk):
     
 
     cases_df = pd.DataFrame(data1)      
-    
+
+    cases_df = pd.DataFrame(data1).drop(['enviroment__behaviorenviroment'], axis=1) 
+
     cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
     cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
     cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
@@ -2298,11 +2288,12 @@ def raw_data(request, pk):
         'unique_bf_count':unique_bf_count.to_html(),
         'duplicateRows':duplicateRows.to_html(),
         'unique_ab_count':unique_ab_count.to_html(),
+        'unique_bs_count':unique_bs_count.to_html(),
+        'unique_b_count':unique_b_count.to_html(),
 
         # 'duration_behavior':duration_behavior.to_html(),
         'frequency_behavior':frequency_behavior.to_html(),
 
-        'frequency_behavior_sum':frequency_behavior_sum.to_html(),
         'matrix':matrix.to_html(),
 
 

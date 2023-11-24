@@ -10,7 +10,7 @@
 
   <!-- JUSTIFY CONTENT - CONTENT AROUND -->
   <div class="d-flex justify-content-center row-hl">
-    <div class="p-4 item-hl"><b>Behavior</b> {{frequency_behavior_sum | safe}}  
+    <div class="p-4 item-hl"><b>Behavior</b> {{unique_b_count | safe}}  
     </div>
   
     <div class="p-4 item-hl"> <b>Behavior-Function</b> {{unique_bf_count | safe}}  
@@ -34,6 +34,17 @@
   </div>
 
 
+  <!-- JUSTIFY CONTENT - CONTENT AROUND -->
+  <div class="d-flex justify-content-center row-hl">
+   
+    <div class="p-4 item-hl"><b>Behavior-Setting Frequency</b> {{unique_bs_count | safe}}  
+    </div>
+    <div class="p-4 item-hl"><b>Behavior Average per Incident</b> {{frequency_behavior | safe}}  
+    </div>
+  
+    
+    
+  </div>
 
 
 
@@ -42,13 +53,6 @@
 
 
 
-       
-
-        <div class='container'>
-          <h1>Average  Frequncy of Behavior</h1>
-            {{frequency_behavior | safe}}  
-           </div>
-          <br>
 
         {% if duration_behavior%}
         <div class='container'>
