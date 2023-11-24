@@ -2130,12 +2130,64 @@ def raw_data(request, pk):
     data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction', 'enviroment__behaviorenviroment','date_created','time','id')
 
 
+    # time data begining
+
+    cases_df_time= pd.DataFrame(data1).drop(['id',], axis=1) 
+    cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+    # cases_df_time= pd.DataFrame(data1).drop(['time','date_created'], axis=1) 
+
+    cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+    cases_df_time.columns = cases_df_time.columns.str.replace('function__behaviorfunction', 'Function')
+    cases_df_time.columns = cases_df_time.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+    cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
+
+
+
+
+    # hour = cases_df_time['combined_datetime'].dt.hour
+
+    
+
+    # unique_hour = cases_df_time.groupby(['Behavior',hour]).size().reset_index(name='Frequency')
+    # unique_hour = unique_hour.sort_values(by=['Frequency'], ascending=False)
+
+    cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
+
+# Group by 'Behavior' and 'hour_12h' to count frequency
+    unique_hour = cases_df_time.groupby(['Behavior', 'hour_12h']).size().reset_index(name='Frequency')
+    unique_hour = unique_hour.sort_values(by='Frequency', ascending=False)
+
+
+
+
+    # time data ending
+
+
+
     cases_df_duplicate = pd.DataFrame(data1)
 
-    print(cases_df_duplicate)
+
+
+    # cases_df_duplicate['time'] = pd.to_datetime(cases_df_duplicate['time'])
+
+    # hour = cases_df_duplicate['time'].dt.hour
+    # print(hour)
+
+    # x = cases_df_duplicate['time']
+    # print(x.dtype)
+
+    # x = cases_df_duplicate['combined_datetime'] = pd.to_datetime(cases_df_duplicate['date_created'].astype(str) + ' ' + cases_df_duplicate['time'].astype(str))
+
+    # print(x)
+
+
+    # print(cases_df_duplicate.time.dt.hour.head())
+
 
     try:
         cases_df_duplicate = pd.DataFrame(data1).drop(['time','id','date_created'], axis=1) 
+
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('function__behaviorfunction', 'Function')
@@ -2290,6 +2342,7 @@ def raw_data(request, pk):
         'unique_ab_count':unique_ab_count.to_html(),
         'unique_bs_count':unique_bs_count.to_html(),
         'unique_b_count':unique_b_count.to_html(),
+        'unique_hour':unique_hour.to_html(),
 
         # 'duration_behavior':duration_behavior.to_html(),
         'frequency_behavior':frequency_behavior.to_html(),
