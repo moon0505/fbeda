@@ -1,5 +1,4 @@
-# 
-        
+      
 from django.db import models
 from django.views import generic
 from django.contrib.auth.models import User
@@ -17,7 +16,6 @@ class CaseManager(models.Model):
     @property
     
     
-    
     def get_name(self):
         return self.user.first_name+" "+self.user.last_name
     @property
@@ -27,13 +25,12 @@ class CaseManager(models.Model):
 class DataEntry(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
 
-
-
     assignedCaseManagerSlug = models.CharField(max_length=20,blank=True,null=True)
     assignedStudentSlug = models.CharField(max_length=20,blank=True,null=True)
 
     admitDate=models.DateField(auto_now=True)
     status=models.BooleanField(default=False)
+
     @property
     def get_name(self):
         return self.user.first_name+" "+self.user.last_name

@@ -365,7 +365,7 @@ def dashboard(request, pk):
 
     student_duration = Case.objects.filter(student__id=pk).values('duration')
 
-
+    print(student_behaviors)
 
     # delete
     firstduration = student_duration.first()
@@ -1306,15 +1306,21 @@ def function_view(request,pk):
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
     
     cases_df = pd.DataFrame(data)
-      
-    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
     
-    
+
+    try:
+
+        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+        
+    except:
+        return redirect("bip:error_page", student.id)
+
+
     df_function = cases_df['Function']
     
     
@@ -1376,15 +1382,18 @@ def consequence_view(request,pk):
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'consequence__behaviorconsequence','date_created','time','id')
     
     cases_df = pd.DataFrame(data)
-      
-    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-    cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
-    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
     
+    try:
+        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+    except:
+        return redirect("bip:error_page", student.id)
+
     
     df_consequence = cases_df['Consequence']
     
@@ -1451,13 +1460,17 @@ def anticedent_view(request,pk):
     
     cases_df = pd.DataFrame(data)
       
-    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
-    
+
+    try:
+        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+    except:
+        return redirect("bip:error_page", student.id)
+
     
     
     
@@ -1520,14 +1533,18 @@ def enviroment_view(request,pk):
     
     cases_df = pd.DataFrame(data)
       
-    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-    cases_df.columns = cases_df.columns.str.replace('enviroment__behaviorenviroment', 'Enviroment')
-    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
-    
+
+    try:
+        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df.columns = cases_df.columns.str.replace('enviroment__behaviorenviroment', 'Enviroment')
+        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+    except:
+        return redirect("bip:error_page", student.id)
+
     df_enviroment = cases_df['Enviroment']
 
     box_graph_setting = get_box_plot_setting( x= df_enviroment, data=cases_df) 
@@ -1931,15 +1948,19 @@ def chart_view(request, pk):
     
     cases_df = pd.DataFrame(data)
       
-    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-    cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
 
-    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
-    
+    try:
+        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+
+        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+    except:
+        return redirect("bip:error_page", student.id)
+
     
     
     df_beh_count = cases_df['Behavior']
@@ -2109,12 +2130,14 @@ def raw_data(request, pk):
     data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction', 'date_created','time','id')
 
     cases_df_duplicate = pd.DataFrame(data1)
-    
-    cases_df_duplicate = pd.DataFrame(data1).drop(['time','id','date_created'], axis=1) 
-    cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-    cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('function__behaviorfunction', 'Function')
-    cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+    try:
+        cases_df_duplicate = pd.DataFrame(data1).drop(['time','id','date_created'], axis=1) 
+        cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+    except:
+        return redirect("bip:error_page", student.id)
 
 
     # duplicateRows = cases_df_duplicate[cases_df_duplicate[['behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction']].duplicated()== False]
