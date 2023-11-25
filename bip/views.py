@@ -47,6 +47,7 @@ from .utils import  (
     get_box_plot_function,
     get_box_plot_consequence,
     get_box_plot_setting,
+    get_box_plot_time,
     
     
     )
@@ -365,7 +366,6 @@ def dashboard(request, pk):
 
     student_duration = Case.objects.filter(student__id=pk).values('duration')
 
-    print(student_behaviors)
 
     # delete
     firstduration = student_duration.first()
@@ -994,17 +994,14 @@ def snapshot_view(request, pk):
     student_cases = student.case_set.all() 
 
     
-    
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
     
-
     cases_df = pd.DataFrame(data)
 
-    # print(cases_df)
+    
       
     try:
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-        # cases_df.columns = cases_df.columns.astype(str).str.replace('behavior__behaviorincident', 'Behavior')
 
         cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
         cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
@@ -1143,7 +1140,8 @@ def snapshot_view(request, pk):
             data=dlpivot
     )
     else:
-        print("Selected y column is empty or does not exist.")
+        # print("Selected y column is empty or does not exist.")
+        pass
   
   
     # cluster heatmapcorrelation matrixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1239,7 +1237,6 @@ def snapshot_data_entry_view(request, pk):
 
     # print(cases_df)
       
-    
     cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
     cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
     cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
@@ -1272,11 +1269,8 @@ def snapshot_data_entry_view(request, pk):
     
     df4 = df2['count']
 
-    print(df4)
 
     bar_graph = get_bar_chart(x=df3, y = df4)
-  
-    
   
     
     context= {
@@ -1946,23 +1940,79 @@ def chart_view(request, pk):
     
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'consequence__behaviorconsequence','date_created','time','id')
     
+
+
+# beging time
+    cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
+    cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+    # cases_df_time= pd.DataFrame(data1).drop(['time','date_created'], axis=1) 
+
+    cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+    cases_df_time.columns = cases_df_time.columns.str.replace('function__behaviorfunction', 'Function')
+    cases_df_time.columns = cases_df_time.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+    cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
+
+
+
+
+    # hour = cases_df_time['combined_datetime'].dt.hour
+
+    
+
+    # unique_hour = cases_df_time.groupby(['Behavior',hour]).size().reset_index(name='Frequency')
+    # unique_hour = unique_hour.sort_values(by=['Frequency'], ascending=False)
+
+    cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
+
+# Group by 'Behavior' and 'hour_12h' to count frequency
+   
+
+    cases_df_time = cases_df_time.sort_values('hour_12h',ascending=True)
+
+    df_time = cases_df_time['hour_12h']
+
+    
+
+    box_graph_time = get_box_plot_time( x= df_time, data=cases_df_time) 
+
+
+
+# ending time
+
+
+
+
+
+
+
+
+
     cases_df = pd.DataFrame(data)
       
+      
+    
+    
+
+
 
     try:
+
+        cases_df['combined_datetime'] = pd.to_datetime(cases_df['date_created'].astype(str) + ' ' + cases_df['time'].astype(str))
+
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
         cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
         cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
-
         cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
         cases_df.columns = cases_df.columns.str.replace('time', 'Time')
         cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+        
     except:
         return redirect("bip:error_page", student.id)
 
     
-    
+
     df_beh_count = cases_df['Behavior']
 
     beh_count_graph = get_count_beh_plot( x= df_beh_count, data=cases_df)  
@@ -2098,6 +2148,8 @@ def chart_view(request, pk):
         
         pass
 
+
+        
     
 
     # correltion table
@@ -2115,6 +2167,7 @@ def chart_view(request, pk):
         'pie_function_graph':pie_function_graph,
         'pie_consequence_graph':pie_consequence_graph,
         'box_duration_graph':box_duration_graph,
+        'box_graph_time':box_graph_time,
 
         }
     return render(request, 'bip/chart.html', context)

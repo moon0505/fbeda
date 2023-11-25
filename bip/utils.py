@@ -170,6 +170,9 @@ def get_box_plot_consequence( *args, **kwargs):
 
     return box_graph_consequence
 
+
+
+
 def get_box_plot( *args, **kwargs):
     plt.switch_backend('AGG')    
     fig = plt.figure()
@@ -563,7 +566,32 @@ def get_count_beh_plot( *args, **kwargs):
 
     return beh_count_graph
 
+def get_count_time_plot( *args, **kwargs):
+    plt.switch_backend('AGG')
+    
+    fig = plt.figure()
+    
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+    
+    
+   
+       
+    sns.countplot(x=x, data=data)
+    plt.xticks(rotation=45)
+    plt.xlabel('Time')
+    plt.ylabel('Count')
 
+    title = "# of Incidents by Behavior"
+    plt.title(title)
+
+    plt.tight_layout()
+  
+    
+    time_count_graph = get_image()
+
+    return time_count_graph
 
 
 
@@ -892,3 +920,24 @@ def get_duration_bar_chart( *args, **kwargs):
 
     return box_duration_graph
 
+def get_box_plot_time( *args, **kwargs):
+    plt.switch_backend('AGG')    
+    fig = plt.figure()
+    
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+    title = "Time and Behavior"
+    plt.title(title)
+
+    sns.countplot(x=x, hue='Behavior', data=data)
+
+    plt.xticks(rotation=45)
+    plt.xlabel('Time')
+    plt.ylabel('Frequency')
+    plt.tight_layout()
+    plt.legend(title='Behavior')
+    
+    box_graph_time = get_image()
+
+    return box_graph_time
