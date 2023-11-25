@@ -124,7 +124,6 @@ class Case(models.Model):
         consequence = models.ForeignKey(Consequence,on_delete=models.CASCADE)
         enviroment = models.ForeignKey(Enviroment,on_delete=models.CASCADE, null=True, blank=True, verbose_name='Setting')
 
-        
         date_created = models.DateField(null=True, blank=True, default=timezone.now)
         duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='Duration')
         time = models.TimeField(null=True, blank=True)

@@ -358,30 +358,47 @@ def list_view(request,pk):
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
+
 def dashboard(request, pk):
   
     student = get_object_or_404(Student, pk=pk)
 
-    student_behaviors = student.case_set.all() 
+    student_behaviors = student.case_set.all()
 
-    student_duration = Case.objects.filter(student__id=pk).values('duration')
+
+    # qs = student_behaviors.filter('case__duration')
+
+        # queryset = student_cases.values('date_created').annotate(count=Count('date_created')).values( 'count')
+
+    # behavior_mean=  cases_df['behavior__behaviorincident'].value_counts()
+
 
 
     # delete
-    firstduration = student_duration.first()
 
     # print(firstduration)
+    student_time = student.case_set.filter(time__isnull=False).first()
+    student_duration = student.case_set.filter(duration__isnull=False).first()
+
+    student_enviroment = student.case_set.filter(enviroment__isnull=False).first()
+
+
 
 
 
     behavior = Behavior.objects.all()
 
-          
+    #   behavior_incident = Case.objects.get(id=pk)
+
+
+    
+
     context = {
-    'student_behaviors':student_behaviors,
+    'student_behaviors': student_behaviors,
     "student":student,
-    'student_duration':student_duration,
-    'firstduration':firstduration,
+    'student_time':student_time,  
+    'student_duration':student_duration,  
+    'student_enviroment':student_enviroment,        
     
                }
     

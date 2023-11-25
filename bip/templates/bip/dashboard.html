@@ -115,23 +115,25 @@
         <tr>
           <th>Behavior (Frequency)</th>
           <th>Anticedent</th>
-
-
           <th>Consequence</th>
-
-
           <th>Function</th>
+          {% if student_enviroment %}
+
+          <th>Setting</th>
+          {% endif %}
+          
+          {% if student_time %}
+
+        <th>Time</th>
+        {% endif %}
 
 
-          {% for info in firstduration %}
+        {% if student_duration %}
 
-          <th>Duration (Min:Sec)</th>
+        <th>Duration (Min:Sec)</th>
+        {% endif %}
 
-            {% endfor%}
-
-
-
-
+        <!-- Display the duration value here -->
           <th>Date</th>
           <th>Update</th>
           <th>Delete</th>
@@ -139,19 +141,18 @@
         {% for incident in student_behaviors %}
         <tr>
     
-          <td>{{incident.behavior }}
-            
-            
-            ({{incident.frequency }})</td>
+          <td>{{incident.behavior }}({{incident.frequency }})</td>
           <td>{{incident.anticedent}}</td>
-         
           <td>{{incident.consequence}}</td>
           <td>{{incident.function}}</td>
+          {% if incident.enviroment%}
+
+          <td>{{incident.enviroment}}</td>
+          {% endif %}
+          {% if incident.time %}
           <td>{{incident.time}}</td>
+          {% endif %}
 
-          
-
-          
           {% if incident.duration%}
           <td>{{incident.time_change}}</td>
           {% endif %}
