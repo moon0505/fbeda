@@ -1,19 +1,34 @@
 
 
-{% if messages %}
+{% extends 'partials/base.html' %} 
+{% block content %}
+<br>
+<br>
+<div class="container">
+<h1>{% if messages %}
     {% for message in messages %}
         <strong>{{ message|safe }}</strong>
-    {% endfor %}
+
+        
+    {% endfor %}</h1>
+    
 
 {% else %}
-
 {{ order}}
 
 <form method="post" enctype="multipart/form-data">
+    <br>
     {% csrf_token %}
-    <label>Upload file</label>
+    <label>Upload csv file</label>
     <input type="file" name="file">
-    <p>Only accepts CSV files</p>
-    <button type="submit">Upload</button>
+    <p style="color:red;">Only accepts CSV files</p>
+    <button type="button" class="btn btn-primary btn-lg">Upload</button>
+
+
+
+
+    
 </form>
 {% endif %}
+</div>
+{% endblock %}

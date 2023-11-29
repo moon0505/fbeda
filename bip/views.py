@@ -2406,51 +2406,6 @@ def raw_data(request, pk):
 
 # need this
 
-def export(request, pk):
-    student = get_object_or_404(Student, pk=pk)
-    student_behaviors = student.case_set.all()
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="FBA Data.csv"'
-
-    writer = csv.writer(response)
-
-    headers = ["User","Case", "Behavior", "Antecedent", "Consequence", "Function", "Date"]
-    has_time = student_behaviors.filter(time__isnull=False).exists()
-    has_duration = student_behaviors.filter(duration__isnull=False).exists()
-
-    if has_time:
-        headers.append("Time")
-    if has_duration:
-        headers.append("Duration(Sec)")
-
-    writer.writerow(headers)
-
-    for case in student_behaviors:
-        date_value = case.date_created.strftime("%Y-%m-%d")
-        time_value = case.time if case.time is not None else ''
-        duration_value = case.duration if case.duration is not None else ''
-
-        row = [
-            case.user.username,
-            case.student.studentname,
-            case.behavior.behaviorincident,
-            case.anticedent.anticedentincident,
-            case.consequence.behaviorconsequence,
-            case.function.behaviorfunction,
-            date_value
-        ]
-
-        if has_time:
-            row.append(time_value)
-
-        if has_duration:
-            row.append(duration_value)
-
-        writer.writerow(row)
-
-    return response
-
 
 
 
@@ -2599,12 +2554,87 @@ def case_manager_unique_identifier(request, pk):
 
 
 
+def export(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    student_behaviors = student.case_set.all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="FBA Data.csv"'
+
+    writer = csv.writer(response)
+
+    headers = ["User","Case", "Behavior", "Antecedent", "Consequence", "Function"]
+    
+    has_setting = student_behaviors.filter(enviroment__isnull=False).exists()
+
+    has_time = student_behaviors.filter(time__isnull=False).exists()
+
+    has_date = student_behaviors.filter(date_created__isnull=False).exists()
+
+    has_duration = student_behaviors.filter(duration__isnull=False).exists()
+
+    
+    if has_setting:
+        headers.append("Setting")
+
+    if has_time:
+        headers.append("Time")
+    if has_date:
+        headers.append("Date")
+    
+    if has_duration:
+        headers.append("Duration(Sec)")
+
+    writer.writerow(headers)
+
+    for case in student_behaviors:
+        setting_value = case.enviroment if case.enviroment is not None else ''
+
+        # date_value = case.date_created.strftime("%Y-%m-%d")
+
+        date_value = case.date_created if case.date_created.strftime("%Y-%m-%d") is not None else ''
+
+
+        time_value = case.time if case.time is not None else ''
+        duration_value = case.duration if case.duration is not None else ''
+
+        row = [
+            case.user.username,
+            case.student.studentname,
+            case.behavior.behaviorincident,
+            case.anticedent.anticedentincident,
+            case.consequence.behaviorconsequence,
+            case.function.behaviorfunction,
+            
+            
+        ]
+
+
+        if has_setting:
+            row.append(setting_value)
+
+
+        if has_time:
+            row.append(time_value)
+
+        if has_date:    
+            row.append(date_value)  
+
+        
+
+        if has_duration:
+            row.append(duration_value)
+
+        writer.writerow(row)
+
+    return response
+
 
 
 
 def case_upload_csv(request):
     template = "bip/upload.html"
-    prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function'}
+    prompt = {'order': 'When saving or downloading from an excel, google sheets, etc. save as CSV and then upload or will not save.  Order of the CSV columns must be User,Case, Behavior, Anticedent, Consequence, Function or will not upload'}
 
     if request.method == "GET":
         return render(request, template, prompt)
@@ -2668,4 +2698,4 @@ def case_upload_csv(request):
             pass
 
     context = {}
-    return render(request, template, context)
+    return render(request,  "bip/welcome_user.html", context)

@@ -97,6 +97,8 @@
       {% comment %} <ul class="list-group list-group-flush">
         <li class="list-group-item"><a href="#" class="card-link">Visual Spreadsheet</a></li> {% endcomment %}
         <li class="list-group-item"><a href="{% url 'bip:export' student.id %}" class="card-link">Download Spreadsheet</a></li>
+        <li class="list-group-item"><a href="{% url 'bip:case_upload_csv' %}" class="card-link">Upload CSV file</a></li>
+
     
        <li class="list-group-item"><a  href="{% url 'bip:assign_data_entry' student.id %}">Add Data Collector</a></li> 
       </ul>
