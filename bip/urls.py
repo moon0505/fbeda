@@ -158,9 +158,18 @@ urlpatterns = [
 
     path('export/<pk>/', views.export, name='export'),
 
-    
-    
-    
+    # path('import_csv', views.import_csv, name='import_csv'),
+
+
+    # path('import_csv/<int:pk>/', import_csv, name='import_csv'),  # Route for import_csv view with pk
+
+
+    #  path('upload/', upload_csv, name='upload_csv'),
+    # path('case_upload_csv/<int:pk>/', views.case_upload_csv, name='case_upload_csv'),  # Route for upload_csv view with pk
+
+    path('case_upload_csv/', views.case_upload_csv, name='case_upload_csv'),  
+
+
     path('download/<path:url>/', views.download_webpage_to_word, name='download_webpage'),
     
     path('download_page/', views.download_page, name='download_page'),

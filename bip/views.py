@@ -7,18 +7,22 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse
 from bip import models
 from django.urls import reverse_lazy
-
+import logging
 from django.contrib.auth.models import User 
 from . import forms
 from django.contrib.auth.models import Group
 
-from bip.forms import CaseManagerUserForm, CaseManagerForm
+from bip.forms import CaseManagerUserForm, CaseManagerForm,CsvUploadForm
+from datetime import datetime
+
+from django.db import IntegrityError
+
+
 from django.views.generic import (View,TemplateView,ListView,DetailView,CreateView,UpdateView,DeleteView,FormView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 
 from django.contrib.auth.decorators import login_required,user_passes_test
-
 from .models import   Student, Behavior, Case, Anticedent, Function, Consequence,Enviroment
 from .forms import BehaviorForm, StudentForm,StudentUpdateForm, CreateBehaviorForm,CreateAnticedentForm,CreateFunctionForm, CreateConsequenceForm, StudentFormSlug, UpdateCaseManagerForm,CreateEnviromentForm
 from .utils import  (
@@ -53,7 +57,9 @@ from .utils import  (
     )
 import pandas as pd
 import numpy as np
-import csv
+import csv,io
+from django.contrib import messages 
+
 
 import requests
 from docx import Document
@@ -1950,7 +1956,8 @@ def chart_view(request, pk):
     error_message=None
     df = None
     graph = None
-
+    cases_df_time = None
+    box_graph_time = None
  
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
@@ -1958,64 +1965,38 @@ def chart_view(request, pk):
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'consequence__behaviorconsequence','date_created','time','id')
     
 
+    try:
+    # beging time
+        cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
+        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+        # cases_df_time= pd.DataFrame(data1).drop(['time','date_created'], axis=1) 
 
-# beging time
-    cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
-    cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
-    # cases_df_time= pd.DataFrame(data1).drop(['time','date_created'], axis=1) 
-
-    cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-    cases_df_time.columns = cases_df_time.columns.str.replace('function__behaviorfunction', 'Function')
-    cases_df_time.columns = cases_df_time.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
-    cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
-
-
+        cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df_time.columns = cases_df_time.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df_time.columns = cases_df_time.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+        cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
 
 
-    # hour = cases_df_time['combined_datetime'].dt.hour
-
-    
-
-    # unique_hour = cases_df_time.groupby(['Behavior',hour]).size().reset_index(name='Frequency')
-    # unique_hour = unique_hour.sort_values(by=['Frequency'], ascending=False)
-
-    cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
-
-# Group by 'Behavior' and 'hour_12h' to count frequency
-   
-
-    cases_df_time = cases_df_time.sort_values('hour_12h',ascending=True)
-
-    df_time = cases_df_time['hour_12h']
-
-    
-
-    box_graph_time = get_box_plot_time( x= df_time, data=cases_df_time) 
+        cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
 
 
+        cases_df_time = cases_df_time.sort_values('hour_12h',ascending=True)
 
+        df_time = cases_df_time['hour_12h']
+
+
+        box_graph_time = get_box_plot_time( x= df_time, data=cases_df_time) 
+
+
+    except:
+        pass
 # ending time
-
-
-
-
-
-
-
-
 
     cases_df = pd.DataFrame(data)
       
-      
-    
-    
-
-
-
     try:
 
-        cases_df['combined_datetime'] = pd.to_datetime(cases_df['date_created'].astype(str) + ' ' + cases_df['time'].astype(str))
 
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
@@ -2413,44 +2394,68 @@ def raw_data(request, pk):
         'unique_bs_count':unique_bs_count.to_html(),
         'unique_b_count':unique_b_count.to_html(),
         'unique_hour':unique_hour.to_html(),
-
         # 'duration_behavior':duration_behavior.to_html(),
         'frequency_behavior':frequency_behavior.to_html(),
-
         'matrix':matrix.to_html(),
 
-
-
-
-
-       
 
         }
 
     return render(request, 'bip/raw_data.html', context)
 
 
-def export(request,pk):
+# need this
 
-
+def export(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    student_behaviors = student.case_set.all()
 
     response = HttpResponse(content_type='text/csv')
-    
-    writer = csv.writer(response)
-    
-    writer.writerow(["Case","Behavior", "Antecedent","Consequence","Function", "Duration(Sec)","Date"])
-    
-    for case in  Case.objects.filter(student__id=pk).values_list('student__studentname','behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction','duration','date_created'):
-        writer.writerow(case)    
+    response['Content-Disposition'] = 'attachment; filename="FBA Data.csv"'
 
-    
-    response['Content-Disposition'] = 'attachment; filename= "FBA Data.csv"'
-    
-    
+    writer = csv.writer(response)
+
+    headers = ["User","Case", "Behavior", "Antecedent", "Consequence", "Function", "Date"]
+    has_time = student_behaviors.filter(time__isnull=False).exists()
+    has_duration = student_behaviors.filter(duration__isnull=False).exists()
+
+    if has_time:
+        headers.append("Time")
+    if has_duration:
+        headers.append("Duration(Sec)")
+
+    writer.writerow(headers)
+
+    for case in student_behaviors:
+        date_value = case.date_created.strftime("%Y-%m-%d")
+        time_value = case.time if case.time is not None else ''
+        duration_value = case.duration if case.duration is not None else ''
+
+        row = [
+            case.user.username,
+            case.student.studentname,
+            case.behavior.behaviorincident,
+            case.anticedent.anticedentincident,
+            case.consequence.behaviorconsequence,
+            case.function.behaviorfunction,
+            date_value
+        ]
+
+        if has_time:
+            row.append(time_value)
+
+        if has_duration:
+            row.append(duration_value)
+
+        writer.writerow(row)
+
     return response
 
 
 
+
+
+# Create an HTML file for the upload form
 
 # donwload to word xxxxxxx
 
@@ -2590,3 +2595,77 @@ def case_manager_unique_identifier(request, pk):
     context = {'form':form}
     
     return render(request, "bip/case_manager_unique_identifier.html", context)
+
+
+
+
+
+
+
+def case_upload_csv(request):
+    template = "bip/upload.html"
+    prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function'}
+
+    if request.method == "GET":
+        return render(request, template, prompt)
+
+    csv_file = request.FILES['file']
+
+    if not csv_file.name.endswith('.csv'):
+        messages.error(request, 'THIS IS NOT A CSV FILE')
+
+    data_set = csv_file.read().decode('UTF-8')
+    io_string = io.StringIO(data_set)
+    next(io_string)
+
+    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+        username = column[0]
+        student_name = column[1]
+        behavior_name = column[2]
+        anticedent_name = column[3]
+        consequence_name = column[4]
+        function_name = column[5]
+
+        user_instance, _ = User.objects.get_or_create(username=username)
+        student_instance, _ = Student.objects.get_or_create(
+            studentname=student_name,
+            user_student=user_instance
+        )
+
+        behavior_instance, _ = Behavior.objects.get_or_create(
+            behaviorincident=behavior_name,
+            student=student_instance,
+            user=user_instance
+        )
+        anticedent_instance, _ = Anticedent.objects.get_or_create(
+            anticedentincident=anticedent_name,
+            student=student_instance,
+            user=user_instance
+        )
+        consequence_instance, _ = Consequence.objects.get_or_create(
+            behaviorconsequence=consequence_name,
+            student=student_instance,
+            user=user_instance
+        )
+        function_instance, _ = Function.objects.get_or_create(
+            behaviorfunction=function_name,
+            student=student_instance,
+            user=user_instance
+        )
+
+        try:
+            Case.objects.create(
+                behavior=behavior_instance,
+                anticedent=anticedent_instance,
+                consequence=consequence_instance,
+                function=function_instance,
+                student=student_instance,
+                user=user_instance,
+                # Add other fields from your model accordingly
+            )
+        except IntegrityError:
+            # Handle IntegrityError (log, pass, or customize as needed)
+            pass
+
+    context = {}
+    return render(request, template, context)

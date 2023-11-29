@@ -143,9 +143,7 @@ class Case(models.Model):
       
       
       
-      
-      
-      
+ 
 # from django.views import generic
 # from django.contrib.auth.models import User
 

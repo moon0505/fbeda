@@ -14,11 +14,6 @@
 
   
 
-  <div class='container'>
-    {% if box_graph_time %}
-    <img src="data:image/png;base64, {{ box_graph_time | safe}}">
-    {% endif %}
-  </div>
 <br>
   <div class='container'>
     {% if beh_count_graph %}
@@ -39,12 +34,27 @@
 
   <div class="d-flex justify-content-center row-hl">
     <div class="p-4 item-hl"><img src="data:image/png;base64, {{ pie_consequence_graph | safe}}"></div>
-    <div class="p-4 item-hl">    <img src="data:image/png;base64, {{ pie_function_graph | safe}}">
-    </div>
+    <div class="p-4 item-hl">    <img src="data:image/png;base64, {{ pie_function_graph | safe}}">    </div>
 
-    
-    
+  </div>
+    <br>
+    {% if box_graph_time %}
+
+    <div class="d-flex justify-content-center row-hl">
+      <div class="p-4 item-hl"><img src="data:image/png;base64, {{ box_graph_time | safe}}"></div>
+      </div>
+      {% endif %}
+      <br>
+ 
+      <br>
+      {% if box_duration_graph %}
   
+      <div class="d-flex justify-content-center row-hl">
+        <div class="p-4 item-hl"><img src="data:image/png;base64, {{ box_duration_graph | safe}}"></div>
+        </div>
+        {% endif %}
+        <br>
+   
     </div>
   
   
