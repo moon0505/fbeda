@@ -2631,10 +2631,156 @@ def export(request, pk):
 
 
 
+# def case_upload_csv(request):
+#     template = "bip/upload.html"
+#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function'}
+
+#     if request.method == "GET":
+#         return render(request, template, prompt)
+
+#     csv_file = request.FILES['file']
+
+#     if not csv_file.name.endswith('.csv'):
+#         messages.error(request, 'THIS IS NOT A CSV FILE')
+
+#     data_set = csv_file.read().decode('UTF-8')
+#     io_string = io.StringIO(data_set)
+#     next(io_string)
+
+#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+#         username = column[0]
+#         student_name = column[1]
+#         behavior_name = column[2]
+#         anticedent_name = column[3]
+#         consequence_name = column[4]
+#         function_name = column[5]
+
+#         user_instance, _ = User.objects.get_or_create(username=username)
+#         student_instance, _ = Student.objects.get_or_create(
+#             studentname=student_name,
+#             user_student=user_instance
+#         )
+
+#         behavior_instance, _ = Behavior.objects.get_or_create(
+#             behaviorincident=behavior_name,
+#             student=student_instance,
+#             user=user_instance
+#         )
+#         anticedent_instance, _ = Anticedent.objects.get_or_create(
+#             anticedentincident=anticedent_name,
+#             student=student_instance,
+#             user=user_instance
+#         )
+#         consequence_instance, _ = Consequence.objects.get_or_create(
+#             behaviorconsequence=consequence_name,
+#             student=student_instance,
+#             user=user_instance
+#         )
+#         function_instance, _ = Function.objects.get_or_create(
+#             behaviorfunction=function_name,
+#             student=student_instance,
+#             user=user_instance
+#         )
+
+#         try:
+#             Case.objects.create(
+#                 behavior=behavior_instance,
+#                 anticedent=anticedent_instance,
+#                 consequence=consequence_instance,
+#                 function=function_instance,
+#                 student=student_instance,
+#                 user=user_instance,
+#                 # Add other fields from your model accordingly
+#             )
+#         except IntegrityError:
+#             # Handle IntegrityError (log, pass, or customize as needed)
+#             pass
+
+#     context = {}
+#     return render(request, template, context) 
+
+
+
+# def case_upload_csv(request):
+#     template = "bip/upload.html"
+#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment'}
+
+#     if request.method == "GET":
+#         return render(request, template, prompt)
+
+#     csv_file = request.FILES['file']
+
+#     if not csv_file.name.endswith('.csv'):
+#         messages.error(request, 'THIS IS NOT A CSV FILE')
+
+#     data_set = csv_file.read().decode('UTF-8')
+#     io_string = io.StringIO(data_set)
+#     next(io_string)
+
+#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+#         username = column[0]
+#         student_name = column[1]
+#         behavior_name = column[2]
+#         anticedent_name = column[3]
+#         consequence_name = column[4]
+#         function_name = column[5]
+#         environment_name = column[6]  # Assuming environment name is in the 7th column
+
+#         user_instance, _ = User.objects.get_or_create(username=username)
+#         student_instance, _ = Student.objects.get_or_create(
+#             studentname=student_name,
+#             user_student=user_instance
+#         )
+
+#         behavior_instance, _ = Behavior.objects.get_or_create(
+#             behaviorincident=behavior_name,
+#             student=student_instance,
+#             user=user_instance
+#         )
+#         anticedent_instance, _ = Anticedent.objects.get_or_create(
+#             anticedentincident=anticedent_name,
+#             student=student_instance,
+#             user=user_instance
+#         )
+#         consequence_instance, _ = Consequence.objects.get_or_create(
+#             behaviorconsequence=consequence_name,
+#             student=student_instance,
+#             user=user_instance
+#         )
+#         function_instance, _ = Function.objects.get_or_create(
+#             behaviorfunction=function_name,
+#             student=student_instance,
+#             user=user_instance
+#         )
+
+#         environment_instance, _ = Enviroment.objects.get_or_create(
+#             behaviorenviroment=environment_name,
+#             student=student_instance,
+#             user=user_instance
+#         )
+
+#         try:
+#             Case.objects.create(
+#                 behavior=behavior_instance,
+#                 anticedent=anticedent_instance,
+#                 consequence=consequence_instance,
+#                 function=function_instance,
+#                 enviroment=environment_instance,
+#                 student=student_instance,
+#                 user=user_instance,
+#                 # Add other fields from your model accordingly
+#             )
+#         except IntegrityError:
+#             # Handle IntegrityError (log, pass, or customize as needed)
+#             pass
+
+#     context = {}
+
+#     return render(request, template, context)
 
 def case_upload_csv(request):
     template = "bip/upload.html"
-    prompt = {'order': 'When saving or downloading from an excel, google sheets, etc. save as CSV and then upload or will not save.  Order of the CSV columns must be User,Case, Behavior, Anticedent, Consequence, Function or will not upload'}
+    prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment'}
 
     if request.method == "GET":
         return render(request, template, prompt)
@@ -2683,12 +2829,24 @@ def case_upload_csv(request):
             user=user_instance
         )
 
+        environment_name = column[6] if len(column) > 6 else None
+
+        if environment_name:
+            environment_instance, _ = Enviroment.objects.get_or_create(
+                behaviorenviroment=environment_name,
+                student=student_instance,
+                user=user_instance
+            )
+        else:
+            environment_instance = None
+
         try:
             Case.objects.create(
                 behavior=behavior_instance,
                 anticedent=anticedent_instance,
                 consequence=consequence_instance,
                 function=function_instance,
+                enviroment=environment_instance,
                 student=student_instance,
                 user=user_instance,
                 # Add other fields from your model accordingly
@@ -2698,4 +2856,4 @@ def case_upload_csv(request):
             pass
 
     context = {}
-    return render(request,  "bip/welcome_user.html", context)
+    return render(request, template, context)
