@@ -2,7 +2,11 @@
 
 
 {% extends 'partials/base.html' %} {% block content %}
-<br>
+
+
+<body>
+    
+
 <div class="container">
       <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">
           Dashboard
@@ -30,4 +34,15 @@
           </div>
       </div>
   </div>
+</body>
+
+  <style>
+
+body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f0f0; /* Updated to gray background */
+      color: #505050;
+      line-height: 1.6;
+    }
+  </style>
 {% endblock %}

@@ -68,7 +68,7 @@ class BehaviorForm(forms.ModelForm):
             'enviroment': forms.Select(),  
 
 
-            
+
 
         }
 

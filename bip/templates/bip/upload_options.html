@@ -1,0 +1,65 @@
+{% extends 'partials/base.html' %} 
+{% block content %}
+
+
+<div class="container">
+    <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+    <br/>
+    <h1>'Order of the CSV should be Case, Behavior, Anticedent, Consequence, Function,  Setting (if used)'</h1> 
+
+         <li class="list-group-item"><a href="{% url 'bip:case_upload_csv' %}" class="card-link">Upload CSV file</a></li> 
+
+<div class="container">
+
+
+
+
+<div class="container">
+    <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+    <br/>
+    <h1>'Order of the CSV should be Case, Behavior, Anticedent, Consequence, Function,  Duration, Setting (if used)'</h1> 
+
+         <li class="list-group-item"><a href="{% url 'bip:case_upload_csv_duration' %}" class="card-link">Upload CSV file</a></li> 
+
+<div class="container">
+
+
+
+
+    <div class="container">
+        <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+        <br/>
+        <h1>'Order of the CSV should be Case, Behavior, Anticedent, Consequence, Function,  TIME, Setting (if used)'</h1> 
+    
+             <li class="list-group-item"><a href="{% url 'bip:case_upload_csv_time' %}" class="card-link">Upload CSV file</a></li> 
+    
+    <div class="container">
+    
+    
+    
+
+
+</div>
+
+<div class="container">
+
+
+
+
+    <div class="container">
+        <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+        <br/>
+        <h1>' Multiple'</h1> 
+    
+             <li class="list-group-item"><a href="{% url 'bip:case_upload_csv_multiple' %}" class="card-link">Upload CSV file</a></li> 
+    
+    <div class="container">
+    
+    
+    
+
+
+</div>
+
+
+{% endblock %}

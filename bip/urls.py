@@ -167,8 +167,17 @@ urlpatterns = [
     #  path('upload/', upload_csv, name='upload_csv'),
     # path('case_upload_csv/<int:pk>/', views.case_upload_csv, name='case_upload_csv'),  # Route for upload_csv view with pk
 
+
+    path('upload_page/<pk>/', views.upload_page, name='upload_page'),
     path('case_upload_csv/', views.case_upload_csv, name='case_upload_csv'),  
 
+    path('upload_options/<pk>/', views.upload_options, name='upload_options'),
+    path('case_upload_csv_duration/', views.case_upload_csv_duration, name='case_upload_csv_duration'),  
+    path('case_upload_csv_time/', views.case_upload_csv_time, name='case_upload_csv_time'),  
+    path('case_upload_csv_multiple/', views.case_upload_csv_multiple, name='case_upload_csv_multiple'),  
+
+
+    
 
     path('download/<path:url>/', views.download_webpage_to_word, name='download_webpage'),
     

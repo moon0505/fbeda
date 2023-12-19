@@ -1,35 +1,94 @@
-
 {% extends 'partials/base.html' %} 
 {% block content %}
-{%load crispy_forms_tags %}
+{% load crispy_forms_tags %}
+<body>
+    
+
 <div class="container mt-4">
-  <h2>Add Individual to Input Data</h2>
-  <div class="row">
-      <div class="col-md-8">
-          <div class="card mb-3">
-              <div class="card-body">
-                  <h5 class="card-title">To assign an idividual to input data you must create a unique identifier for yourself and the case. The person inputting the data will be limited to the Functional Behaivior Observation Form only and wil not have access to the other components of the website i.e.,  dashboard, data analysis and so fourth. </h5>
-                  <p class="card-text"></p>
-              </div>
-          </div>
+  <h2 class="page-title">Add Individual to Input Data</h2>
+
+  <div class="instruction-card card mb-4">
+      <div class="card-body">
+          <h5 class="card-title">Introduction</h5>
+          <p class="card-text">
+            To assign an individual to input data, you must create a unique identifier for yourself and the case. The person inputting the data will be limited to the Functional Behavior Observation Form only and will not have access to other components of the website, i.e., dashboard, data analysis, and so forth.
+          </p>
       </div>
   </div>
-  <div class="row">
-      <div class="col-md-8">
-          <div class="card mb-3">
-              <div class="card-body">
-                  <h5 class="card-title">Follow the steps below:</h5>
-                  <p class="card-text"><ol>
-                    <li>Click on the following link to create your unique identification if the following is blank or need to change it: <a a href="{% url 'bip:case_manager_unique_identifier' request.user.casemanager.id %}" class="card-link">Unique Identifier   ({{request.user.casemanager.slug}})</a></li>
-                    <li>Click on the following link to create the cases' unique identifier:<a a href="{% url 'bip:updateunique_case_identifier' student.id %}" class="card-link">Unique Identifier</a>  ({{student.slug}})</li>
-                    <li>Provide the individual who will be inputting the data both unique identifiers and the folloiwng link: <a a href="{% url 'bip:data_entry_signup'  %}" class="card-link">Register</a> </li>
-                    <li>The individual will then need to create thier account and provide the unique identifiers to access the case</li>
-                    <li>Once provided, check the follwing link to aprove/reject the indivudal access to the FBO form</li>
-                    <li>Click on the following link to create your unique identifier: <a a href="{% url 'bip:case_manager_dashboard'  %}" class="card-link">Confirmation</a></li>
-                </ol></p>
-              </div>
-          </div>
+
+  <div class="steps-card card mb-4">
+      <div class="card-body">
+          <h5 class="card-title">Follow the steps below:</h5>
+          <ol class="steps-list">
+            <li>Click on the following link to create your unique identification if the following is blank or need to change it: 
+              <a href="{% url 'bip:case_manager_unique_identifier' request.user.casemanager.id %}" class="card-link">
+                Unique Identifier ({{ request.user.casemanager.slug }})
+              </a>
+            </li>
+            <li>Click on the following link to create the case's unique identifier:
+              <a href="{% url 'bip:updateunique_case_identifier' student.id %}" class="card-link">
+                Unique Identifier ({{ student.slug }})
+              </a>
+            </li>
+            <li>Provide the individual who will be inputting the data both unique identifiers and the following link:
+              <a href="{% url 'bip:data_entry_signup' %}" class="card-link">Register</a>
+            </li>
+            <li>The individual will then need to create their account and provide the unique identifiers to access the case.</li>
+            <li>Once provided, check the following link to approve/reject the individual's access to the FBO form.</li>
+            <li>Click on the following link to create your unique identifier: 
+              <a href="{% url 'bip:case_manager_dashboard' %}" class="card-link">Confirmation</a>
+            </li>
+          </ol>
       </div>
   </div>
 </div>
+</body>
+
+<style>
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f0f0; /* Updated to gray background */
+      color: #505050;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 15px;
+    }
+    
+    .page-title {
+      color: #0056b3;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .card {
+    
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-title {
+      color: #007bff;
+    }
+    
+    .card-text, .steps-list {
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .card-link {
+      color: #28a745;
+    }
+    
+    .card-link:hover {
+      text-decoration: underline;
+    }
+    
+    .steps-list {
+      padding-left: 20px;
+    }
+    </style>
 {% endblock %}

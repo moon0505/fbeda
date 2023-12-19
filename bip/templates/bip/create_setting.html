@@ -1,134 +1,87 @@
-
-
 {% extends 'partials/base.html' %} 
 {% block content %}
-{%load crispy_forms_tags %}
+{% load crispy_forms_tags %}
 
 <body>
-  <div id="container" >
-    <div class="form-wrap" >
-      <h1>Target Behavior</h1>
-       
-      <form method="POST" class"btn btn-primary mt-3">
+  <div class="container my-4">
+    <!-- Form Section -->
+    <div class="form-section">
+      <h1 class="text-center">Target Behavior</h1>
+      <form method="POST" class="behavior-form">
         {% csrf_token %}
-        <div class='row'>
-            <div class='col-6'><b> {{ form.behaviorenviroment |as_crispy_field }}</b></div>
-      
-      </div>
-        <button class="btn btn-primary mt-3" type="submit" style='width:90px'>Submit</button>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <b>{{ form.behaviorenviroment | as_crispy_field }}</b>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
       </form>
-      
+    </div>
+
+    <!-- Information Card -->
+    <div class="card border mb-3">
+      <div class="card-body">
+        <h3>Examples of Observable and Measurable Behaviors:</h3>
+        <ul class="behavior-examples">
+          <li><b>Non-Compliance:</b> Refusal to follow instructions or tasks.</li>
+          <li><b>Hitting:</b> Making contact with another person’s body using hands.</li>
+          <li><b>Verbal Aggression:</b> Threats or comments indicating physical harm.</li>
+          <li><b>Eloping:</b> Being away from a designated area without permission.</li>
+        </ul>
+      </div>
     </div>
   </div>
-
- <!-- CARD OUTLINE -->
- <div class='container'>
-
- <div class="card border mb-3">
-    <div class="card-body">
-   
-      <ul>
-        <h3>Examples of observable and measurable behaviors:</h2>
-          <li><b>Non-Compliance:</b> Any instance in which individual physically and/or refuses to follow an instruction or a task</li>
-          <li> <b> Hitting:</b> Any occurrence of making contact with any part of another person’s body with an open
-            or closed hand </li>
-          <li><b>Verbal Aggression:</b>  Any threat or comment directed towards others that indicates any form of
-              physical harm to another person (e.g., “I am going to throw you down the stairs!").</li>
-          <li><b> Eloping:</b>Being more than x feet away from a designated area (seat or rug) without adult permission for any duration of time</li> 
-          </ul>
-         
-            </div>
-      </div>
-</div>
- 
 </body>
-{% comment %} <button class="btn btn-primary mt-3" type="submit" style='width:90px'>Submit</button> {% endcomment %}
-
 
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  #container {
-    margin: 30px auto;
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f0f0; /* Updated to gray background */
+      color: #505050;
+      line-height: 1.6;
+    }
+  .container {
     max-width: 800px;
-    
-    padding: 10px;
-  }
-
-  .form-wrap {
-    background: #fff;
-    padding: 15px 25px;
-    color: #333;
-    margin-top: px;
-  }
-
-  .form-wrap h1,
-  .form-wrap p {
-    text-align: center;
-  }
-
-  .form-wrap .form-group {
-    margin-top: 5px;
-  }
-
-  .form-wrap .form-group label {
-    display: block;
-    color: #666;
-  }
-
-  .form-wrap .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: #ddd 1px solid;
-    border-radius: 5px;
-  }
-
-  .form-wrap button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    {% comment %} background: #17a2b8; {% endcomment %}
-    color: #fff;
-    cursor: pointer;
-  }
-
-  .form-wrap button:hover {
-    background: #37a08e;
-  }
-
-  .form-wrap .bottom-text {
-    font-size: 13px;
-    margin-top: 5px;
-  }
-
-  table.center {
-    margin-left: auto; 
-    margin-right: auto;
-  }
-
-  table  {
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid #ddd;
-  }
-  
-  th, td {
+    margin: auto;
     padding: 15px;
-    padding-left: 35px;
-    padding-bottom: 1px;
+  }
 
+  .form-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+
+  .form-section h1 {
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  .behavior-form {
+    margin-top: 10px;
+  }
+
+  .behavior-form .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    margin-top: 10px;
+  }
+
+  .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .behavior-examples li {
+    margin-bottom: 5px;
+  }
+
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+    }
   }
 </style>
-  {% endblock %}
 
-
-  
+{% endblock %}

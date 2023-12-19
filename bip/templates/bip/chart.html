@@ -1,111 +1,86 @@
-
-
 {% extends 'partials/base.html' %} 
 {% block content %}
-<br>
-
-
 
 <body>
-  <div class="container text-center">
-<div class="container">
-  <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
-  <br/>
+  <div class="main-container">
+    <!-- Navigation Button -->
+    <div class="nav-button">
+      <a class="btn btn-outline-info" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+    </div>
 
-  
-
-<br>
-  <div class='container'>
+    <!-- Behavior Count Graph -->
     {% if beh_count_graph %}
-    <img src="data:image/png;base64, {{ beh_count_graph | safe}}">
+      <div class="graph-container">
+        <img src="data:image/png;base64, {{ beh_count_graph | safe}}">
+      </div>
+    {% endif %}
+
+    <!-- Pie Charts -->
+    <div class="pie-charts">
+      <div class="chart-row">
+        <div class="chart-item"><img src="data:image/png;base64, {{ pie_graph | safe}}"></div>
+        <div class="chart-item"><img src="data:image/png;base64, {{ pie_anticedent_graph | safe}}"></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-item"><img src="data:image/png;base64, {{ pie_consequence_graph | safe}}"></div>
+        <div class="chart-item"><img src="data:image/png;base64, {{ pie_function_graph | safe}}"></div>
+      </div>
+    </div>
+
+    <!-- Box Graph Time -->
+    {% if box_graph_time %}
+      <div class="box-graph">
+        <img src="data:image/png;base64, {{ box_graph_time | safe}}">
+      </div>
+    {% endif %}
+
+    <!-- Box Duration Graph -->
+    {% if box_duration_graph %}
+      <div class="box-graph">
+        <img src="data:image/png;base64, {{ box_duration_graph | safe}}">
+      </div>
     {% endif %}
   </div>
-<br>
-
-<div class="d-flex justify-content-around row-hl">
-  <div class="p-4 item-hl"><img src="data:image/png;base64, {{ pie_graph | safe}}"></div>
-  <div class="p-4 item-hl">  <img src="data:image/png;base64, {{ pie_anticedent_graph | safe}}">
-  </div>
-  
-  
-
-  </div>
-
-
-  <div class="d-flex justify-content-center row-hl">
-    <div class="p-4 item-hl"><img src="data:image/png;base64, {{ pie_consequence_graph | safe}}"></div>
-    <div class="p-4 item-hl">    <img src="data:image/png;base64, {{ pie_function_graph | safe}}">    </div>
-
-  </div>
-    <br>
-    {% if box_graph_time %}
-
-    <div class="d-flex justify-content-center row-hl">
-      <div class="p-4 item-hl"><img src="data:image/png;base64, {{ box_graph_time | safe}}"></div>
-      </div>
-      {% endif %}
-      <br>
- 
-      <br>
-      {% if box_duration_graph %}
-  
-      <div class="d-flex justify-content-center row-hl">
-        <div class="p-4 item-hl"><img src="data:image/png;base64, {{ box_duration_graph | safe}}"></div>
-        </div>
-        {% endif %}
-        <br>
-   
-    </div>
-  
-  
-  
-  
-
-
-<br>
-
-
-<!-- 
-{% if multiple_scater_plot_five  %}
-
-<div class='container'>
-  <img src="data:image/png;base64, {{ multiple_scater_plot_five | safe}}">
-</div>
-
-{% elif multiple_scater_plot_four  %}
-
-<div class='container'>
-  <img src="data:image/png;base64, {{ multiple_scater_plot_four | safe}}">
-</div>
-
-
-
-
-{% elif multiple_scater_plot_three %}
-<div class='container'>
-  <img src="data:image/png;base64, {{ multiple_scater_plot_three | safe}}">
-</div>
-{% elif multiple_scater_plot_two %}
-<div class='container'>
-  <img src="data:image/png;base64, {{ multiple_scater_plot_two | safe}}">
-</div>
-{% elif multiple_scater_plot_one %}
-<div class='container'>
-  <img src="data:image/png;base64, {{ multiple_scater_plot_one | safe}}">
-</div>
-{% endif %}  -->
-
-<br>
-
-
-</div>
 </body>
+
 <style>
-  body {
- background: white; 
+  .main-container {
+    background: white;
+    padding: 20px;
+  }
+  .nav-button {
+    margin-bottom: 20px;
+  }
+  .btn-outline-info {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  .graph-container, .pie-charts, .box-graph {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .chart-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  .chart-item {
+    flex-basis: 45%;
   }
   img {
+    max-width: 100%;
     border: 2px solid #555;
+    padding: 5px;
   }
-  </style>
+  @media (max-width: 768px) {
+    .chart-row {
+      flex-direction: column;
+    }
+    .chart-item {
+      flex-basis: 100%;
+    }
+  }
+</style>
+
 {% endblock %}

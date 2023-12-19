@@ -1,133 +1,85 @@
-
+Copy code
 {% extends 'partials/base.html' %} 
 {% block content %}
-{%load crispy_forms_tags %}
+{% load crispy_forms_tags %}
 
 <body>
-  <div id="container" >
-    <div class="form-wrap" >
-      <h1>Anticedent</h1>
-       
- 
-      <form method="POST" class"btn btn-primary mt-3">
+  <div class="container my-4">
+    <!-- Form Section -->
+    <div class="form-section">
+      <h1 class="text-center">Antecedent</h1>
+      <form method="POST" class="antecedent-form">
         {% csrf_token %}
-        <div class='row'>
-          <div class='col-6'><b> {{ form.anticedentincident |as_crispy_field }}</b></div>
-          <div class='col-12'><b> {{ form.anticedent_definition |as_crispy_field }}</b></div>
-      
-      </div>
-        <button class="btn btn-primary mt-3" type="submit" style='width:90px'>Submit</button>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <b>{{ form.anticedentincident | as_crispy_field }}</b>
+          </div>
+          <div class="col-12">
+            <b>{{ form.anticedent_definition | as_crispy_field }}</b>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
       </form>
-      
+    </div>
+
+    <!-- Information Card -->
+    <div class="card border mb-3">
+      <div class="card-body">
+        <h3>Examples of Antecedents:</h3>
+        <ul class="antecedent-list">
+          <li><b>Academic Demand:</b> Adult presents a specific demand related to ongoing academic instruction to the class.</li>
+          <li><b>Directive:</b> Verbal request.</li>
+          <li><b>Denied Access:</b> Access to activity or tangible is denied.</li>
+          <li><b>Transitions:</b> Asked to stop an ongoing activity and move to another activity or area.</li>
+        </ul>
+      </div>
     </div>
   </div>
-
-  <div class='container'>
-
-    <div class="card border mb-3">
-       <div class="card-body">
-      
-        <ul >
-          <li><b>Academic Demand:</b> adult (teacher or assistant) presents a specific demand related to ongoing academic
-            instruction to the class   </li>
-            <li><b> Directive:</b> Verbal Request</li>
-            <li><b>Denied Access:</b> Access to activity or tangible is denied: individual asks for an item or tries to grab an item and the adult does not give the individual the item, or adult (teacher or assistant) stands between an item that the student is walking towards
-            or reaching toward</li>
-            <li><b>Transitions:</b> Asked to stop an ongoing activity and move to another activity or area </li>
-        </ul>
-            
-      </div>
-    </div>
-</div>
-
-
 </body>
 
-
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  #container {
-    margin: 30px auto;
+  .container {
     max-width: 800px;
-    
-    padding: 10px;
-  }
-
-  .form-wrap {
-    background: #fff;
-    padding: 15px 25px;
-    color: #333;
-    margin-top: px;
-  }
-
-  .form-wrap h1,
-  .form-wrap p {
-    text-align: center;
-  }
-
-  .form-wrap .form-group {
-    margin-top: 5px;
-  }
-
-  .form-wrap .form-group label {
-    display: block;
-    color: #666;
-  }
-
-  .form-wrap .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: #ddd 1px solid;
-    border-radius: 5px;
-  }
-
-  .form-wrap button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    {% comment %} background: #17a2b8; {% endcomment %}
-    color: #fff;
-    cursor: pointer;
-  }
-
-  .form-wrap button:hover {
-    background: #37a08e;
-  }
-
-  .form-wrap .bottom-text {
-    font-size: 13px;
-    margin-top: 5px;
-  }
-
-  table.center {
-    margin-left: auto; 
-    margin-right: auto;
-  }
-
-  table  {
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid #ddd;
-  }
-  
-  th, td {
+    margin: auto;
     padding: 15px;
-    padding-left: 35px;
-    padding-bottom: 1px;
+  }
 
+  .form-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+
+  .form-section h1 {
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  .antecedent-form {
+    margin-top: 10px;
+  }
+
+  .antecedent-form .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    margin-top: 10px;
+  }
+
+  .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .antecedent-list li {
+    margin-bottom: 5px;
+  }
+
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+    }
   }
 </style>
-  {% endblock %}
 
-
-  
+{% endblock %}

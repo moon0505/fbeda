@@ -1,93 +1,95 @@
- 
 {% extends 'partials/base.html' %} 
 {% block content %}
 
-
-<a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"
->Dashboard</a>
-<br>
 <body>
-
-  <!-- JUSTIFY CONTENT - CONTENT AROUND -->
-  <div class="d-flex justify-content-center row-hl">
-    <div class="p-4 item-hl"><b>Behavior</b> {{unique_b_count | safe}}  
+  <div class="main-container">
+    <!-- Dashboard Button -->
+    <div class="nav-button">
+      <a class="btn btn-primary" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
     </div>
-  
-    <div class="p-4 item-hl"> <b>Behavior-Function</b> {{unique_bf_count | safe}}  
-    </div>
-    <div class="p-4 item-hl"><b>Antecedent-Behavior</b>       {{unique_ab_count | safe}}  
 
-    </div>
-  </div>
+    <!-- Content Sections -->
+    <div class="content-section">
+      <div class="stats-row">
+        <div class="stat-item"><b>Behavior:</b> {{unique_b_count | safe}}</div>
+        <div class="stat-item"><b>Behavior-Function:</b> {{unique_bf_count | safe}}</div>
+        <div class="stat-item"><b>Antecedent-Behavior:</b> {{unique_ab_count | safe}}</div>
+      </div>
 
+      <div class="stats-row">
+        <div class="stat-item"><b>Antecedent-Behavior-Consequence:</b> {{unique_abc_count | safe}}</div>
+        <div class="stat-item"><b>Antecedent-Behavior-Consequence-Function:</b> {{unique_abcf_count | safe}}</div>
+      </div>
 
-  <!-- JUSTIFY CONTENT - CONTENT AROUND -->
-  <div class="d-flex justify-content-center row-hl">
-   
-    <div class="p-4 item-hl"><b>Antecedent-Behavior-Consequence</b> {{unique_abc_count | safe}}  
-    </div>
-    <div class="p-4 item-hl"><b>Antecedent-Behavior-Consequence-Function</b> {{unique_abcf_count | safe}}  
-    </div>
-  
-    
-    
-  </div>
-
-
-  <!-- JUSTIFY CONTENT - CONTENT AROUND -->
-  <div class="d-flex justify-content-center row-hl">
-   
-    <div class="p-4 item-hl"><b>Behavior-Setting Frequency</b> {{unique_bs_count | safe}}  
-    </div>
-    <div class="p-4 item-hl"><b>Behavior Average per Incident</b> {{frequency_behavior | safe}}  </div>
-      <div class="p-4 item-hl"><b>Behavior-Hour Frequency</b> {{unique_hour | safe}}  </div>
-  
-    
-    
-  </div>
-
-
-
-
-
-
-
-        {% if duration_behavior%}
-        <div class='container'>
-            <h1>Average Duration of Behavior</h1>
-              {{duration_behavior | safe}}  
-             </div>
-            <br>
+      <div class="stats-row">
+        <div class="stat-item"><b>Behavior-Setting Frequency:</b> {{unique_bs_count | safe}}</div>
+        <div class="stat-item"><b>Behavior Average per Incident:</b> {{frequency_behavior | safe}}</div>
+        {% if unique_hour_html %}
+          <div class="stat-item"><b>Behavior-Hour Frequency:</b> {{unique_hour_html | safe}}</div>
         {% endif %}
+        {% if duration_behavior %}
+          <div class="stat-item"><b>Average Duration of Behavior:</b> {{duration_behavior | safe}}</div>
+        {% endif %}
+      </div>
+    </div>
 
-           
-
-  
-
-
-<div class="box">
-<h1>Correlation Matrix (A-B-C-F)</h1>
-  {{matrix | safe}}
-
-</div>
-
-
-              </body>
-
+    <!-- Correlation Matrix -->
+    <div class="matrix-box">
+      <h1>Correlation Matrix (A-B-C-F)</h1>
+      {{matrix | safe}}
+    </div>
+  </div>
+</body>
 
 <style>
-.box {
-  /* width: 99%; */
-  height: 100%;
-  border: 1px solid black;
-  background-color: #fff;
-  padding: 20px;
-  margin: 5px;
-  overflow: auto;
-}
-
-  
+  .main-container {
+    background-color: #f5f5f5;
+    padding: 20px;
+  }
+  .nav-button {
+    margin-bottom: 20px;
+  }
+  .btn-primary {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+  }
+  .content-section {
+    margin-bottom: 20px;
+  }
+  .stats-row {
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .stat-item {
+    flex-basis: 30%;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .matrix-box {
+    border: 1px solid black;
+    background-color: #fff;
+    padding: 20px;
+    margin: 5px;
+    overflow: auto;
+  }
+  @media (max-width: 768px) {
+    .stats-row {
+      flex-direction: column;
+    }
+    .stat-item {
+      flex-basis: 100%;
+    }
+  }
 </style>
 
-
-            {% endblock %}
+{% endblock %}
