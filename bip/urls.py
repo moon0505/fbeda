@@ -66,6 +66,11 @@ urlpatterns = [
     path('description/', views.description_view, name="description"),
     
     path('student_list/<pk>/', views.list_view, name='student_list'),
+
+
+
+
+    
     
     path("by/<username>/",views.UserPosts.as_view(),name="for_user"),
     

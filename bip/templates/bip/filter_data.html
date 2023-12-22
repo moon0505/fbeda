@@ -3,8 +3,8 @@
 {% load crispy_forms_tags %}
 
 <div class="container mt-4">
-  <a class="btn btn-info btn-sm mb-4" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
-
+  <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+<br>
   <div class="text-center mb-4">
     <h3>Filter Data</h3>
   </div>
@@ -54,17 +54,16 @@
 
     <div class="form-row">
       <div class="form-group col-md-2 col-lg-2">
-        <label for="publishDateMin">Publish date minimum</label>
+        <label for="publishDateMin">Publish Date Minimum</label>
         <input type="date" class="form-control" id="publishDateMin" name="date_min">
       </div>
       <div class="form-group col-md-2 col-lg-2">
-        <label for="publishDateMax">Publish date maximum</label>
+        <label for="publishDateMax">Publish Date Maximum</label>
         <input type="date" class="form-control" id="publishDateMax" name="date_max">
       </div>
     </div>
-    <button type="submit" class="btn btn-primary btn-filter">Filter</button>
+    <button type="submit" class="btn btn-success btn-filter">Filter</button>
   </form>
-
   <div class="query-count text-center my-4">
     <h4>Count Query: <b>{{ qs_count }}</b> / {{ total_beh }}</h4>
     <p>{{ beh_devide|floatformat:1 }}% of all behaviors</p>
@@ -99,14 +98,15 @@
 </div>
 
 <style>
-  body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #f0f0f0; /* Updated to gray background */
-  color: #505050;
-  line-height: 1.6;
-}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0; /* Updated to gray background */
+    color: #505050;
+    line-height: 1.6;
+  }
+
   .container {
-    max-width: 800px;
+    max-width: 1200px; /* Increased the maximum width */
     margin: auto;
     padding: 15px;
   }

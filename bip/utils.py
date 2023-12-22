@@ -55,7 +55,7 @@ def get_bar_chart( *args, **kwargs):
     ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
 
     
-    plt.grid(True)   
+    # plt.grid(True)   
     
     plt.bar(x, y)
          
@@ -75,7 +75,7 @@ def get_bar_chart( *args, **kwargs):
 
 def get_heatmap( *args, **kwargs):
     plt.switch_backend('AGG')
-    fig = plt.figure(figsize=(11,5))
+    fig = plt.figure(figsize=(10,5))
     x = kwargs.get('x')
     y = kwargs.get('y')
     data = kwargs.get('data')
@@ -100,7 +100,7 @@ def get_heatmap( *args, **kwargs):
 
 def get_clustermap( *args, **kwargs):
     plt.switch_backend('AGG')
-    fig = plt.figure(figsize=(3,6))
+    fig = plt.figure(figsize=(10,5))
     x = kwargs.get('x')
     y = kwargs.get('y')
     data = kwargs.get('data')
@@ -125,7 +125,9 @@ def get_clustermap( *args, **kwargs):
 
 def get_box_plot_function( *args, **kwargs):
     plt.switch_backend('AGG')    
-    fig = plt.figure()
+    # fig = plt.figure()
+    fig = plt.figure(figsize=(10,6))
+
     
     x = kwargs.get('x')
     y = kwargs.get('y')
@@ -592,12 +594,6 @@ def get_count_time_plot( *args, **kwargs):
     time_count_graph = get_image()
 
     return time_count_graph
-
-
-
-
-
-
 
 
 

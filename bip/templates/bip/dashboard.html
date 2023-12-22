@@ -3,8 +3,10 @@
 <br>
 <div class="container my-4">
   <!-- Navigation Button -->
-  <div class="nav-button mb-3">
-    <a class="btn btn-primary btn-block" href="{% url 'bip:create_incident' student.id %}">Create Incident</a>
+
+  
+  <div class="nav-button">
+    <a class="btn btn-outline-info" href="{% url 'bip:create_incident' student.id %}">Create Incident</a>
   </div>
   
 
@@ -38,7 +40,7 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item"><a href="{% url 'bip:snapshot' student.id %}" class="card-link">Snap Shot</a></li>
         <li class="list-group-item"><a href="{% url 'bip:function' student.pk %}" class="card-link">Function</a></li>
-        <li class="list-group-item"><a href="{% url 'bip:anticedent' student.pk %}" class="card-link">Anticedent</a></li>
+        <li class="list-group-item"><a href="{% url 'bip:anticedent' student.pk %}" class="card-link">Antecedent</a></li>
         <li class="list-group-item"><a href="{% url 'bip:consequence' student.pk %}" class="card-link">Consequence</a></li>
         <li class="list-group-item"><a href="{% url 'bip:setting' student.pk %}" class="card-link">Setting</a></li>
 
@@ -82,7 +84,7 @@
       <table class="table table-striped">
         <tr>
           <th>Behavior (Frequency)</th>
-          <th>Anticedent</th>
+          <th>Antecedent</th>
           <th>Consequence</th>
           <th>Function</th>
           {% if student_enviroment %}
@@ -161,13 +163,26 @@
       line-height: 1.6;
     }
   .container {
-    max-width: 960px;
+    max-width: 1000px;
     margin: auto;
   }
+/* 
+  .container {
+    max-width: 1200px; 
+    margin: auto;
+    padding: 15px;
+  } */
 
   .nav-button {
     margin-bottom: 20px;
   }
+  .btn-outline-info {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+
+  
 
   .btn-primary {
     background-color: #007bff;

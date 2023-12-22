@@ -11,7 +11,7 @@ import logging
 from django.contrib.auth.models import User 
 from . import forms
 from django.contrib.auth.models import Group
-
+from django.http import HttpResponseForbidden
 from bip.forms import CaseManagerUserForm, CaseManagerForm,CsvUploadForm
 from datetime import datetime
 
@@ -354,12 +354,16 @@ class HomePage(LoginRequiredMixin, TemplateView):
 
 @login_required
 def list_view(request,pk):
-    student = get_object_or_404(Student, pk=pk)
-    student_list = student.case_set.all()
+    
+    user = get_object_or_404(User, pk=pk)
 
-    context ={"student_list":student_list,'student':student}
+
+
+    user_list = user.case_set.all()
+
+    context ={'user ':user,'user_list':user_list}  
          
-    return render(request, "bip/student_list.html", context)
+    return render(request, "bip/preffered_student_list.html", context)
 
 
 @login_required(login_url='case_manager_login')
@@ -370,15 +374,6 @@ def dashboard(request, pk):
     student = get_object_or_404(Student, pk=pk)
 
     student_behaviors = student.case_set.all()
-
-
-    # qs = student_behaviors.filter('case__duration')
-
-        # queryset = student_cases.values('date_created').annotate(count=Count('date_created')).values( 'count')
-
-    # behavior_mean=  cases_df['behavior__behaviorincident'].value_counts()
-
-
 
     # delete
 
@@ -502,28 +497,60 @@ def deletePost(request, pk):
   return render(request, 'bip/delete_post.html', context)
 
 
-@login_required
 def create_student(request):
+    
     user_student = User.objects.get(pk=request.user.id)
     form = StudentForm()
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            form = StudentForm(request.POST)   
+    if  is_case_manager(request.user):
+
+            if request.method == 'POST':
+                if request.user.is_authenticated:
+                    form = StudentForm(request.POST)   
+                    
+                    for field in form:
+                        print(field.value())
+                    
+                    if form.is_valid():
+                        obj = form.save(commit=False)
+                        obj.user_student = User.objects.get(pk=request.user.id)
+                        obj.save()                 
+                        
+                        return redirect("bip:for_user", username=request.user.username)
+                        
+                    else:
+                        print("ERROR In Form") 
+                        
             
-            for field in form:
-                print(field.value())
+            return render(request, 'bip/create_student.html', {'form': form,'user_student':user_student})
+    else :
+        return redirect("bip:data_entry_dashboard")
+    
+
+# def create_student(request):
+    
+#     user_student = User.objects.get(pk=request.user.id)
+#     form = StudentForm()
+#     if request.method == 'POST':
+#         if request.user.is_authenticated:
+#             form = StudentForm(request.POST)   
             
-            if form.is_valid():
-                 obj = form.save(commit=False)
-                 obj.user_student = User.objects.get(pk=request.user.id)
-                 obj.save()                 
+#             for field in form:
+#                 print(field.value())
+            
+#             if form.is_valid():
+#                  obj = form.save(commit=False)
+#                  obj.user_student = User.objects.get(pk=request.user.id)
+#                  obj.save()                 
                 
-                 return redirect("bip:for_user", username=request.user.username)
+#                  return redirect("bip:for_user", username=request.user.username)
                 
-            else:
-                print("ERROR In Form") 
+#             else:
+#                 print("ERROR In Form") 
+                
      
-    return render(request, 'bip/create_student.html', {'form': form,'user_student':user_student})
+#     return render(request, 'bip/create_student.html', {'form': form,'user_student':user_student})
+
+
 
 
 def updateStudent(request, pk):
