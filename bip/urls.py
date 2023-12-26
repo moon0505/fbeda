@@ -37,7 +37,7 @@ urlpatterns = [
     path('case_manager_dashboard/<int:pk>', views.case_manager_dashboard_view,name='case_manager_dashboard'),
 
 
-    path('admin_data_entry_approve', views.admin_approve_data_entry_view,name='admin_data_entry_approve'),
+    path('admin_data_entry_approve/<int:pk>', views.admin_approve_data_entry_view,name='admin_data_entry_approve'),
     
     path('approved_data_entry/<int:pk>', views.approved_data_entry_view,name='approved_data_entry'),
     

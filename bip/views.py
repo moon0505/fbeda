@@ -285,16 +285,17 @@ def data_entry_input_view(request, pk):
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
-def admin_approve_data_entry_view(request):
+def admin_approve_data_entry_view(request,pk):
     #those whose approval are needed
   
-    case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
-    
-    specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.slug)
+    # case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
     
 
-    # specific_data_entry=models.DataEntry.objects.all().filter(status=False)
+    # specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.pk)
+    
 
+    specific_data_entry=models.DataEntry.objects.all().filter(status=False)
+    print(specific_data_entry)
 
     context = {
         'specific_data_entry':specific_data_entry
@@ -309,7 +310,11 @@ def approved_data_entry_view(request,pk):
     data_entry=models.DataEntry.objects.get(id=pk)
     data_entry.status=True
     data_entry.save()
-    return redirect(reverse('bip:case_manager_dashboard'))
+
+    
+    case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
+
+    return redirect('bip:case_manager_dashboard',case_manager_entry.id)
 
 
 

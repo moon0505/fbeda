@@ -50,14 +50,18 @@
         </tr>
       </thead>
 
-      <!-- <tr>
-        <td> {{specific_data_entry.get_name}}</td>
-       
-        <td><a class="btn btn-primary btn-xs" href="{% url 'bip:approved_data_entry' specific_data_entry.id  %}"><span class="glyphicon glyphicon-ok"></span></a></td>
+      {% for x in specific_data_entry %}
 
-        <td><a class="btn btn-danger btn-xs" href="{% url 'bip:reject_data_entry' specific_data_entry.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+        <td> {{x.get_name}}</td>
+       
+        <td><a class="btn btn-primary btn-xs" href="{% url 'bip:approved_data_entry' x.id  %}"><span class="glyphicon glyphicon-ok"></span></a></td>
+
+        <td><a class="btn btn-danger btn-xs" href="{% url 'bip:reject_data_entry' x.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+     
+
+     
       </tr>
-    -->
+      {% endfor %}
     </table>
   </div>
 
