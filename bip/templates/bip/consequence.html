@@ -1,47 +1,88 @@
-
-
 {% extends 'partials/base.html' %} 
 {% block content %}
-<br>
-<body>
-  
-  <div class="container text-center">
-
-<div class="container">
-  <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
-  <br/>
-  <div class='container'>
-    <img src="data:image/png;base64, {{ box_graph_consequence | safe}}">
-  </div>
   <br>
+  <body>
+    <div class="container text-center">
+      <div class="container">
+        <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+        <br/>
+        <div class="title-container">
+          <h2 class="page-title">Consequence Analysis</h2>
+        </div>
+        <div class='container'>
+          <img src="data:image/png;base64, {{ box_graph_consequence | safe}}">
+        </div>
+        <br><br>
+        <div class='container'>
+          {% if iheat_graph %}
+            <img src="data:image/png;base64, {{ iheat_graph | safe}} ">
+          {% endif %}
+        </div>
+        <br><br>
+        <div class="container">
+          {% if iclustermap_graph %}
+            <img src="data:image/png;base64, {{ iclustermap_graph | safe }}">
+          {% endif %}
+        </div>
+        <br><br>
+      </div>
 
-  <div class='container'>
-    {% if iheat_graph %}
-    <img src="data:image/png;base64, {{ iheat_graph | safe}} ">
-    {% endif %}
-  </div>
-<br>
-  <div class="container">
-    {% if iclustermap_graph %}
-      <img src="data:image/png;base64, {{ iclustermap_graph | safe }}">
-    {% endif %}
-  </div>
-
-  <br>
-
-<br>
-
-</div>
+      
+    </div>
 
 
-</div>
-</body>
-<style>
-  body {
-  background: white; 
-  }
-  img {
-    border: 2px solid #555;
-  }
+
+    
+  </body>
+
+  <style>
+    .main-container {
+      background: white;
+      padding: 20px;
+    }
+    .nav-button {
+      margin-bottom: 20px;
+    }
+    .btn-outline-info {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+    .graph-container, .pie-charts, .box-graph {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .chart-row {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .chart-item {
+      flex-basis: 45%;
+    }
+    img {
+      max-width: 100%;
+      border: 2px solid #555;
+      padding: 5px;
+    }
+    @media (max-width: 768px) {
+      .chart-row {
+        flex-direction: column;
+      }
+      .chart-item {
+        flex-basis: 100%;
+      }
+    }
+    .title-container {
+        margin-bottom: 20px;
+      }
+      .page-title {
+        font-size: 28px;
+        color: #333;
+        font-weight: bold;
+        border-bottom: 2px solid #555;
+        display: inline-block;
+        padding-bottom: 5px;
+      }
   </style>
 {% endblock %}

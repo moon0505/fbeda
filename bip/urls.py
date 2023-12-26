@@ -25,7 +25,6 @@ urlpatterns = [
     path('data_entry_signup/', views.data_entry_signup_view, name='data_entry_signup'),
     path('data_entry_login/', LoginView.as_view(template_name='account/data_entry_login.html'), name='data_entry_login'),
     
-    path('case_manager_dashboard/', views.case_manager_dashboard_view,name='case_manager_dashboard'),
 
     path('data_entry_dashboard/', views.data_entry_dashboard_view,name='data_entry_dashboard'),
 
@@ -34,16 +33,30 @@ urlpatterns = [
 
     path('data_entry_input/<pk>/', views.data_entry_input_view, name='data_entry_input'),
 
+
+    path('case_manager_dashboard/<int:pk>', views.case_manager_dashboard_view,name='case_manager_dashboard'),
+
+
     path('admin_data_entry_approve', views.admin_approve_data_entry_view,name='admin_data_entry_approve'),
     
     path('approved_data_entry/<int:pk>', views.approved_data_entry_view,name='approved_data_entry'),
     
-    path('admin_delete_data_entry', views.admin_delete_data_entry_view,name='admin_delete_data_entry'),
+
+
+    path('admin_delete_data_entry/<int:pk>', views.admin_delete_data_entry_view,name='admin_delete_data_entry'),
     
+
+
     path('delete_data_entry/<int:pk>', views.delete_data_entry_view,name='delete_data_entry'),
+
 
     path('reject_data_entry/<int:pk>', views.reject_data_entry_view,name='reject_data_entry'),
     
+
+
+
+
+
     
         
     path('assign_data_entry/<pk>/', views.assign_data_entry, name='assign_data_entry'),

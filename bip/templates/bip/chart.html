@@ -5,7 +5,7 @@
   <div class="main-container">
     <!-- Navigation Button -->
     <div class="nav-button">
-      <a class="btn btn-outline-info" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+      <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
     </div>
 
     <!-- Behavior Count Graph -->
@@ -81,6 +81,18 @@
       flex-basis: 100%;
     }
   }
+
+  .title-container {
+      margin-bottom: 20px;
+    }
+  .page-title {
+      font-size: 28px;
+      color: #333;
+      font-weight: bold;
+      border-bottom: 2px solid #555;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
 </style>
 
 {% endblock %}

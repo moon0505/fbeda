@@ -152,7 +152,7 @@ def get_box_plot_function( *args, **kwargs):
 
 def get_box_plot_consequence( *args, **kwargs):
     plt.switch_backend('AGG')    
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10,6))
     
     x = kwargs.get('x')
     y = kwargs.get('y')
@@ -177,7 +177,7 @@ def get_box_plot_consequence( *args, **kwargs):
 
 def get_box_plot( *args, **kwargs):
     plt.switch_backend('AGG')    
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10,6))
     
     x = kwargs.get('x')
     y = kwargs.get('y')
@@ -200,7 +200,7 @@ def get_box_plot( *args, **kwargs):
 
 def get_box_plot_setting( *args, **kwargs):
     plt.switch_backend('AGG')    
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10,6))
     
     x = kwargs.get('x')
     y = kwargs.get('y')

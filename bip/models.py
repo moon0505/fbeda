@@ -59,10 +59,10 @@ class Student(models.Model):
 
 
 class Anticedent(models.Model):
-        anticedentincident = models.CharField(max_length=50,verbose_name= 'Anticedent', null=True, blank=True)
+        anticedentincident = models.CharField(max_length=50,verbose_name= 'Antecedent', null=True, blank=True)
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         
-        anticedent_definition = models.CharField(null=True, blank=True, max_length=1000)
+        anticedent_definition = models.CharField(null=True, blank=True, max_length=1000, verbose_name= 'Antecedent Definition')
   
       
         user = models.ForeignKey(User, on_delete=models.CASCADE,  default=None)

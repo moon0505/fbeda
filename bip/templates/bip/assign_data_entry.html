@@ -3,7 +3,9 @@
 {% load crispy_forms_tags %}
 <body>
     
-
+  <div class="container">
+    <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
+    <br/>
 <div class="container mt-4">
   <h2 class="page-title">Add Individual to Input Data</h2>
 
@@ -11,7 +13,7 @@
       <div class="card-body">
           <h5 class="card-title">Introduction</h5>
           <p class="card-text">
-            To assign an individual to input data, you must create a unique identifier for yourself and the case. The person inputting the data will be limited to the Functional Behavior Observation Form only and will not have access to other components of the website, i.e., dashboard, data analysis, and so forth.
+            To assign an individual to input data, you must create a unique identification for yourself and the case. The person inputting the data will be limited to the Functional Behavior Observation Form only and will not have access to other components of the website, i.e., dashboard, data analysis, and so forth.
           </p>
       </div>
   </div>
@@ -22,22 +24,22 @@
           <ol class="steps-list">
             <li>Click on the following link to create your unique identification if the following is blank or need to change it: 
               <a href="{% url 'bip:case_manager_unique_identifier' request.user.casemanager.id %}" class="card-link">
-                Unique Identifier ({{ request.user.casemanager.slug }})
+                Unique identification ({{ request.user.casemanager.slug }})
               </a>
             </li>
-            <li>Click on the following link to create the case's unique identifier:
+            <li>Click on the following link to create the case's unique identification:
               <a href="{% url 'bip:updateunique_case_identifier' student.id %}" class="card-link">
-                Unique Identifier ({{ student.slug }})
+                Unique identification ({{ student.slug }})
               </a>
             </li>
-            <li>Provide the individual who will be inputting the data both unique identifiers and the following link:
+            <li>Provide the individual who will be inputting the data both unique identification and the following link:
               <a href="{% url 'bip:data_entry_signup' %}" class="card-link">Register</a>
             </li>
-            <li>The individual will then need to create their account and provide the unique identifiers to access the case.</li>
-            <li>Once provided, check the following link to approve/reject the individual's access to the FBO form.</li>
-            <li>Click on the following link to create your unique identifier: 
-              <a href="{% url 'bip:case_manager_dashboard' %}" class="card-link">Confirmation</a>
+            <li>The individual will then need to create their account and provide the unique identification to access the case.</li>
+            <li>Once provided, check the following link to approve/reject the individual's access to 
+              the FBO form:              <a href="{% url 'bip:case_manager_dashboard' user.id %}" class="card-link">Confirmation</a>
             </li>
+            
           </ol>
       </div>
   </div>
@@ -54,7 +56,7 @@
     }
     
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: auto;
       padding: 15px;
     }
@@ -90,5 +92,18 @@
     .steps-list {
       padding-left: 20px;
     }
+    .btn-outline-info {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 768px) {
+    .chart-row {
+      flex-direction: column;
+    }
+    .chart-item {
+      flex-basis: 100%;
+    }
+  }
     </style>
 {% endblock %}

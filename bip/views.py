@@ -198,18 +198,35 @@ def afterlogin_view(request):
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
-def case_manager_dashboard_view(request):
+def case_manager_dashboard_view(request,pk):
     
+
+
+
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
 
-    try:
-        specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.slug)
-        print(specific_data_entry)
-    except:
-        specific_data_entry =None
+    # print(case_manager_entry)
+    # data_entry=models.DataEntry.objects.all().filter(status=True)
+    # print(data_entry)
+
+    specific_data_entry =models.DataEntry.objects.filter(assignedCaseManagerSlug=case_manager_entry.slug)
+    print(specific_data_entry)
+
+
+    # data_entry_hold=models.DataEntry.objects.all().filter(status=False)
+
+
+
+    # try:
+    #     specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.slug)
+    #     print(specific_data_entry)
+    # except:
+    #     specific_data_entry =None
 
     mydict={
         'specific_data_entry':specific_data_entry,
+        # 'data_entry':data_entry,
+        # 'data_entry_hold':data_entry_hold
    
     }
     return render(request,'account/case_manager_dashboard.html',context=mydict)
@@ -275,7 +292,9 @@ def admin_approve_data_entry_view(request):
     
     specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.slug)
     
-   
+
+    # specific_data_entry=models.DataEntry.objects.all().filter(status=False)
+
 
     context = {
         'specific_data_entry':specific_data_entry
@@ -293,15 +312,20 @@ def approved_data_entry_view(request,pk):
     return redirect(reverse('bip:case_manager_dashboard'))
 
 
+
+
+
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
-def admin_delete_data_entry_view(request):
+
+def admin_delete_data_entry_view(request,pk):
     
-    case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
+    # case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
     
-    specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.slug)
-    
-    
+    # specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.slug)
+    specific_data_entry=models.DataEntry.objects.get(id=pk)
+
+
     context = { 
                'specific_data_entry':specific_data_entry,
                }
@@ -316,7 +340,10 @@ def delete_data_entry_view(request,pk):
     user=models.User.objects.get(id=data_entry.user_id)
     user.delete()
     data_entry.delete()
-    return redirect('bip:case_manager_dashboard')
+
+    case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
+
+    return redirect('bip:case_manager_dashboard',case_manager_entry.id)
 
 
 @login_required(login_url='case_manager_login')
@@ -326,7 +353,15 @@ def reject_data_entry_view(request,pk):
     user=models.User.objects.get(id=data_entry.user_id)
     user.delete()
     data_entry.delete()
-    return redirect('bip:case_manager_dashboard')
+    case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
+
+    return redirect('bip:case_manager_dashboard',case_manager_entry.id)
+
+
+
+
+
+
 
 
 # Website forms/input---------------------------------------------------------
@@ -574,6 +609,22 @@ def updateStudent(request, pk):
     context = {'form':form}
     
     return render(request, "bip/create_student.html", context)
+
+
+
+
+# def deleteData_entry(request, pk):
+    
+#     studentdelete = Student.objects.get(id=pk)
+    
+#     student = Student.objects.get(id=pk)
+    
+#     if request.method == "POST":
+#         studentdelete.delete()
+#         return redirect("bip:home")
+    
+#     context = {'item':studentdelete,'student':student}
+#     return render(request, "bip/delete_student.html", context)
 
 
 def deleteStudent(request, pk):

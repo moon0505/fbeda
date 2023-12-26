@@ -39,6 +39,121 @@
 <br><br>
 
 <body>
+
+  {% for x in specific_data_entry %}
+
+
+
+  {{x.get_name}}
+
+  {% endfor %}
+
+
+  
+<div class="container">
+  <div class="panel panel-primary">
+
+      <div class="panel-heading"  style="text-align:center;">
+        <h3 class="panel-title"> Aprroved Data Recorder</h6>
+      </div>
+      
+
+      <table class="table table-hover" id="dev-table">
+        <thead>
+          <tr>
+            <th> Name</th>
+            <th> Status</th>
+            <th> Delete</th>
+
+
+
+          </tr>
+        </thead>
+        {% for d in specific_data_entry %}
+        <tr>
+          {%if d.status == True%}
+          <td> {{d.get_name}} {{d.pk}}</td>
+
+          <td> <span class="label label-primary">Permanent</span></td>
+          <td> <span class="btn btn-danger"><a href="{% url 'bip:admin_delete_data_entry' d.id  %}" >Delete</a></span></td>
+
+         
+
+         
+          {% endif %}
+          
+          {% endfor %}
+          
+        
+         
+      
+      </table>
+      
+    </div>
+
+    
+  </div>
+
+
+<div class="container">
+  <div class="panel panel-primary">
+
+      <div class="panel-heading"  style="text-align:center;">
+        <h3 class="panel-title"> Wait List Data Recorder</h6>
+      </div>
+      
+
+      <table class="table table-hover" id="dev-table">
+        <thead>
+          <tr>
+            <th> Name</th>
+            <th> Status</th>
+            <th> Aprove</th>
+            <th> Reject</th>
+
+
+
+
+          </tr>
+        </thead>
+        
+          {% for x in specific_data_entry %}
+          <tr>
+           
+            {%if x.status == False%}
+            <td> {{x.get_name}}{{x.id}}</td>
+            <td> <span class="label label-success">On Hold</span></td>
+            <td><a class="btn btn-primary btn-xs" href="{% url 'bip:approved_data_entry' x.id  %}"><span class="glyphicon glyphicon-ok"></span></a></td>
+
+            <td><a class="btn btn-danger btn-xs" href="{% url 'bip:reject_data_entry' x.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+
+            
+            
+  
+  
+           
+            {% endif %}
+
+
+  {% endfor %}
+        
+         
+      
+      </table>
+      
+    </div>
+
+    
+  </div>
+
+</body>
+<!-- 
+  {% for d in data_entry %}
+
+
+  {{d.get_name}}
+
+  {% endfor %}
   
 <div class="container">
   <div class="panel panel-primary">
@@ -53,21 +168,28 @@
           <tr>
             <th> Name</th>
             <th> Status</th>
-            {%if specific_data_entry.status == True%}
-            <th> Remove</th>
-            {% endif %}
             {%if specific_data_entry.status == False%}
 
             <th> Aprove/Reject</th>
             {% endif %}
 
+            {%if specific_data_entry.status == True%}
+            <th> Delete</th>
+            {% endif %}
+          
 
           </tr>
         </thead>
-
+ 
         <tr>
+         
           <td> {{specific_data_entry.get_name}}</td>
         
+          {%if specific_data_entry.status == False%}
+
+          <td> <span class="btn btn-success"><a  href="/admin_data_entry_approve">Aprove/Reject</a></span></td>
+          {% endif %}
+
           {%if specific_data_entry.status%}
           <td> <h4><span class="label label-primary">Approved</span></h4></td>
           {% else %}
@@ -75,17 +197,11 @@
           {% endif %}
 
           {%if specific_data_entry.status == True%}
-          <td> <span class="btn btn-danger"><a href="/admin_reject_data_entry">Remove</a></span></td>
+          <td> <span class="btn btn-danger"><a href="{% url 'bip:admin_delete_data_entry' specific_data_entry.id  %}" >Delete</a></span></td>
           {% endif %}
-          {%if specific_data_entry.status == False%}
-
-          <td> <span class="btn btn-success"><a  href="/admin_data_entry_approve">Aprove/Reject</a></span></td>
-          {% endif %}
-
 
         </tr>
       
-    
       </table>
       {% else %}
       <h4>No Recorder at this time</h4>
@@ -94,7 +210,7 @@
     </div>
   </div>
 
-</body>
+</body> -->
 <style>
   body {
   background: #f4f4f4;
