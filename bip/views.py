@@ -68,11 +68,6 @@ from urllib.parse import unquote
 import html2text
 
 
-def home(request):
-  
-  
-    return render(request,'bip/home.html')
-
 
 
 
@@ -92,8 +87,6 @@ def error_page(request,  pk):
     return render(request,'bip/error_page.html',context)
 
 def description_view(request):
-  
-  
     return render(request,'bip/description.html')
   
 # Below login and logout views are for case manager and data entry
@@ -110,7 +103,6 @@ def dataentryclick_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
     return render(request,'account/dataentryclick.html')
-
 
 
 def case_manager_signup_view(request):
@@ -132,11 +124,6 @@ def case_manager_signup_view(request):
         return HttpResponseRedirect(reverse('bip:case_manager_login'))
     return render(request,'account/case_manager_signup.html',context=mydict)
 
-        # return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
-
-
-
-
 def data_entry_signup_view(request):
     userForm=forms.DataEntryUserForm()
     dataEntryForm=forms.DataEntryForm()
@@ -150,7 +137,6 @@ def data_entry_signup_view(request):
             user.save()
             dataentry =dataEntryForm.save(commit=False)
             dataentry.user=user
-            
             dataentry.assignedCaseManagerSlug=request.POST.get('assignedCaseManagerSlug')
             dataentry.assignedStudentSlug=request.POST.get('assignedStudentSlug')
             dataentry=dataentry.save()
@@ -158,9 +144,6 @@ def data_entry_signup_view(request):
             my_dataentry_group[0].user_set.add(user)
         return HttpResponseRedirect(reverse('bip:data_entry_login'))
     return render(request,'account/data_entry_signup.html',context=mydict)
-
-        # return HttpResponseRedirect(reverse('bip:case_manager_login'))
-
 
 def is_case_manager(user):
     return user.groups.filter(name='CASE MANAGER').exists()
@@ -171,12 +154,7 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('bip:description'))
 
-
-
-
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF Casemanager,Dataentry or not
-
-
 
 def afterlogin_view(request):
     if  is_case_manager(request.user):
@@ -195,14 +173,10 @@ def afterlogin_view(request):
 
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF Casemanager,Dataentry or not
 
-
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
 def case_manager_dashboard_view(request,pk):
     
-
-
-
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
 
     # print(case_manager_entry)
@@ -214,8 +188,6 @@ def case_manager_dashboard_view(request,pk):
 
 
     # data_entry_hold=models.DataEntry.objects.all().filter(status=False)
-
-
 
     # try:
     #     specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.slug)
@@ -231,14 +203,12 @@ def case_manager_dashboard_view(request,pk):
     }
     return render(request,'account/case_manager_dashboard.html',context=mydict)
 
-
 @login_required(login_url='data_entry_login')
 @user_passes_test(is_data_entry)
 def data_entry_dashboard_view(request):
     
     data_entry =models.DataEntry.objects.get(user_id=request.user.id)
     case_manager=models.CaseManager.objects.get(slug=data_entry.assignedCaseManagerSlug)
-    
     
     assigned_student =models.Student.objects.get(slug=data_entry.assignedStudentSlug)
  
@@ -251,23 +221,13 @@ def data_entry_dashboard_view(request):
     }
     return render(request,'account/data_entry_dashboard.html',context=mydict)
 
-
 def data_entry_input_view(request, pk):
   
     student = get_object_or_404(Student, pk=pk)
-    
     student_behaviors = student.case_set.all()[:10] 
-    
-
-    # products = Product.objects.all()[:10]
-
-
     behavior = Behavior.objects.all()
-   
-      
     case = Case.objects.all()
-          
-    
+      
     # this works:
     stbehavior = student.behavior_set.all() 
       
@@ -276,7 +236,7 @@ def data_entry_input_view(request, pk):
     
     context = {'student_behaviors':student_behaviors,
                "student":student,
-           
+
                }
      
     return render(request, 'bip/data_entry_input.html',context, )
@@ -287,13 +247,10 @@ def data_entry_input_view(request, pk):
 @user_passes_test(is_case_manager)
 def admin_approve_data_entry_view(request,pk):
     #those whose approval are needed
-  
     # case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
     
-
     # specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.pk)
     
-
     specific_data_entry=models.DataEntry.objects.all().filter(status=False)
     print(specific_data_entry)
 
@@ -311,22 +268,16 @@ def approved_data_entry_view(request,pk):
     data_entry.status=True
     data_entry.save()
 
-    
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
 
     return redirect('bip:case_manager_dashboard',case_manager_entry.id)
-
-
-
 
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
 
 def admin_delete_data_entry_view(request,pk):
-    
     # case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
-    
     # specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.slug)
     specific_data_entry=models.DataEntry.objects.get(id=pk)
 
@@ -362,15 +313,7 @@ def reject_data_entry_view(request,pk):
 
     return redirect('bip:case_manager_dashboard',case_manager_entry.id)
 
-
-
-
-
-
-
-
 # Website forms/input---------------------------------------------------------
-
 
 class UserPosts(LoginRequiredMixin, generic.ListView):
     model = models.Student
@@ -387,7 +330,6 @@ class UserPosts(LoginRequiredMixin, generic.ListView):
             return self.post_user.postts.all()
 
 
-
 class HomePage(LoginRequiredMixin, TemplateView):
     template_name = 'bip/welcome_user.html'
 
@@ -396,15 +338,10 @@ class HomePage(LoginRequiredMixin, TemplateView):
 def list_view(request,pk):
     
     user = get_object_or_404(User, pk=pk)
-
-
-
     user_list = user.case_set.all()
-
     context ={'user ':user,'user_list':user_list}  
          
     return render(request, "bip/preffered_student_list.html", context)
-
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
@@ -412,27 +349,12 @@ def list_view(request,pk):
 def dashboard(request, pk):
   
     student = get_object_or_404(Student, pk=pk)
-
     student_behaviors = student.case_set.all()
-
-    # delete
-
-    # print(firstduration)
     student_time = student.case_set.filter(time__isnull=False).first()
     student_duration = student.case_set.filter(duration__isnull=False).first()
-
     student_enviroment = student.case_set.filter(enviroment__isnull=False).first()
 
-
-
-
-
     behavior = Behavior.objects.all()
-
-    #   behavior_incident = Case.objects.get(id=pk)
-
-
-    
 
     context = {
     'student_behaviors': student_behaviors,
@@ -440,8 +362,7 @@ def dashboard(request, pk):
     'student_time':student_time,  
     'student_duration':student_duration,  
     'student_enviroment':student_enviroment,        
-    
-               }
+    }
     
     return render(request, 'bip/dashboard.html',context, )
 
@@ -456,7 +377,6 @@ def behavior_form_view(request, pk):
     consequset = student.consequence_set.all()
     enviromentset = student.enviroment_set.all()
 
-    
 
     if request.method == 'POST':
         form = BehaviorForm(instance=student) 
@@ -467,17 +387,12 @@ def behavior_form_view(request, pk):
             instance.student = student
             instance.save()   
 
-
             if is_case_manager(request.user):
                 return redirect("bip:dashboard", student.id)
 
             elif is_data_entry(request.user):
                 return redirect("bip:data_entry_input", student.id)
-            
-            
-
-                
-
+               
     else:
         form = BehaviorForm()                                            
         form.fields["behavior"].queryset=behaviorset
@@ -532,7 +447,6 @@ def deletePost(request, pk):
     behavior_incident.delete()
     return redirect("bip:dashboard", behavior_incident.student.id)
   
-  
   context = {'incident': behavior_incident}
   return render(request, 'bip/delete_post.html', context)
 
@@ -565,34 +479,6 @@ def create_student(request):
     else :
         return redirect("bip:data_entry_dashboard")
     
-
-# def create_student(request):
-    
-#     user_student = User.objects.get(pk=request.user.id)
-#     form = StudentForm()
-#     if request.method == 'POST':
-#         if request.user.is_authenticated:
-#             form = StudentForm(request.POST)   
-            
-#             for field in form:
-#                 print(field.value())
-            
-#             if form.is_valid():
-#                  obj = form.save(commit=False)
-#                  obj.user_student = User.objects.get(pk=request.user.id)
-#                  obj.save()                 
-                
-#                  return redirect("bip:for_user", username=request.user.username)
-                
-#             else:
-#                 print("ERROR In Form") 
-                
-     
-#     return render(request, 'bip/create_student.html', {'form': form,'user_student':user_student})
-
-
-
-
 def updateStudent(request, pk):
         
     studentupdate = Student.objects.get(id=pk)
@@ -616,22 +502,6 @@ def updateStudent(request, pk):
     return render(request, "bip/create_student.html", context)
 
 
-
-
-# def deleteData_entry(request, pk):
-    
-#     studentdelete = Student.objects.get(id=pk)
-    
-#     student = Student.objects.get(id=pk)
-    
-#     if request.method == "POST":
-#         studentdelete.delete()
-#         return redirect("bip:home")
-    
-#     context = {'item':studentdelete,'student':student}
-#     return render(request, "bip/delete_student.html", context)
-
-
 def deleteStudent(request, pk):
     
     studentdelete = Student.objects.get(id=pk)
@@ -644,8 +514,6 @@ def deleteStudent(request, pk):
     
     context = {'item':studentdelete,'student':student}
     return render(request, "bip/delete_student.html", context)
-
-
 
 
 def deleteUser(request, pk):
@@ -661,10 +529,6 @@ def deleteUser(request, pk):
     context = {'item':user_delete,'user':user}
     return render(request, "bip/delete_user.html", context)
 
-
-
-
-
 @login_required
 def create_behavior(request,pk):
     user = User.objects.get(pk=request.user.id)
@@ -675,7 +539,6 @@ def create_behavior(request,pk):
         if request.user.is_authenticated:
             form = CreateBehaviorForm(request.POST)
             
-            
             for field in form:
                 print(field.value())
             
@@ -685,23 +548,16 @@ def create_behavior(request,pk):
                  obj.student = student
                  obj.save()
                  return redirect("bip:dashboard", student.id)                
-                
-                             
+                      
             else:
                 print("ERROR In Form") 
             
-    
-     
     return render(request, 'bip/create_behavior.html', {'form': form})
-# #  
-
 
 
 def updateBehavior(request, pk):
     
-    behupdate = Behavior.objects.get(id=pk)
-
-      
+    behupdate = Behavior.objects.get(id=pk)  
     form = CreateBehaviorForm(instance=behupdate)
     
     if request.method == 'POST': 
@@ -715,13 +571,9 @@ def updateBehavior(request, pk):
           
           return redirect("bip:edit_behavior", behupdate.student.id)
     
-   
     context = {'form':form}
     
     return render(request, "bip/update_behavior.html", context)
-
-
-
 
 def deleteBehavior(request, pk):
     
@@ -735,10 +587,6 @@ def deleteBehavior(request, pk):
     context = {'item':behdelete}
     return render(request, "bip/delete_behavior.html", context)
 
-
-
-
-# Use pk to createbehavior
 @login_required
 def create_anticedent(request,pk):
     user = User.objects.get(pk=request.user.id)
@@ -782,8 +630,8 @@ def updateAnticedent(request, pk):
     
     return render(request, "bip/create_anticedent.html", context)
 
+
 def deleteAnticedent(request, pk):
-    
     antidelete = Anticedent.objects.get(id=pk)
     
     if request.method == "POST":
@@ -792,6 +640,7 @@ def deleteAnticedent(request, pk):
     
     context = {'item':antidelete}
     return render(request, "bip/delete_anticedent.html", context)
+
 
 @login_required
 def create_function(request,pk):
@@ -820,7 +669,6 @@ def create_function(request,pk):
     return render(request, 'bip/create_function.html', {'form': form})
 
 
-
 def updatFunction(request, pk):
         
     funcupdate = Function.objects.get(id=pk)
@@ -841,10 +689,8 @@ def updatFunction(request, pk):
     return render(request, "bip/create_function.html", context)
 
 
-def deleteFunction(request, pk):
-    
-    funcdelete = Function.objects.get(id=pk)
-    
+def deleteFunction(request, pk):  
+    funcdelete = Function.objects.get(id=pk)    
     if request.method == "POST":
         funcdelete.delete()
         return redirect("bip:abc", funcdelete.student.id)
@@ -879,11 +725,8 @@ def create_consequence(request,pk):
     return render(request, 'bip/create_consequence.html', {'form': form})
 
 
-
 def updateConsequence(request, pk):
-        
     conqupdate = Consequence.objects.get(id=pk)
-
     form = CreateConsequenceForm(instance=conqupdate)
     
     if request.method == 'POST': 
@@ -900,10 +743,8 @@ def updateConsequence(request, pk):
     return render(request, "bip/create_consequence.html", context)
 
 
-def deleteConsequence(request, pk):
-    
+def deleteConsequence(request, pk): 
     conqdelete = Consequence.objects.get(id=pk)
-    
     if request.method == "POST":
         conqdelete.delete()
         return redirect("bip:abc", conqdelete.student.id)
@@ -915,23 +756,16 @@ def deleteConsequence(request, pk):
 @user_passes_test(is_case_manager)
 def abc_view(request, pk ):
     student = Student.objects.get(id=pk) 
-    
     function = Function.objects.all()
     functionset = student.function_set.all()
-
     anticedent = Anticedent.objects.all()
     anticedentset = student.anticedent_set.all()
-    
     behaviors = Behavior.objects.all()
     behaivorpest  = Behavior.objects.filter(user=request.user)
     behaviorset = student.behavior_set.all()
-    
-     
     consequence = Consequence.objects.all()
     consequencepest  = Consequence.objects.filter(user=request.user)
     conseqenceset = student.consequence_set.all()
-    
-    
      
     context= {
         'behaviorset':behaviorset,
@@ -945,8 +779,7 @@ def abc_view(request, pk ):
 
 @login_required
 def create_setting_view(request,pk):
-    user = User.objects.get(pk=request.user.id)
-    
+    user = User.objects.get(pk=request.user.id) 
     student = Student.objects.get(id=pk) 
 
     form = CreateEnviromentForm()
@@ -970,10 +803,8 @@ def create_setting_view(request,pk):
     return render(request, 'bip/create_setting.html', {'form': form})
 
 
-def updateSetting(request, pk):
-        
+def updateSetting(request, pk):       
     enviromentupdate = Enviroment.objects.get(id=pk)
-
     form = CreateEnviromentForm(instance=enviromentupdate)
     
     if request.method == 'POST': 
@@ -990,9 +821,7 @@ def updateSetting(request, pk):
     return render(request, "bip/create_setting.html", context)
 
 def deleteEnviroment(request, pk):
-    
     envdelete = Enviroment.objects.get(id=pk)
-    
     if request.method == "POST":
         envdelete.delete()
         return redirect("bip:edit_setting", envdelete.student.id)
@@ -1004,12 +833,9 @@ def deleteEnviroment(request, pk):
 @user_passes_test(is_case_manager)
 def edit_enviroment_view(request, pk ):
     student = Student.objects.get(id=pk) 
-   
     enviroment = Enviroment.objects.all()
     enviromentset = student.enviroment_set.all()
 
-
-  
     context= {
         'enviromentset':enviromentset,   
         'student':student,  
@@ -1021,14 +847,11 @@ def edit_enviroment_view(request, pk ):
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
 def edit_behavior_view(request, pk ):
-    student = Student.objects.get(id=pk) 
-    
+    student = Student.objects.get(id=pk)  
     behaviors = Behavior.objects.all()
     behaivorpest  = Behavior.objects.filter(user=request.user)
     behaviorset = student.behavior_set.all()
     
-     
-     
     context= {
         'behaviorset':behaviorset,
        
@@ -1040,10 +863,8 @@ def edit_behavior_view(request, pk ):
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
-
 def edit_anticedent_view(request, pk ):
     student = Student.objects.get(id=pk) 
-   
     anticedent = Anticedent.objects.all()
     anticedentset = student.anticedent_set.all()
   
@@ -1055,21 +876,14 @@ def edit_anticedent_view(request, pk ):
     return render(request, 'bip/edit_anticedent.html', context)
 
 
-
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
 def edit_consequence_view(request, pk ):
     student = Student.objects.get(id=pk) 
-    
-    
-    
-     
     consequence = Consequence.objects.all()
     consequencepest  = Consequence.objects.filter(user=request.user)
     conseqenceset = student.consequence_set.all()
     
-    
-     
     context= {
        
         'conseqenceset':conseqenceset,
@@ -1082,7 +896,6 @@ def edit_consequence_view(request, pk ):
 @user_passes_test(is_case_manager)
 def edit_function_view(request, pk ):
     student = Student.objects.get(id=pk) 
-    
     function = Function.objects.all()
     functionset = student.function_set.all()
 
@@ -1100,14 +913,13 @@ def edit_function_view(request, pk ):
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
 def student_profile(request, pk ):
-    student = Student.objects.get(id=pk) 
-    
-         
+    student = Student.objects.get(id=pk)    
     context= {
        
         'student':student,  
     }
     return render(request, 'bip/student_profile.html', context)
+
 # Exploratory 
 # 
 # 
@@ -1118,14 +930,9 @@ def snapshot_view(request, pk):
     
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-
-    
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
-    
     cases_df = pd.DataFrame(data)
 
-    
-      
     try:
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
 
@@ -1137,42 +944,17 @@ def snapshot_view(request, pk):
     except:
         return redirect("bip:error_page", student.id)
 
-
-
-    
-  
     df1 = cases_df['Date'].value_counts()
-
-    # print(df1)
-
     df1 = df1.to_frame().reset_index() 
-
-    # print(df1)
-
     df2 = df1.reset_index()
-
-    # print(df2)
-
-
     df2 = df2.sort_values(by=['index'])
-
-    # print(df2)
-
-
     df3 = df2['Date']
-
-    # print(df3)
-    
     df4 = df2['count']
-
-    # print(df4)
 
     bar_graph = get_bar_chart(x=df3, y = df4)
   
-    
     # multiple dddbar graph- line plot origniallyxxxxxxxxxxxxxxxxxxxxxxxxx
-  
-    
+      
     df_multiple_bar = cases_df[['Behavior','Date']]
 
     pivot = pd.pivot_table(df_multiple_bar,  
@@ -1183,9 +965,7 @@ def snapshot_view(request, pk):
     
     dlpivot = pivot.reset_index()
     
-    
     multiple_line_plot_five = None
-    
     
     try:       
     
@@ -1199,7 +979,6 @@ def snapshot_view(request, pk):
      
     except:
         pass
-    
     
     multiple_line_plot_four = None
  
@@ -1215,7 +994,6 @@ def snapshot_view(request, pk):
     except:
         pass
     
-    
     multiple_line_plot_three = None
 
     try:       
@@ -1229,7 +1007,6 @@ def snapshot_view(request, pk):
     except:
         pass
     
-    
     multiple_line_plot_two = None
     
     try:       
@@ -1241,7 +1018,6 @@ def snapshot_view(request, pk):
      
     except:
         pass
-    
     
     multiple_line_plot_one = None
 
@@ -1273,21 +1049,11 @@ def snapshot_view(request, pk):
     # cluster heatmapcorrelation matrixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     
     behavior = pd.get_dummies(cases_df['Behavior'])
-   
     anticedent = pd.get_dummies(cases_df['Anticedent'])
-    
     function = pd.get_dummies(cases_df['Function'])
-    
-    
     df_matrix = pd.concat([cases_df,behavior, anticedent,function], axis=1)
-    
     df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
-        
     matrix = df_matrix.corr().round(2) 
-
-    # print(matrix)
-  
-
     iclustermap_graph = None
     
     try:
@@ -1296,26 +1062,13 @@ def snapshot_view(request, pk):
     except:
         pass
   
-
-
 # heatmap correaltion matrix
     behavior = pd.get_dummies(cases_df['Behavior'])
-   
     anticedent = pd.get_dummies(cases_df['Anticedent'])
-    
     function = pd.get_dummies(cases_df['Function'])
-    
-    
     df_matrix = pd.concat([cases_df,behavior, anticedent,function], axis=1)
-    
     df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
-        
     matrix = df_matrix.corr().round(2) 
-
-    # print(matrix)
-  
-
-    
     iheat_graph = None
     
     try:
@@ -1323,9 +1076,6 @@ def snapshot_view(request, pk):
 
     except:
         pass
-  
-
-  
   
     context= {
     
@@ -1344,25 +1094,13 @@ def snapshot_view(request, pk):
     return render(request, 'bip/snapshot.html', context)
 
 
-
-
-
-# xxxxxxxxxxx
-
 def snapshot_data_entry_view(request, pk):
     
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-
-    
-    
-    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
-    
-
+    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')  
     cases_df = pd.DataFrame(data)
 
-    # print(cases_df)
-      
     cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
     cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
     cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
@@ -1370,35 +1108,15 @@ def snapshot_data_entry_view(request, pk):
     cases_df.columns = cases_df.columns.str.replace('time', 'Time')
     cases_df.columns = cases_df.columns.str.replace('id', 'ID')
   
-  
     df1 = cases_df['Date'].value_counts()
-
-    # print(df1)
-
     df1 = df1.to_frame().reset_index() 
-
-    # print(df1)
-
     df2 = df1.reset_index()
-
-    # print(df2)
-
-
     df2 = df2.sort_values(by=['index'])
-
-    # print(df2)
-
-
     df3 = df2['Date']
-
-    # print(df3)
-    
     df4 = df2['count']
-
 
     bar_graph = get_bar_chart(x=df3, y = df4)
   
-    
     context= {
     
         'student':student,
@@ -1408,26 +1126,16 @@ def snapshot_data_entry_view(request, pk):
     
     return render(request, 'bip/data_entry_chart_view.html', context)
 
-
-
-
-
-
 # xxxxxxxx
-
 
 def function_view(request,pk):
      
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-
-    
-    
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
     
     cases_df = pd.DataFrame(data)
     
-
     try:
 
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
@@ -1442,29 +1150,16 @@ def function_view(request,pk):
 
 
     df_function = cases_df['Function']
-    
-    
     box_graph_function = get_box_plot_function( x= df_function, data=cases_df) 
     
-    
-    # correationxxxxxxxxxxxxxx
-    
+        # correationxxxxxxxxxxxxxx
     behavior = pd.get_dummies(cases_df['Behavior'])
-   
     anticedent = pd.get_dummies(cases_df['Anticedent'])
-    
     function = pd.get_dummies(cases_df['Function'])
-    
-    
     df_matrix = pd.concat([cases_df,behavior,function], axis=1)
-    
     df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
-        
     matrix = df_matrix.corr().round(2) 
   
-
-
-
     try:
         filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
     
@@ -1481,26 +1176,18 @@ def function_view(request,pk):
     except:
         pass
   
-  
-
     context= {'student':student,'iclustermap_graph':iclustermap_graph, 
     'iheat_graph':iheat_graph, 
     'box_graph_function':box_graph_function,}
     
-    
     return render(request, 'bip/function.html', context)
-
 
 
 def consequence_view(request,pk):
      
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-
-    
-    
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'consequence__behaviorconsequence','date_created','time','id')
-    
     cases_df = pd.DataFrame(data)
     
     try:
@@ -1514,32 +1201,18 @@ def consequence_view(request,pk):
     except:
         return redirect("bip:error_page", student.id)
 
-    
     df_consequence = cases_df['Consequence']
-    
-    
     box_graph_consequence = get_box_plot_consequence( x= df_consequence, data=cases_df) 
-    
     
     # correationxxxxxxxxxxxxxx
     
     behavior = pd.get_dummies(cases_df['Behavior'])
-   
     anticedent = pd.get_dummies(cases_df['Anticedent'])
-    
     function = pd.get_dummies(cases_df['Function'])
-    
     consequence = pd.get_dummies(cases_df['Consequence'])
-
-    
     df_matrix = pd.concat([cases_df,behavior,consequence], axis=1)
-    
-    df_matrix.drop(['Behavior','Anticedent','Function', 'Consequence', 'Date','Time','ID'],axis=1,inplace=True)
-        
-    matrix = df_matrix.corr().round(2) 
-  
-# stopped here
-
+    df_matrix.drop(['Behavior','Anticedent','Function', 'Consequence', 'Date','Time','ID'],axis=1,inplace=True) 
+    matrix = df_matrix.corr().round(2)
 
     try:
         filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
@@ -1547,7 +1220,6 @@ def consequence_view(request,pk):
         iheat_graph = get_heatmap(data=filterDX)
     except:
         pass
-    
 
     iclustermap_graph = None
     
@@ -1556,31 +1228,21 @@ def consequence_view(request,pk):
 
     except:
         pass
-  
-  
 
     context= {'student':student,'iclustermap_graph':iclustermap_graph, 
     'iheat_graph':iheat_graph, 
     'box_graph_consequence':box_graph_consequence,}
     
-    
     return render(request, 'bip/consequence.html', context)
-
-
 
 
 def anticedent_view(request,pk):
      
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-
-    
-    
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
-    
     cases_df = pd.DataFrame(data)
       
-
     try:
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
@@ -1591,39 +1253,25 @@ def anticedent_view(request,pk):
     except:
         return redirect("bip:error_page", student.id)
 
-    
-    
-    
+
     df_anticedent = cases_df['Anticedent']
-    
-    
     box_graph = get_box_plot( x= df_anticedent, data=cases_df) 
     
-    
     # correationxxxxxxxxxxxxxx
-    
     behavior = pd.get_dummies(cases_df['Behavior'])
-   
     anticedent = pd.get_dummies(cases_df['Anticedent'])
-    
     function = pd.get_dummies(cases_df['Function'])
-    
-    
     df_matrix = pd.concat([cases_df,behavior,anticedent], axis=1)
-    
     df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
         
     matrix = df_matrix.corr().round(2) 
   
-
     try:
         filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
     
         iheat_graph = get_heatmap(data=filterDX)
     except:
         pass
-    
-
     iclustermap_graph = None
     
     try:
@@ -1633,7 +1281,6 @@ def anticedent_view(request,pk):
         pass
   
   
-
     context= {'student':student,'iclustermap_graph':iclustermap_graph, 
     'iheat_graph':iheat_graph, 
     'box_graph':box_graph,}
@@ -1641,18 +1288,13 @@ def anticedent_view(request,pk):
     
     return render(request, 'bip/anticedent.html', context)
 
-    
-
 # Setting enviroment
 def enviroment_view(request,pk):
      
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'enviroment__behaviorenviroment','date_created','time','id')
-    
-    cases_df = pd.DataFrame(data)
-      
+    cases_df = pd.DataFrame(data)   
 
     try:
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
@@ -1666,28 +1308,18 @@ def enviroment_view(request,pk):
         return redirect("bip:error_page", student.id)
 
     df_enviroment = cases_df['Enviroment']
-
     box_graph_setting = get_box_plot_setting( x= df_enviroment, data=cases_df) 
-
-
 
     # correationxxxxxxxxxxxxxx
     
     behavior = pd.get_dummies(cases_df['Behavior'])
-   
     anticedent = pd.get_dummies(cases_df['Anticedent'])
-    
     function = pd.get_dummies(cases_df['Function'])
-
     enviroment = pd.get_dummies(cases_df['Enviroment'])
-
     df_matrix = pd.concat([cases_df,behavior,enviroment], axis=1)
-    
     df_matrix.drop(['Behavior','Anticedent','Function', 'Enviroment','Date','Time','ID'],axis=1,inplace=True)
-        
     matrix = df_matrix.corr().round(2) 
   
-
     try:
         filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
     
@@ -1705,7 +1337,6 @@ def enviroment_view(request,pk):
         pass
   
   
-
     context= {'student':student,'iclustermap_graph':iclustermap_graph, 
     'iheat_graph':iheat_graph, 
     'box_graph_setting':box_graph_setting,}
@@ -1718,278 +1349,6 @@ def enviroment_view(request,pk):
 
 def is_valid_queryparam(param):
     return param != '' and param is not None
-
-# def filter_data(request, pk):
-   
-#     student = get_object_or_404(Student, pk=pk)
-
-#     student_cases = student.case_set.all() 
-#     behaviorset = student.behavior_set.all()
-#     functionset = student.function_set.all()
-#     anticedentset = student.anticedent_set.all()
-#     consequenceset = student.consequence_set.all()
-
-#     case = Case.objects.all()
-
-#     bqs =  student.behavior_set.all() 
-    
-    
-#     fqs =  student.function_set.all()
-#     aqs =  student.anticedent_set.all() 
-#     dateqs = student.case_set.all()
-    
-    
-#     total_beh = student.case_set.count()
-    
-    
-#     behavior_query = request.GET.get('behavior')
-#     function_query = request.GET.get('function')
-#     anticedent_query = request.GET.get('anticedent')
-#     consequence_query = request.GET.get('consequence')
-#     date_min = request.GET.get('date_min')
-#     date_max = request.GET.get('date_max')
-    
-#     qs = None
-    
-#     qs_count = None
-    
-    
-#     if is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence' and is_valid_queryparam(function_query) and function_query != 'Choose Function' and  is_valid_queryparam(date_min) and is_valid_queryparam(date_max):
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) &  student_cases.filter(consequence__behaviorconsequence=consequence_query) & student_cases.filter(function__behaviorfunction=function_query)  & student_cases.filter(date_created__gte=date_min) & student_cases.filter(date_created__lt=date_max)
-        
-#         qs_count = qs.count()
-        
-        
-#         # works
-        
-        
-        
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence' and is_valid_queryparam(function_query) and function_query != 'Choose Function' and is_valid_queryparam(date_max):
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(consequence__behaviorconsequence=consequence_query) & student_cases.filter(function__behaviorfunction=function_query)   & student_cases.filter(date_created__lt=date_max)
-        
-#         qs_count = qs.count()
-        
-  
-#     # work 
-    
-    
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence' and is_valid_queryparam(function_query) and function_query != 'Choose Function' and is_valid_queryparam(date_min):
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(consequence__behaviorconsequence=consequence_query) & student_cases.filter(function__behaviorfunction=function_query)  & student_cases.filter(date_created__gte=date_min)
-        
-#         qs_count = qs.count()
-        
-      
-    
-#     # work
-       
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence' and is_valid_queryparam(function_query) and function_query != 'Choose Function':
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) &  student_cases.filter(consequence__behaviorconsequence=consequence_query) & student_cases.filter(function__behaviorfunction=function_query)
-    
-#         qs_count = qs.count()
-        
-        
-#     # work
-    
-    
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence' and is_valid_queryparam(date_min) and is_valid_queryparam(date_max):
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(consequence__behaviorconsequence=consequence_query) & student_cases.filter(date_created__gte=date_min) & student_cases.filter(date_created__lt=date_max)
-        
-#         qs_count = qs.count()
-        
-    
-    
-    
-#     # work
-    
-    
-    
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(function_query) and consequence_query != 'Choose Consequence' and is_valid_queryparam(date_min):
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(consequence__behaviorconsequence=consequence_query) & student_cases.filter(date_created__gte=date_min) 
-        
-#         qs_count = qs.count()
- 
- 
-# #  work
-    
-    
-    
-     
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(function_query) and consequence_query != 'Choose Consequence' and  is_valid_queryparam(date_max):
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(consequence__behaviorconsequence=consequence_query)  & student_cases.filter(date_created__lt=date_max)
-        
-#         qs_count = qs.count()
-
-    
-    
-#     # work
-    
-    
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence':
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(consequence__behaviorconsequence=consequence_query)  
-        
-#         qs_count = qs.count()
-    
-#     # work
-    
-    
-    
-    
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(function_query) and function_query != 'Choose Function' and is_valid_queryparam(date_min) and is_valid_queryparam(date_max):
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(function__behaviorfunction=function_query) & student_cases.filter(date_created__gte=date_min) & student_cases.filter(date_created__lt=date_max)
-        
-#         qs_count = qs.count()
-        
-#      # work
-    
-    
-  
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(function_query) and function_query != 'Choose Function' and is_valid_queryparam(date_min):
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(function__behaviorfunction=function_query) & student_cases.filter(date_created__gte=date_min) 
-        
-        
-#         qs_count = qs.count()
-        
-        
-        
-#         # check min
-        
-        
-     
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(function_query) and function_query != 'Choose Function':
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(function__behaviorfunction=function_query) 
-        
-        
-#         qs_count = qs.count()
-       
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' :
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(anticedent__anticedentincident=anticedent_query) 
-        
-#         qs_count = qs.count()
-
-
-
-
-
-
-    
-    
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and  is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence':
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(consequence__behaviorconsequence=consequence_query)  
-        
-#         qs_count = qs.count()
-
-
-#     # works 
-
-
-
-
-
-
-
-
-
-
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior' and is_valid_queryparam(function_query) and function_query != 'Choose Function' :
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(function__behaviorfunction=function_query) 
-    
-#         qs_count = qs.count()
-
-    
-#     elif  is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' and is_valid_queryparam(function_query) and function_query != 'Choose Function':
-        
-#         qs =  student_cases.filter(anticedent__anticedentincident=anticedent_query) & student_cases.filter(function__behaviorfunction=function_query) 
-        
-        
-#         qs_count = qs.count()
-
-
-
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior'  and is_valid_queryparam(date_min) and is_valid_queryparam(date_max):
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  & student_cases.filter(date_created__gte=date_min) & student_cases.filter(date_created__lt=date_max)
-        
-#         qs_count = qs.count()
-
-#     elif is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior':
-        
-#         qs = student_cases.filter(behavior__behaviorincident = behavior_query)  
-#         qs_count = qs.count()
-  
-  
-  
-  
-  
-#     elif is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent' :
-        
-#         qs = student_cases.filter(anticedent__anticedentincident=anticedent_query) 
-        
-#         qs_count = qs.count()
-        
-        
-    
-#     elif  is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence':
-        
-#         qs =  student_cases.filter(consequence__behaviorconsequence=consequence_query)  
-        
-#         qs_count = qs.count()
-
-   
-#     elif  is_valid_queryparam(function_query) and function_query != 'Choose Function' :
-        
-#         qs =student_cases.filter(function__behaviorfunction=function_query) 
-    
-#         qs_count = qs.count()
-
-#     elif is_valid_queryparam(date_min) and is_valid_queryparam(date_max):
-#         qs =  student_cases.filter(date_created__gte=date_min) & student_cases.filter(date_created__lt=date_max)
-        
-#         qs_count = qs.count()
-        
-#     elif is_valid_queryparam(date_min) :
-#         qs =  student_cases.filter(date_created__gte=date_min) 
-        
-#         qs_count = qs.count()
-        
-#     elif  is_valid_queryparam(date_max):
-#         qs =  student_cases.filter(date_created__lt=date_max)
-        
-        
-#         qs_count = qs.count()
-
-#     beh_devide = None
-#     if qs_count:
-#         beh_devide = qs_count / total_beh * 100
-    
-#     context = {'queryset': qs,
-#                'student_cases':student_cases,
-#                'behaviorset':behaviorset,
-#                'anticedentset':anticedentset, 
-#                "functionset":functionset,
-#                "consequenceset":consequenceset,
-#                'case':case,
-#                'qs_count':qs_count,
-#                'student':student,
-#                'values':request.GET,
-#                'total_beh':total_beh,
-#                'beh_devide':beh_devide
-#                            }
-    
-#     return render(request, 'bip/filter_data.html', context)
 
 
 from django.db.models import Q
@@ -2047,27 +1406,18 @@ def filter_data(request, pk):
     return render(request, 'bip/filter_data.html', context)
 
 
-
-
-
-
-
-
 def chart_view(request, pk):    
  
-   
     error_message=None
     df = None
     graph = None
     cases_df_time = None
     box_graph_time = None
- 
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
     
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'consequence__behaviorconsequence','date_created','time','id')
     
-
     try:
     # beging time
         cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
@@ -2091,7 +1441,6 @@ def chart_view(request, pk):
 
         box_graph_time = get_box_plot_time( x= df_time, data=cases_df_time) 
 
-
     except:
         pass
 # ending time
@@ -2099,8 +1448,6 @@ def chart_view(request, pk):
     cases_df = pd.DataFrame(data)
       
     try:
-
-
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
         cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
@@ -2113,13 +1460,8 @@ def chart_view(request, pk):
         return redirect("bip:error_page", student.id)
 
     
-
     df_beh_count = cases_df['Behavior']
-
     beh_count_graph = get_count_beh_plot( x= df_beh_count, data=cases_df)  
-  
-  
-  
   
     pivot = pd.pivot_table(cases_df,  
                                 index='Date', 
@@ -2127,11 +1469,7 @@ def chart_view(request, pk):
                                 aggfunc=len,fill_value=0)
     
     trtis = pivot.replace(0, np.nan, inplace=True)
-    
     trtis = pivot.reset_index()
-    
-    
-    
     multiple_scater_plot_five = None
     
     try:
@@ -2142,8 +1480,6 @@ def chart_view(request, pk):
             m=trtis['Date'], n=trtis.iloc[:,4],data3=trtis,
             a=trtis['Date'], b=trtis.ililoc[:,5],data4=trtis
 
-
-      
         )
            
     except:
@@ -2166,12 +1502,10 @@ def chart_view(request, pk):
     
     multiple_scater_plot_three = None
     try:
-    
         multiple_scater_plot_three = get_multiple_scatter_plot_three(
             x =trtis['Date'], y=trtis.iloc[:,1],data=trtis,
             z=trtis['Date'], k=trtis.iloc[:,2],data1=trtis,
-            g=trtis['Date'], q=trtis.iloc[:,3],data2=trtis)
-           
+            g=trtis['Date'], q=trtis.iloc[:,3],data2=trtis)  
     except:
         pass
     
@@ -2181,80 +1515,41 @@ def chart_view(request, pk):
         multiple_scater_plot_two = get_multiple_scatter_plot_two(
             x =trtis['Date'], y=trtis.iloc[:,1],data=trtis,
             z=trtis['Date'], k=trtis.iloc[:,2],data1=trtis)
-           
     except:
         pass
     
-    
     try:
-    
         multiple_scater_plot_one = get_multiple_scatter_plot_one(
             x =trtis['Date'], y=trtis.iloc[:,1],data=trtis)
            
     except:
         pass
     
-    
     df2 = cases_df['Behavior'].value_counts()
-    
-    
     pie_graph = get_pie_chart( x=df2, labels=df2.index)
-    
-    
-    
     df3 = cases_df['Anticedent'].value_counts()
-    
     pie_anticedent_graph = get_pie__chart_anticedent( x=df3, labels=df3.index)
-    
-    
-    
-    
     df4 = cases_df['Function'].value_counts()
-
     pie_function_graph = get_pie__chart_function( x=df4, labels=df4.index)
-    
-
     df5 = cases_df['Consequence'].value_counts()
-
     pie_consequence_graph = get_pie__chart_consequence( x=df5, labels=df5.index)
-    
-    # Duration of behavior
     data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
-    
     cases_df_duration = pd.DataFrame(data_duration)
 
     box_duration_graph = None
     
     try:
         duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
-        
-        
         duration_behavior = duration_behavior.to_frame().reset_index()        
-        
-        
         df_duration = duration_behavior['behavior__behaviorincident']
-
-        # print(df_duration)
-        
         dfy_duration = duration_behavior['duration']
-        
-        # print(dfy_duration)
-
-        
+      
         box_duration_graph = get_duration_bar_chart ( x= df_duration, y= dfy_duration, data=duration_behavior)  
-        
-        # duration_behavior = duration_behavior.set_index('behavior__behaviorincident')
-        
+                
     except:
         
         pass
 
-
-        
-    
-
-    # correltion table
-    
     context = {
         'student':student,
         'beh_count_graph':beh_count_graph,
@@ -2275,19 +1570,10 @@ def chart_view(request, pk):
     
 
 def raw_data(request, pk):
-
-
-
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-    
     data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction', 'enviroment__behaviorenviroment','date_created','time','id')
 
-    
-
-
-
-    # time data begining
     unique_hour_html = None
     try:
         cases_df_time= pd.DataFrame(data1).drop(['id',], axis=1) 
@@ -2300,7 +1586,6 @@ def raw_data(request, pk):
         cases_df_time.columns = cases_df_time.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
         cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
 
-
         cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
 
     # Group by 'Behavior' and 'hour_12h' to count frequency
@@ -2311,19 +1596,9 @@ def raw_data(request, pk):
     except:
         pass
 
-    
-
-
-
-
-
-
-    
     cases_df_duplicate = pd.DataFrame(list(data1))
 
 # Reset the index of the DataFrame
-
-
 
     try:
         cases_df_duplicate = pd.DataFrame(data1).drop(['time','id','date_created'], axis=1) 
@@ -2333,124 +1608,54 @@ def raw_data(request, pk):
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('function__behaviorfunction', 'Function')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
-
-
-        # print(cases_df_duplicate)
     except:
         return redirect("bip:error_page", student.id)
 
-
-    # duplicateRows = cases_df_duplicate[cases_df_duplicate[['behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction']].duplicated()== False]
-            
     duplicateRows = cases_df_duplicate[cases_df_duplicate.duplicated(['Behavior','Anticedent','Function',]) == False].sort_values('Behavior')
-          
-   
     behavior_count = cases_df_duplicate['Behavior'].value_counts()
-
-
     unique_b_count = cases_df_duplicate.groupby(['Behavior']).size().reset_index(name='Frequency')
-    
-
-
     unique_b_count = unique_b_count.sort_values(by=['Frequency'], ascending=False)
-    
-
-
-    
-
-
-
-
     unique_abcf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence','Function']).size().reset_index(name='Frequency')
-
     unique_abcf_count = unique_abcf_count.sort_values(by=['Frequency'], ascending=False)
-
     unique_abf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Function']).size().reset_index(name='Frequency')
-
     unique_abf_count = unique_abf_count.sort_values(by=['Frequency'], ascending=False)
-
     unique_abc_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence']).size().reset_index(name='Frequency')
-
     unique_abc_count = unique_abc_count.sort_values(by=['Frequency'], ascending=False)
-
     unique_ab_count = cases_df_duplicate.groupby(['Behavior','Anticedent']).size().reset_index(name='Frequency')
     unique_ab_count = unique_ab_count.sort_values(by=['Frequency'], ascending=False)
-
     unique_bf_count = cases_df_duplicate.groupby(['Behavior','Function']).size().reset_index(name='Frequency')
     unique_bf_count = unique_bf_count.sort_values(by=['Frequency'], ascending=False)
-  
     unique_bs_count = cases_df_duplicate.groupby(['Behavior','Setting']).size().reset_index(name='Frequency')
     unique_bs_count = unique_bs_count.sort_values(by=['Frequency'], ascending=False)
 
-
-
-
-
     # Duration of behavior
     data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
-    
     cases_df_duration = pd.DataFrame(data_duration)
 
     box_duration_graph = None
 
     try:
         duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
-        
-        
         duration_behavior = duration_behavior.to_frame().reset_index()        
-        
-
-
-
-# df = df.drop('index_column', axis=1)
-
-
         df_duration = duration_behavior['behavior__behaviorincident']
-
-
     except:
         
         pass
-
 
     # Frequency of behavior:
 
     data_frequency = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','frequency')
-    
     cases_df_frequency = pd.DataFrame(data_frequency)
 
-    
     try:
-
-        
         frequency_behavior = cases_df_frequency.groupby('behavior__behaviorincident')['frequency'].mean().round(1) 
-        
-        
         frequency_behavior = frequency_behavior.to_frame().reset_index()        
-        
-        
         df_frequency = frequency_behavior['behavior__behaviorincident']
-
-      
-        
     except:
         
         pass
 
-    
-
-    # add up the freeuency"
-
-
-
-    
-    # correaltion
-    
-    # data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction', 'date_created','time','id')
-    
-
     cases_df = pd.DataFrame(data1)      
-
     cases_df = pd.DataFrame(data1).drop(['enviroment__behaviorenviroment'], axis=1) 
 
     cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
@@ -2462,26 +1667,13 @@ def raw_data(request, pk):
     cases_df.columns = cases_df.columns.str.replace('id', 'ID')
   
 
-    
     behavior = pd.get_dummies(cases_df['Behavior'])
-   
     anticedent = pd.get_dummies(cases_df['Anticedent'])
-
-
     consequence = pd.get_dummies(cases_df['Consequence'])
-
-    
     function = pd.get_dummies(cases_df['Function'])
-    
-    
     df_matrix = pd.concat([cases_df,behavior, anticedent, consequence, function], axis=1)
-    
     df_matrix.drop(['Behavior','Anticedent','Function', 'Consequence','Date','Time','ID'],axis=1,inplace=True)
-        
     matrix = df_matrix.corr().round(2) 
-
-  
-# end correlation
 
     context = {
         'student':student,
@@ -2493,30 +1685,19 @@ def raw_data(request, pk):
         'unique_ab_count':unique_ab_count.to_html(index=False),
         'unique_bs_count':unique_bs_count.to_html(index=False),
         
-        
-        
         # 'unique_hour':unique_hour.to_html(),
 
        'unique_hour_html':unique_hour_html,
 
         'unique_b_count':unique_b_count.to_html(index=False),
          
-
-            
         # 'duration_behavior':duration_behavior.to_html(),
         'frequency_behavior':frequency_behavior.to_html(index=False),
         'matrix':matrix.to_html(),
 
-
         }
 
     return render(request, 'bip/raw_data.html', context)
-
-
-# need this
-
-
-
 
 
 # Create an HTML file for the upload form
@@ -2557,35 +1738,19 @@ def download_webpage_to_word(request, url):
 def download_page(request):
     return render(request, 'bip/download_page.html')
 
-
-
-
-
-# LEFT OFFF August 9th
 def assign_data_entry(request, pk):
   
     student = get_object_or_404(Student, pk=pk)
-    
     student_behaviors = student.case_set.all() 
-        
     behavior = Behavior.objects.all()
-
     casemanager = models.CaseManager.objects.all()
-
     case = Case.objects.all()
-
     studentcurrent = Student.objects.get(id=pk)
 
-    # check this after ereasing the data 11/6
-    # user = User.objects.get(id=pk)
-
-          
     context = {
     'student_behaviors':student_behaviors,
     "student":student,
     'case':case,
-    # 'user':user,
-    
                }
     
     
@@ -2594,7 +1759,6 @@ def assign_data_entry(request, pk):
 def create_unique_id(request, pk):
         
     studentupdate = Student.objects.get(id=pk)
-
     form = StudentFormSlug(instance=studentupdate)
     
     if request.method == 'POST': 
@@ -2608,17 +1772,13 @@ def create_unique_id(request, pk):
           
           return redirect("bip:dashboard", studentupdate.id)
     
-   
     context = {'form':form}
     
     return render(request, "bip/create_id.html", context)
 
 
-
-def updateunique_case_identifier(request, pk):
-        
+def updateunique_case_identifier(request, pk):  
     studentupdate = Student.objects.get(id=pk)
-
     form = StudentFormSlug(instance=studentupdate)
     
     if request.method == 'POST': 
@@ -2632,16 +1792,13 @@ def updateunique_case_identifier(request, pk):
           
           return redirect("bip:assign_data_entry", studentupdate.id)
     
-   
     context = {'form':form}
     
     return render(request, "bip/create_student.html", context)
 
 
 def case_manager_unique_identifier(request, pk):
-    
     userupdate = models.CaseManager.objects.get(id=pk)
-
     form = UpdateCaseManagerForm(instance=userupdate)
     
     if request.method == 'POST': 
@@ -2655,21 +1812,16 @@ def case_manager_unique_identifier(request, pk):
           
           return redirect("bip:for_user", userupdate.user)
     
-   
     context = {'form':form}
     
     return render(request, "bip/case_manager_unique_identifier.html", context)
 
 
-
-
 def export(request, pk):
     student = get_object_or_404(Student, pk=pk)
     student_behaviors = student.case_set.all()
-
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="FBA Data.csv"'
-
     writer = csv.writer(response)
 
     headers = ["User","Case", "Behavior", "Frequency","Antecedent", "Consequence", "Function","Date"]
