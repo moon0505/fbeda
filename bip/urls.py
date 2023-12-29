@@ -102,9 +102,17 @@ urlpatterns = [
     
     path('update_student/<pk>/',views.updateStudent,name='update_student'),
     
+
+
+    
     path('delete_student/<pk>/',views.deleteStudent,name='delete_student'),
      
-    
+    path('delete_user/<pk>/',views.deleteUser,name='delete_user'),
+
+
+
+
+
     path('create_unique_id/<pk>/',views.create_unique_id,name='create_unique_id'),
 
     path('case_profile/<pk>/',views.student_profile,name='student_profile'),

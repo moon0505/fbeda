@@ -1,0 +1,42 @@
+
+
+
+
+{% extends 'partials/base.html' %} {% block content %}
+
+
+<body>
+    
+
+<div class="container">
+    
+      <br>
+      <div class="row">
+          <div class="card card-body">
+              <h2>
+                  <p>
+                      All data associated with this User will be <b>DELETED PERMANENTLY</b>.
+                      Are you sure you want to <b>DELETE</b> your account PERMANENTLY: <b>{{ user.username }}</b>??
+                  </p>
+              </h2>
+             
+              <form action="{% url 'bip:delete_user' user.id %}" method="POST">
+                  {% csrf_token %}
+                
+                  <input class="btn btn-danger" type="submit" name="confirm" value="Confirm">
+              </form>
+          </div>
+      </div>
+  </div>
+</body>
+
+  <style>
+
+body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f0f0; /* Updated to gray background */
+      color: #505050;
+      line-height: 1.6;
+    }
+  </style>
+{% endblock %}

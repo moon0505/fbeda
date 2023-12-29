@@ -645,6 +645,26 @@ def deleteStudent(request, pk):
     context = {'item':studentdelete,'student':student}
     return render(request, "bip/delete_student.html", context)
 
+
+
+
+def deleteUser(request, pk):
+    user_delete= User.objects.get(pk=request.user.id)
+
+    print(user_delete)
+    user = User.objects.get(id=pk)
+    
+    if request.method == "POST":
+        user_delete.delete()
+        return redirect("bip:description")
+    
+    context = {'item':user_delete,'user':user}
+    return render(request, "bip/delete_user.html", context)
+
+
+
+
+
 @login_required
 def create_behavior(request,pk):
     user = User.objects.get(pk=request.user.id)
