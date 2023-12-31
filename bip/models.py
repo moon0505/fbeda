@@ -59,6 +59,7 @@ class Behavior(models.Model):
         behavior_definition = models.CharField(null=True, blank=True, max_length=1000,verbose_name= 'Behavior Definition')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         user = models.ForeignKey(User, on_delete=models.CASCADE,  default=None)
+        
         def __str__(self):
           return self.behaviorincident
           
@@ -81,8 +82,11 @@ class Enviroment(models.Model):
         behaviorenviroment = models.CharField(max_length=50, null=True, blank=True,verbose_name= 'Setting')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         user = models.ForeignKey(User, on_delete=models.CASCADE,  default=None)
+        
+        
+        # May need to check this if it causes issues with data table or more
         def __str__(self):
-          return self.behaviorenviroment  
+            return self.behaviorenviroment or ''
         
 class Case(models.Model):
         student= models.ForeignKey(Student,on_delete=models.CASCADE)

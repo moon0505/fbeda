@@ -221,6 +221,8 @@ def data_entry_dashboard_view(request):
     }
     return render(request,'account/data_entry_dashboard.html',context=mydict)
 
+@login_required(login_url='data_entry_login')
+@user_passes_test(is_data_entry)
 def data_entry_input_view(request, pk):
   
     student = get_object_or_404(Student, pk=pk)
@@ -405,7 +407,6 @@ def behavior_form_view(request, pk):
     return render(request, 'bip/fbo_form.html', {'form': form,'student':student})
 
 
-
 @login_required      
 def updatePost(request, pk,student_id ):
     
@@ -415,13 +416,15 @@ def updatePost(request, pk,student_id ):
     behaivorpest  = Behavior.objects.filter(user=request.user,student_id=student_id)
     anticedentpest  = Anticedent.objects.filter(user=request.user,student_id=student_id)
     functionpest  = Function.objects.filter(user=request.user,student_id=student_id)
+    consequenceset = Consequence.objects.filter(user=request.user,student_id=student_id)
+    enviromentset = Enviroment.objects.filter(user=request.user,student_id=student_id)
         
     if request.method == 'POST': 
       form = BehaviorForm(request.POST, instance=student_post) 
       
       if form.is_valid():
           instance = form.save(commit=False)
-          instance.user = request.user
+          instance.user = request.user 
           
           instance.save()  
           
@@ -432,6 +435,10 @@ def updatePost(request, pk,student_id ):
         form.fields["behavior"].queryset=behaivorpest
         form.fields["anticedent"].queryset=anticedentpest
         form.fields["function"].queryset=functionpest
+        form.fields["consequence"].queryset=consequenceset
+        form.fields["enviroment"].queryset=enviromentset
+
+
     
     context = {'form':form,
             'student_post':student_post,
@@ -445,7 +452,13 @@ def deletePost(request, pk):
   
   if request.method == 'POST': 
     behavior_incident.delete()
-    return redirect("bip:dashboard", behavior_incident.student.id)
+
+    if is_case_manager(request.user):
+                return redirect("bip:dashboard", behavior_incident.student.id)
+
+    elif is_data_entry(request.user):
+                return redirect("bip:data_entry_input", behavior_incident.student.id)
+    
   
   context = {'incident': behavior_incident}
   return render(request, 'bip/delete_post.html', context)
@@ -529,7 +542,6 @@ def deleteUser(request, pk):
     context = {'item':user_delete,'user':user}
     return render(request, "bip/delete_user.html", context)
 
-@login_required
 def create_behavior(request,pk):
     user = User.objects.get(pk=request.user.id)
     student = Student.objects.get(id=pk) 
@@ -1577,7 +1589,14 @@ def raw_data(request, pk):
     unique_hour_html = None
     try:
         cases_df_time= pd.DataFrame(data1).drop(['id',], axis=1) 
-        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+        # made this correction on 12/31/2023
+        cases_df_time['combined_datetime'] = pd.to_datetime(
+            cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str),
+            format='%Y-%m-%d %H:%M:%S'
+                )
+        
+        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+
         # cases_df_time= pd.DataFrame(data1).drop(['time','date_created'], axis=1) 
 
         cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
@@ -1625,6 +1644,8 @@ def raw_data(request, pk):
     unique_ab_count = unique_ab_count.sort_values(by=['Frequency'], ascending=False)
     unique_bf_count = cases_df_duplicate.groupby(['Behavior','Function']).size().reset_index(name='Frequency')
     unique_bf_count = unique_bf_count.sort_values(by=['Frequency'], ascending=False)
+    
+    
     unique_bs_count = cases_df_duplicate.groupby(['Behavior','Setting']).size().reset_index(name='Frequency')
     unique_bs_count = unique_bs_count.sort_values(by=['Frequency'], ascending=False)
 
@@ -1634,13 +1655,18 @@ def raw_data(request, pk):
 
     box_duration_graph = None
 
+    duration_behavior = pd.DataFrame(columns=['behavior__behaviorincident', 'duration'])  # Initialize an empty DataFrame
+
     try:
         duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
         duration_behavior = duration_behavior.to_frame().reset_index()        
         df_duration = duration_behavior['behavior__behaviorincident']
+        
     except:
         
         pass
+
+
 
     # Frequency of behavior:
 
@@ -1691,7 +1717,10 @@ def raw_data(request, pk):
 
         'unique_b_count':unique_b_count.to_html(index=False),
          
-        # 'duration_behavior':duration_behavior.to_html(),
+
+        
+         'duration_behavior':duration_behavior.to_html(index=False),
+        
         'frequency_behavior':frequency_behavior.to_html(index=False),
         'matrix':matrix.to_html(),
 

@@ -67,10 +67,10 @@ class BehaviorForm(forms.ModelForm):
             'consequence':forms.RadioSelect(),
             'enviroment': forms.Select(),  
 
-
-
-
         }
+
+    
+            
 
 
    

@@ -109,6 +109,12 @@
 
 
 
+ <td> <a class="btn btn-danger" href="{% url 'bip:delete_post' pk=incident.pk  %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-x" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708z"/>
+  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+</svg></a></td>  
+
            {% comment %} <td> <a class="btn btn-danger" href="{% url 'bip:delete_behavior' pk=incident.pk  %}">Delete</a></td>  {% endcomment %}
            
            {% endfor%}
@@ -122,4 +128,69 @@
 <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:snapshot_data_entry' student.id %}"
 >Graph</a>  
 
+<style>
+  body {
+   font-family: 'Roboto', sans-serif;
+   background-color: #f0f0f0; /* Updated to gray background */
+   color: #505050;
+   line-height: 1.6;
+ }
+.container {
+ max-width: 1000px;
+ margin: auto;
+}
+/* 
+.container {
+ max-width: 1200px; 
+ margin: auto;
+ padding: 15px;
+} */
+
+.nav-button {
+ margin-bottom: 20px;
+}
+.btn-outline-info {
+ width: 100%;
+ padding: 10px;
+ margin-bottom: 20px;
+}
+
+
+
+.btn-primary {
+ background-color: #007bff;
+ border-color: #007bff;
+}
+
+.card {
+ margin-bottom: 20px;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+ color: #333;
+}
+
+.card-link {
+ color: #007bff;
+}
+
+.table {
+ margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+ .container {
+   padding: 15px;
+ }
+}
+@media (max-width: 768px) {
+ .chart-row {
+   flex-direction: column;
+ }
+ .chart-item {
+   flex-basis: 100%;
+ }
+}
+</style>
 {% endblock%}
