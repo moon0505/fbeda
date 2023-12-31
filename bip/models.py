@@ -100,6 +100,8 @@ class Case(models.Model):
         class Meta:
             ordering = ['-date_created']
        
+
+        
         def __str__(self):
           return str(self.student)
 

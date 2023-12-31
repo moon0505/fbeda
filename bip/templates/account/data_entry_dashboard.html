@@ -5,39 +5,36 @@
 
 <br>
 
-<div class"container" >
-
-<div class="market-updates">
-  <div class="col-md-4 market-update-gd">
-    <div class="market-update-block clr-block-1">
-      <div class="col-md-8 market-update-left">
-        <h3> {{case_manager_name}}</h3>
-        <h4>Data Analyst</h4>
+<div class="container">
+  <div class="market-updates">
+    <div class="col-md-4 market-update-gd">
+      <div class="market-update-block clr-block-1">
+        <div class="col-md-8 market-update-left">
+          <h3>{{ case_manager_name }}</h3>
+          <h4>Data Analyst</h4>
+        </div>
+        <div class="clearfix"></div>
       </div>
-   
-      <div class="clearfix"> </div>
     </div>
   </div>
 
   <br>
+
   <div class="market-updates">
     <div class="col-md-4 market-update-gd">
       <div class="market-update-block clr-block-1">
         <div class="col-md-8 market-update-left">
           <br>
-            <h3>Assigned Case: <a href="{% url 'bip:data_entry_input' pk=assigned_student.id  %}"> {{assigned_student}}({{assigned_student.id}})</a> </h3>
-          <h4>Data Recorder</h4>
+          <h3>Data Recorder</h3>
+          <h3>Assigned Case: <a href="{% url 'bip:data_entry_input' pk=assigned_student.id %}">{{ assigned_student }}</a></h3>
         </div>
-     
-        <div class="clearfix"> </div>
+        <div class="clearfix"></div>
       </div>
     </div>
-
-  <div class="clearfix"> </div>
+  </div>
+  <div class="clearfix"></div>
 </div>
 
-
-</div>
 <br><br><br>
 
 <!DOCTYPE html>
@@ -48,6 +45,9 @@
   <title></title>
 
   <style media="screen">
+
+
+
     .market-update-block {
       padding: 2em 2em;
       background: background;

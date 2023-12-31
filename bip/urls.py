@@ -91,8 +91,15 @@ urlpatterns = [
     
     path('create_incident/<pk>/', views.behavior_form_view, name='create_incident'),
     
-    path('update/<str:pk>/<int:student_id>', views.updatePost, name='updatepost'),
+
+
+
     
+    path('updatepost/<int:pk>/<int:student_id>/', views.updatePost, name='updatepost'),
+
+
+
+
     path("by/<username>/",views.UserPosts.as_view(),name="for_user"),
 
     path('delete_post/<pk>/', views.deletePost, name='delete_post'),

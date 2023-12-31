@@ -311,7 +311,7 @@ def reject_data_entry_view(request,pk):
     data_entry.delete()
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
 
-    return redirect('bip:case_manager_dashboard',case_manager_entry.id)
+    return render(request,'bip/welcome_user.html')
 
 # Website forms/input---------------------------------------------------------
 
@@ -582,7 +582,7 @@ def deleteBehavior(request, pk):
     
     if request.method == "POST":
         behdelete.delete()
-        return redirect("bip:abc", behdelete.student.id)
+        return redirect("bip:dashboard", behdelete.student.id)
     
     context = {'item':behdelete}
     return render(request, "bip/delete_behavior.html", context)
@@ -636,7 +636,7 @@ def deleteAnticedent(request, pk):
     
     if request.method == "POST":
         antidelete.delete()
-        return redirect("bip:abc", antidelete.student.id)
+        return redirect("bip:dashboard", antidelete.student.id)
     
     context = {'item':antidelete}
     return render(request, "bip/delete_anticedent.html", context)
@@ -747,7 +747,7 @@ def deleteConsequence(request, pk):
     conqdelete = Consequence.objects.get(id=pk)
     if request.method == "POST":
         conqdelete.delete()
-        return redirect("bip:abc", conqdelete.student.id)
+        return redirect("bip:dashboard", conqdelete.student.id)
     
     context = {'item':conqdelete}
     return render(request, "bip/delete_consequence.html", context)
@@ -824,7 +824,7 @@ def deleteEnviroment(request, pk):
     envdelete = Enviroment.objects.get(id=pk)
     if request.method == "POST":
         envdelete.delete()
-        return redirect("bip:edit_setting", envdelete.student.id)
+        return redirect("bip:dashboard", envdelete.student.id)
     
     context = {'item':envdelete}
     return render(request, "bip/delete_setting.html", context)

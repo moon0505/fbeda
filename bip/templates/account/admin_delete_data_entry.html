@@ -8,35 +8,7 @@
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-  <style media="screen">
-    a:link {
-      text-decoration: none;
-    }
-
-    h6 {
-      text-align: center;
-    }
-
-
-    body {
-      background: rgb(230, 227, 227);
-    }
   
-    .panel-heading {
-      background: black !important;
-      color: #fff;
-      font-weight: bold;
-      line-height: 80px;
-    }
-
-    h6 {
-      text-align: center;
-    }
-
-    .row {
-      margin: 100px;
-    }
-  </style>
 </head>
 
 <div class="container">
@@ -55,7 +27,7 @@
       </thead>
       <tr>
 
-{{user}}
+
 
         <td> {{specific_data_entry.get_name}}</td>
     
@@ -64,6 +36,47 @@
     </table>
   </div>
 </div>
+<style media="screen">
+  a:link {
+    text-decoration: none;
+  }
 
+
+  body {
+background: #f4f4f4;
+font-family: 'Open Sans', sans-serif;
+}
+  
+  
+  .panel-heading {
+    background: black !important;
+    color: #fff;
+    font-weight: bold;
+    line-height: 80px;
+    
+  }
+
+  h6 {
+    text-align: center;
+  }
+
+  .row {
+    margin: 100px;
+  }
+
+@media (max-width: 768px) {
+.container {
+ padding: 15px;
+}
+}
+@media (max-width: 768px) {
+.chart-row {
+ flex-direction: column;
+}
+.chart-item {
+ flex-basis: 100%;
+}
+}
+</style>
 
 {% endblock  %}

@@ -18,10 +18,7 @@
       <button type="submit" class="btn btn-success btn-block">Sign In</button>
     
       <p class="bottom-text">
-        Please contact
-        <a href="mailto:krstngonzalez@gmail.com">administrator</a> if unable to
-        login. <a href="#">Terms & Conditions</a> and
-        <a href="#">Privacy Policy</a>
+        <a href="{% url 'bip:case_manager_signup' %}">Sign Up </a>if not regestered
       </p>
     </form>
   </div>
@@ -52,6 +49,7 @@
   color: #333;
   margin-bottom: 20px;
   font-size: 24px;
+  text-align: center; /* Add this line to center the text */
 }
 
 .form-wrap p {
