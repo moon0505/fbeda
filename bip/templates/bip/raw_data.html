@@ -23,17 +23,22 @@
 
       <div class="stats-row">
 
-        {% if unique_bs_count != '' %}
+
+
+        {% if unique_bs_count %}
         <div class="stat-item"><b>Behavior-Setting Frequency:</b> {{unique_bs_count | safe}}</div>
         {% endif %}
+
+
+
 
 
         <div class="stat-item"><b>Behavior Average per Incident:</b> {{frequency_behavior | safe}}</div>
         {% if unique_hour_html %}
           <div class="stat-item"><b>Behavior-Hour Frequency:</b> {{unique_hour_html | safe}}</div>
         {% endif %}
-{% if duration_behavior  %}
-    <div class="stat-item"><b>Average Duration of Behavior:</b> {{duration_behavior | safe}}</div>
+{% if duration_html  %}
+    <div class="stat-item"><b>Average Duration of Behavior:</b> {{duration_html | safe}}</div>
 {% endif %}
       </div>
     </div>

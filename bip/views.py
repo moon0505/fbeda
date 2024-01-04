@@ -17,6 +17,9 @@ from datetime import datetime
 
 from django.db import IntegrityError
 
+from django import template
+
+
 
 from django.views.generic import (View,TemplateView,ListView,DetailView,CreateView,UpdateView,DeleteView,FormView)
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -1646,21 +1649,43 @@ def raw_data(request, pk):
     unique_bf_count = unique_bf_count.sort_values(by=['Frequency'], ascending=False)
     
     
+
+    
+
+    # Setting/Enviroemnt:
+
+    
+
+
     unique_bs_count = cases_df_duplicate.groupby(['Behavior','Setting']).size().reset_index(name='Frequency')
     unique_bs_count = unique_bs_count.sort_values(by=['Frequency'], ascending=False)
 
+    
+
+
+
+
+
     # Duration of behavior
-    data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
-    cases_df_duration = pd.DataFrame(data_duration)
 
-    box_duration_graph = None
+    
+    
+    duration_html = None
+    try: 
+        data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'duration')
+        cases_df_duration = pd.DataFrame(data_duration)
 
-    duration_behavior = pd.DataFrame(columns=['behavior__behaviorincident', 'duration'])  # Initialize an empty DataFrame
+# Rename columns
+        cases_df_duration = cases_df_duration.rename(columns={'behavior__behaviorincident': 'Behavior', 'duration': 'Duration'})
 
-    try:
-        duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
-        duration_behavior = duration_behavior.to_frame().reset_index()        
-        df_duration = duration_behavior['behavior__behaviorincident']
+# Group and calculate the mean duration
+        duration_behavior = cases_df_duration.groupby('Behavior')['Duration'].mean().round(0).astype(int).reset_index()
+
+# Extract the 'Behavior' column
+        df_duration = duration_behavior['Behavior']
+
+# Convert the DataFrame to HTML
+        duration_html = duration_behavior.to_html(index=False)
         
     except:
         
@@ -1673,13 +1698,25 @@ def raw_data(request, pk):
     data_frequency = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','frequency')
     cases_df_frequency = pd.DataFrame(data_frequency)
 
+# Rename columns with 'enviroment__behaviorenviroment' to 'Setting'
+    cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
+
     try:
-        frequency_behavior = cases_df_frequency.groupby('behavior__behaviorincident')['frequency'].mean().round(1) 
-        frequency_behavior = frequency_behavior.to_frame().reset_index()        
-        df_frequency = frequency_behavior['behavior__behaviorincident']
-    except:
+    # Group and calculate the mean frequency
+        frequency_behavior = cases_df_frequency.groupby('behavior__behaviorincident')['frequency'].mean().round(0).astype(int).reset_index()
+    
+    # Rename the 'behavior__behaviorincident' column to 'Behavior'
+        frequency_behavior = frequency_behavior.rename(columns={'behavior__behaviorincident': 'Behavior', 'frequency': 'Frequency'})
+
         
+    
+    # Extract the 'Behavior' column
+        df_frequency = frequency_behavior['Behavior']
+    except:
         pass
+
+
+
 
     cases_df = pd.DataFrame(data1)      
     cases_df = pd.DataFrame(data1).drop(['enviroment__behaviorenviroment'], axis=1) 
@@ -1709,6 +1746,7 @@ def raw_data(request, pk):
         'unique_bf_count':unique_bf_count.to_html(index=False),
         'duplicateRows':duplicateRows.to_html(index=False),
         'unique_ab_count':unique_ab_count.to_html(index=False),
+    
         'unique_bs_count':unique_bs_count.to_html(index=False),
         
         # 'unique_hour':unique_hour.to_html(),
@@ -1717,9 +1755,9 @@ def raw_data(request, pk):
 
         'unique_b_count':unique_b_count.to_html(index=False),
          
-
-        
-         'duration_behavior':duration_behavior.to_html(index=False),
+    
+        'duration_html':duration_html,
+        #  'duration_behavior':duration_behavior.to_html(index=False),
         
         'frequency_behavior':frequency_behavior.to_html(index=False),
         'matrix':matrix.to_html(),
