@@ -3,6 +3,7 @@
 {% block content %}
 <br>
 
+<title>FBA/EDA</title>
 
 <div class="container">
 
@@ -89,7 +90,6 @@
 
 
           <th>Date</th>
-          <th>Update</th>
           <th>Delete</th>
         </tr>
         {% for incident in student_behaviors %}
@@ -105,7 +105,6 @@
 
           <td>{{incident.date_created|date:'m-d-Y'}}</td> 
 
- <td> <a class="btn btn-warning" href="{% url 'bip:updatepost' pk=incident.pk student_id=incident.student_id %}" >Update</a></td> 
 
 
 
@@ -127,7 +126,8 @@
 <br>
 <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:snapshot_data_entry' student.id %}"
 >Graph</a>  
-
+<br>
+<br>
 <style>
   body {
    font-family: 'Roboto', sans-serif;

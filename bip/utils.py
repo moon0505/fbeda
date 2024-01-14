@@ -80,7 +80,7 @@ def get_heatmap( *args, **kwargs):
     y = kwargs.get('y')
     data = kwargs.get('data')
 
-    title = "Correlation Heatmap"
+    title = "Correlation Heatmap (Behavior, Anticedent, Function"
     plt.title(title)
        
     sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
@@ -105,7 +105,7 @@ def get_clustermap( *args, **kwargs):
     y = kwargs.get('y')
     data = kwargs.get('data')
 
-    title = "Correlation Heatmap (Behaviors, Anticedents, Functions)"
+    title = "Clustermap (Behaviors, Antecedents, Functions)"
     plt.title(title)
   
 

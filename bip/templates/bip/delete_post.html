@@ -2,7 +2,10 @@
 
 
 {% extends 'partials/base.html' %} {% block content %}
+
+{% load custom_filters %}
 <br><br>
+
 <div class="container">
 <div class ="row">
       <div class="card card-body">
@@ -15,8 +18,10 @@
       
       {% csrf_token %}
 
+      {% if user|is_case_manager %}
 
       <a  class="btn btn-warning" href="{% url 'bip:dashboard' incident.student.pk %}">Cancel</a>
+      {% endif %}
 
     <input class="btn btn-danger" type="submit" name="Confirm">
 

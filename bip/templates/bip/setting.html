@@ -2,12 +2,14 @@
 {% block content %}
   <br>
   <body>
+    <title>Setting (FBA/EDA)</title>
+
     <div class="container text-center">
       <div class="container">
         <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard ({{student.studentname}})</a>
         <br/>
         <div class="title-container">
-          <h2 class="page-title">Setting/Topography Analysis</h2>
+          <h2 class="page-title">Setting Analysis</h2>
         </div>
         {% if box_graph_setting %}
           <div class='container'>
