@@ -23,6 +23,13 @@
       <a  class="btn btn-warning" href="{% url 'bip:dashboard' incident.student.pk %}">Cancel</a>
       {% endif %}
 
+
+
+
+      {% if user|is_data_entry %}
+
+      <a  class="btn btn-warning" href="{% url 'bip:data_entry_input' incident.student.pk %}">Cancel</a>
+      {% endif %}
     <input class="btn btn-danger" type="submit" name="Confirm">
 
 

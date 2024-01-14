@@ -415,12 +415,14 @@ def updatePost(request, pk,student_id ):
     
     student_post = Case.objects.get(id=pk, student_id= student_id) 
     form = BehaviorForm(instance=student_post)
-    behaviors = Behavior.objects.all()
-    behaivorpest  = Behavior.objects.filter(user=request.user,student_id=student_id)
-    anticedentpest  = Anticedent.objects.filter(user=request.user,student_id=student_id)
-    functionpest  = Function.objects.filter(user=request.user,student_id=student_id)
-    consequenceset = Consequence.objects.filter(user=request.user,student_id=student_id)
-    enviromentset = Enviroment.objects.filter(user=request.user,student_id=student_id)
+    
+   # Filter behaviors related to the specific student or pk
+    behaivorpest = Behavior.objects.filter(student_id=student_id)
+    anticedentpest = Anticedent.objects.filter(student_id=student_id)
+    functionpest = Function.objects.filter(student_id=student_id)
+    consequenceset = Consequence.objects.filter(student_id=student_id)
+    enviromentset = Enviroment.objects.filter(student_id=student_id)
+
         
     if request.method == 'POST': 
       form = BehaviorForm(request.POST, instance=student_post) 
@@ -431,7 +433,14 @@ def updatePost(request, pk,student_id ):
           
           instance.save()  
           
-          return redirect("bip:dashboard", student_post.student.id)
+          
+
+
+          if is_case_manager(request.user):
+                return redirect("bip:dashboard", student_post.student.id)
+
+          elif is_data_entry(request.user):
+                return redirect("bip:data_entry_input", student_post.student.id)
     
     else:
         form = BehaviorForm(instance=student_post)                                           
@@ -2066,6 +2075,8 @@ def case_upload_csv(request):
     context = {}
     return render(request, "bip/welcome_user.html", context)
 
+
+
     # This adds Duration
 
 
@@ -2161,9 +2172,11 @@ def case_upload_csv_duration(request):
     context = {}
     return render(request, "bip/welcome_user.html", context)
 
-
+    
 
     # This is the time upload:
+
+
 
 
 def case_upload_csv_time(request):
