@@ -1599,15 +1599,15 @@ def raw_data(request, pk):
         # cases_df_time= pd.DataFrame(data1).drop(['time','date_created'], axis=1) 
 
         cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
-        cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Antecedent')
         cases_df_time.columns = cases_df_time.columns.str.replace('function__behaviorfunction', 'Function')
         cases_df_time.columns = cases_df_time.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
         cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
 
-        cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
+        cases_df_time['Hour'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
 
     # Group by 'Behavior' and 'hour_12h' to count frequency
-        unique_hour = cases_df_time.groupby(['Behavior', 'hour_12h']).size().reset_index(name='Frequency')
+        unique_hour = cases_df_time.groupby(['Behavior', 'Hour']).size().reset_index(name='Frequency')
         unique_hour = unique_hour.sort_values(by='Frequency', ascending=False)
 
         unique_hour_html = unique_hour.to_html(index=False)
@@ -1622,44 +1622,30 @@ def raw_data(request, pk):
         cases_df_duplicate = pd.DataFrame(data1).drop(['time','id','date_created'], axis=1) 
     
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('behavior__behaviorincident', 'Behavior')
-        cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('anticedent__anticedentincident', 'Antecedent')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('function__behaviorfunction', 'Function')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
         cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
     except:
         return redirect("bip:error_page", student.id)
 
-    duplicateRows = cases_df_duplicate[cases_df_duplicate.duplicated(['Behavior','Anticedent','Function',]) == False].sort_values('Behavior')
+    duplicateRows = cases_df_duplicate[cases_df_duplicate.duplicated(['Behavior','Antecedent','Function',]) == False].sort_values('Behavior')
     behavior_count = cases_df_duplicate['Behavior'].value_counts()
     unique_b_count = cases_df_duplicate.groupby(['Behavior']).size().reset_index(name='Frequency')
     unique_b_count = unique_b_count.sort_values(by=['Frequency'], ascending=False)
-    unique_abcf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence','Function']).size().reset_index(name='Frequency')
+    unique_abcf_count = cases_df_duplicate.groupby(['Behavior','Antecedent','Consequence','Function']).size().reset_index(name='Frequency')
     unique_abcf_count = unique_abcf_count.sort_values(by=['Frequency'], ascending=False)
-    unique_abf_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Function']).size().reset_index(name='Frequency')
+    unique_abf_count = cases_df_duplicate.groupby(['Behavior','Antecedent','Function']).size().reset_index(name='Frequency')
     unique_abf_count = unique_abf_count.sort_values(by=['Frequency'], ascending=False)
-    unique_abc_count = cases_df_duplicate.groupby(['Behavior','Anticedent','Consequence']).size().reset_index(name='Frequency')
+    unique_abc_count = cases_df_duplicate.groupby(['Behavior','Antecedent','Consequence']).size().reset_index(name='Frequency')
     unique_abc_count = unique_abc_count.sort_values(by=['Frequency'], ascending=False)
-    unique_ab_count = cases_df_duplicate.groupby(['Behavior','Anticedent']).size().reset_index(name='Frequency')
+    unique_ab_count = cases_df_duplicate.groupby(['Behavior','Antecedent']).size().reset_index(name='Frequency')
     unique_ab_count = unique_ab_count.sort_values(by=['Frequency'], ascending=False)
     unique_bf_count = cases_df_duplicate.groupby(['Behavior','Function']).size().reset_index(name='Frequency')
     unique_bf_count = unique_bf_count.sort_values(by=['Frequency'], ascending=False)
     
-    
-
-    
-
-    # Setting/Enviroemnt:
-
-    
-
-
     unique_bs_count = cases_df_duplicate.groupby(['Behavior','Setting']).size().reset_index(name='Frequency')
     unique_bs_count = unique_bs_count.sort_values(by=['Frequency'], ascending=False)
-
-    
-
-
-
 
 
     # Duration of behavior
@@ -1686,7 +1672,6 @@ def raw_data(request, pk):
     except:
         
         pass
-
 
 
     # Frequency of behavior:
@@ -1718,7 +1703,7 @@ def raw_data(request, pk):
     cases_df = pd.DataFrame(data1).drop(['enviroment__behaviorenviroment'], axis=1) 
 
     cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Antecedent')
     cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
     cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
     cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
@@ -1727,11 +1712,11 @@ def raw_data(request, pk):
   
 
     behavior = pd.get_dummies(cases_df['Behavior'])
-    anticedent = pd.get_dummies(cases_df['Anticedent'])
+    anticedent = pd.get_dummies(cases_df['Antecedent'])
     consequence = pd.get_dummies(cases_df['Consequence'])
     function = pd.get_dummies(cases_df['Function'])
     df_matrix = pd.concat([cases_df,behavior, anticedent, consequence, function], axis=1)
-    df_matrix.drop(['Behavior','Anticedent','Function', 'Consequence','Date','Time','ID'],axis=1,inplace=True)
+    df_matrix.drop(['Behavior','Antecedent','Function', 'Consequence','Date','Time','ID'],axis=1,inplace=True)
     matrix = df_matrix.corr().round(2) 
 
     context = {
@@ -1925,7 +1910,6 @@ def export(request, pk):
         # date_value = case.date_created.strftime("%Y-%m-%d")
 
 
-
         time_value = case.time if case.time is not None else ''
         duration_value = case.duration if case.duration is not None else ''
 
@@ -1946,9 +1930,6 @@ def export(request, pk):
             case.date_created,
 
 
-
-            
-            
         ]
 
         if has_duration:
@@ -1963,8 +1944,6 @@ def export(request, pk):
 
         
         
-
-        
         # if has_frequency:
         #     row.append(frequency_value)
 
@@ -1974,7 +1953,6 @@ def export(request, pk):
         writer.writerow(row)
 
     return response
-
 
 
 def upload_page(request,pk):
@@ -1987,847 +1965,6 @@ def upload_page(request,pk):
 
     return render(request, 'bip/upload_page.html', context) 
 
-# def case_upload_csv(request):
-#     template = "bip/upload.html"
-#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function'}
-
-#     if request.method == "GET":
-#         return render(request, template, prompt)
-
-#     csv_file = request.FILES['file']
-
-#     if not csv_file.name.endswith('.csv'):
-#         messages.error(request, 'THIS IS NOT A CSV FILE')
-
-#     data_set = csv_file.read().decode('UTF-8')
-#     io_string = io.StringIO(data_set)
-#     next(io_string)
-
-#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#         username = column[0]
-#         student_name = column[1]
-#         behavior_name = column[2]
-#         anticedent_name = column[3]
-#         consequence_name = column[4]
-#         function_name = column[5]
-
-#         user_instance, _ = User.objects.get_or_create(username=username)
-#         student_instance, _ = Student.objects.get_or_create(
-#             studentname=student_name,
-#             user_student=user_instance
-#         )
-
-#         behavior_instance, _ = Behavior.objects.get_or_create(
-#             behaviorincident=behavior_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         anticedent_instance, _ = Anticedent.objects.get_or_create(
-#             anticedentincident=anticedent_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         consequence_instance, _ = Consequence.objects.get_or_create(
-#             behaviorconsequence=consequence_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         function_instance, _ = Function.objects.get_or_create(
-#             behaviorfunction=function_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         try:
-#             Case.objects.create(
-#                 behavior=behavior_instance,
-#                 anticedent=anticedent_instance,
-#                 consequence=consequence_instance,
-#                 function=function_instance,
-#                 student=student_instance,
-#                 user=user_instance,
-#                 # Add other fields from your model accordingly
-#             )
-#         except IntegrityError:
-#             # Handle IntegrityError (log, pass, or customize as needed)
-#             pass
-
-#     context = {}
-#     return render(request, template, context) 
-
-
-
-# def case_upload_csv(request):
-#     template = "bip/upload.html"
-#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment'}
-
-#     if request.method == "GET":
-#         return render(request, template, prompt)
-
-#     csv_file = request.FILES['file']
-
-#     if not csv_file.name.endswith('.csv'):
-#         messages.error(request, 'THIS IS NOT A CSV FILE')
-
-#     data_set = csv_file.read().decode('UTF-8')
-#     io_string = io.StringIO(data_set)
-#     next(io_string)
-
-#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#         username = column[0]
-#         student_name = column[1]
-#         behavior_name = column[2]
-#         anticedent_name = column[3]
-#         consequence_name = column[4]
-#         function_name = column[5]
-#         environment_name = column[6]  # Assuming environment name is in the 7th column
-
-#         user_instance, _ = User.objects.get_or_create(username=username)
-#         student_instance, _ = Student.objects.get_or_create(
-#             studentname=student_name,
-#             user_student=user_instance
-#         )
-
-#         behavior_instance, _ = Behavior.objects.get_or_create(
-#             behaviorincident=behavior_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         anticedent_instance, _ = Anticedent.objects.get_or_create(
-#             anticedentincident=anticedent_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         consequence_instance, _ = Consequence.objects.get_or_create(
-#             behaviorconsequence=consequence_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         function_instance, _ = Function.objects.get_or_create(
-#             behaviorfunction=function_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         environment_instance, _ = Enviroment.objects.get_or_create(
-#             behaviorenviroment=environment_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         try:
-#             Case.objects.create(
-#                 behavior=behavior_instance,
-#                 anticedent=anticedent_instance,
-#                 consequence=consequence_instance,
-#                 function=function_instance,
-#                 enviroment=environment_instance,
-#                 student=student_instance,
-#                 user=user_instance,
-#                 # Add other fields from your model accordingly
-#             )
-#         except IntegrityError:
-#             # Handle IntegrityError (log, pass, or customize as needed)
-#             pass
-
-#     context = {}
-
-#     return render(request, template, context)
-
-
-# this works so far I think
-# def case_upload_csv(request):
-#     template = "bip/upload.html"
-#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment'}
-
-#     if request.method == "GET":
-#         return render(request, template, prompt)
-
-#     csv_file = request.FILES['file']
-
-#     if not csv_file.name.endswith('.csv'):
-#         messages.error(request, 'THIS IS NOT A CSV FILE')
-
-#     data_set = csv_file.read().decode('UTF-8')
-#     io_string = io.StringIO(data_set)
-#     next(io_string)
-
-#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#         username = column[0]
-#         student_name = column[1]
-#         behavior_name = column[2]
-#         anticedent_name = column[3]
-#         consequence_name = column[4]
-#         function_name = column[5]
-
-
-#         user_instance, _ = User.objects.get_or_create(username=username)
-#         student_instance, _ = Student.objects.get_or_create(
-#             studentname=student_name,
-#             user_student=user_instance
-#         )
-
-#         behavior_instance, _ = Behavior.objects.get_or_create(
-#             behaviorincident=behavior_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         anticedent_instance, _ = Anticedent.objects.get_or_create(
-#             anticedentincident=anticedent_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         consequence_instance, _ = Consequence.objects.get_or_create(
-#             behaviorconsequence=consequence_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         function_instance, _ = Function.objects.get_or_create(
-#             behaviorfunction=function_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         environment_name = column[6] if len(column) > 6 else None
-
-
-    
-
-
-#         if environment_name:
-#             environment_instance, _ = Enviroment.objects.get_or_create(
-#                 behaviorenviroment=environment_name,
-#                 student=student_instance,
-#                 user=user_instance
-#             )
-#         else:
-#             environment_instance = None
-
-#         try:
-#             Case.objects.create(
-#                 behavior=behavior_instance,
-#                 anticedent=anticedent_instance,
-#                 consequence=consequence_instance,
-#                 function=function_instance,
-#                 enviroment=environment_instance,
-#                 student=student_instance,
-#                 user=user_instance,
-#                 # Add other fields from your model accordingly
-#             )
-#         except IntegrityError:
-#             # Handle IntegrityError (log, pass, or customize as needed)
-#             pass
-
-#     context = {}
-#     return render(request, template, context)
-
-
-
-# def case_upload_csv(request):
-#     template = "bip/upload.html"
-#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment, duration'}
-
-#     if request.method == "GET":
-#         return render(request, template, prompt)
-
-#     csv_file = request.FILES['file']
-
-#     if not csv_file.name.endswith('.csv'):
-#         messages.error(request, 'THIS IS NOT A CSV FILE')
-
-#     data_set = csv_file.read().decode('UTF-8')
-#     io_string = io.StringIO(data_set)
-#     next(io_string)
-
-#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#         username = column[0]
-#         student_name = column[1]
-#         behavior_name = column[2]
-#         anticedent_name = column[3]
-#         consequence_name = column[4]
-#         function_name = column[5]
-#         enviroment_name = column[6] if len(column) > 6 else None
-#         duration_value = int(column[7]) if len(column) > 7 and column[7].isdigit() else None  # Convert to integer if it's a digit
-#         frequency_value = column[8] if len(column) > 8 else None  # Extract frequency from CSV
-
-#         user_instance, _ = User.objects.get_or_create(username=username)
-#         student_instance, _ = Student.objects.get_or_create(
-#             studentname=student_name,
-#             user_student=user_instance
-#         )
-
-#         behavior_instance, _ = Behavior.objects.get_or_create(
-#             behaviorincident=behavior_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         anticedent_instance, _ = Anticedent.objects.get_or_create(
-#             anticedentincident=anticedent_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         consequence_instance, _ = Consequence.objects.get_or_create(
-#             behaviorconsequence=consequence_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         function_instance, _ = Function.objects.get_or_create(
-#             behaviorfunction=function_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         if enviroment_name:
-#             enviroment_instance, _ = Enviroment.objects.get_or_create(
-#                 behaviorenviroment=enviroment_name,
-#                 student=student_instance,
-#                 user=user_instance
-#             )
-#         else:
-#             enviroment_instance = None
-
-
-#         try:
-#             Case.objects.create(
-#                 behavior=behavior_instance,
-#                 anticedent=anticedent_instance,
-#                 consequence=consequence_instance,
-#                 function=function_instance,
-#                 enviroment=enviroment_instance,
-#                 student=student_instance,
-#                 user=user_instance,
-#                 duration=duration_value, 
-#                 frequency=frequency_value,  # Assign duration to the Case object
-#                 date_created=datetime.now().date(),  # Assuming you want the current date
-#                 # Add other fields from your model accordingly
-#             )
-#         except IntegrityError:
-#             # Handle IntegrityError (log, pass, or customize as needed)
-#             pass
-
-#     context = {}
-#     return render(request, template, context)
-
-
-
-
-# def case_upload_csv(request):
-#     template = "bip/upload.html"
-#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment'}
-
-#     if request.method == "GET":
-#         return render(request, template, prompt)
-
-#     csv_file = request.FILES['file']
-
-#     if not csv_file.name.endswith('.csv'):
-#         messages.error(request, 'THIS IS NOT A CSV FILE')
-
-#     data_set = csv_file.read().decode('UTF-8')
-#     io_string = io.StringIO(data_set)
-#     next(io_string)
-
-#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#         username = column[0]
-#         student_name = column[1]
-#         behavior_name = column[2]
-#         anticedent_name = column[3]
-#         consequence_name = column[4]
-#         function_name = column[5]
-#         environment_name = column[6]  # Assuming environment name is in the 7th column
-
-#         user_instance, _ = User.objects.get_or_create(username=username)
-#         student_instance, _ = Student.objects.get_or_create(
-#             studentname=student_name,
-#             user_student=user_instance
-#         )
-
-#         behavior_instance, _ = Behavior.objects.get_or_create(
-#             behaviorincident=behavior_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         anticedent_instance, _ = Anticedent.objects.get_or_create(
-#             anticedentincident=anticedent_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         consequence_instance, _ = Consequence.objects.get_or_create(
-#             behaviorconsequence=consequence_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         function_instance, _ = Function.objects.get_or_create(
-#             behaviorfunction=function_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         environment_instance, _ = Enviroment.objects.get_or_create(
-#             behaviorenviroment=environment_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         try:
-#             Case.objects.create(
-#                 behavior=behavior_instance,
-#                 anticedent=anticedent_instance,
-#                 consequence=consequence_instance,
-#                 function=function_instance,
-#                 enviroment=environment_instance,
-#                 student=student_instance,
-#                 user=user_instance,
-#                 # Add other fields from your model accordingly
-#             )
-#         except IntegrityError:
-#             # Handle IntegrityError (log, pass, or customize as needed)
-#             pass
-
-#     context = {}
-
-#     return render(request, template, context)
-
-
-
-
-
-# this addd duraton and envroment
-
-# this works for all 
-# def case_upload_csv(request):
-#     template = "bip/upload.html"
-#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment'}
-
-#     if request.method == "GET":
-#          return render(request, template, prompt)
-
-#     csv_file = request.FILES['file']
-
-#     if not csv_file.name.endswith('.csv'):
-#          messages.error(request, 'THIS IS NOT A CSV FILE')
-
-#     data_set = csv_file.read().decode('UTF-8')
-#     io_string = io.StringIO(data_set)
-#     next(io_string)
-
-
-#     enviroment_name = None
-#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#         username = column[0]
-#         student_name = column[1]
-#         behavior_name = column[2]
-#         frequency_value = column[3]
-#         anticedent_name = column[4]
-#         consequence_name = column[5]
-#         function_name = column[6]
-#         date_created = column[7]
-#         enviroment_name = column[8]  if len(column) > 8 else None
-#         duration_value = column[9] if len(column) > 9 else None  # Assuming duration is at index 9 in CSV
-
-
-
-
-#         user_instance, _ = User.objects.get_or_create(username=username)
-#         student_instance, _ = Student.objects.get_or_create(
-#             studentname=student_name,
-#             user_student=user_instance
-#         )
-
-#         behavior_instance, _ = Behavior.objects.get_or_create(
-#             behaviorincident=behavior_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         anticedent_instance, _ = Anticedent.objects.get_or_create(
-#             anticedentincident=anticedent_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         consequence_instance, _ = Consequence.objects.get_or_create(
-#             behaviorconsequence=consequence_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         function_instance, _ = Function.objects.get_or_create(
-#             behaviorfunction=function_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         # Initialize environment and duration values to None
-        
-             
-#         if enviroment_name:
-#              enviroment_instance, _ = Enviroment.objects.get_or_create(
-#                  behaviorenviroment=enviroment_name,
-#                  student=student_instance,
-#                  user=user_instance
-#             )
-#         else:
-#             enviroment_instance = None
-
-     
-#         try:
-#             Case.objects.create(
-#                 behavior=behavior_instance,
-#                 frequency=frequency_value,
-#                 anticedent=anticedent_instance,
-#                 consequence=consequence_instance,
-#                 function=function_instance,
-#                 date_created=date_created,
-#                 student=student_instance,
-#                 user=user_instance,
-#                 enviroment=enviroment_instance,
-#                 duration=duration_value 
-#                 # Add other fields from your model accordingly
-#             )
-#         except IntegrityError:
-#             # Handle IntegrityError (log, pass, or customize as needed)
-#             pass
-
-#     context = {}
-#     return render(request, template, context)
-
-
-
-
-# def case_upload_csv(request):
-#     template = "bip/upload.html"
-#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment'}
-
-#     if request.method == "GET":
-#          return render(request, template, prompt)
-
-#     csv_file = request.FILES['file']
-
-#     if not csv_file.name.endswith('.csv'):
-#          messages.error(request, 'THIS IS NOT A CSV FILE')
-
-#     data_set = csv_file.read().decode('UTF-8')
-#     io_string = io.StringIO(data_set)
-#     next(io_string)
-
-
-#     enviroment_name = None
-#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#         username = column[0]
-#         student_name = column[1]
-#         behavior_name = column[2]
-#         frequency_value = column[3]
-#         anticedent_name = column[4]
-#         consequence_name = column[5]
-#         function_name = column[6]
-#         date_created = column[7]
-#         enviroment_name = column[8]  if len(column) > 8 else None
-#         duration_value = column[9] if len(column) > 9 else None  # Assuming duration is at index 9 in CSV
-
-
-
-
-#         user_instance, _ = User.objects.get_or_create(username=username)
-#         student_instance, _ = Student.objects.get_or_create(
-#             studentname=student_name,
-#             user_student=user_instance
-#         )
-
-#         behavior_instance, _ = Behavior.objects.get_or_create(
-#             behaviorincident=behavior_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         anticedent_instance, _ = Anticedent.objects.get_or_create(
-#             anticedentincident=anticedent_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         consequence_instance, _ = Consequence.objects.get_or_create(
-#             behaviorconsequence=consequence_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         function_instance, _ = Function.objects.get_or_create(
-#             behaviorfunction=function_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         # Initialize environment and duration values to None
-        
-             
-#         if enviroment_name:
-#              enviroment_instance, _ = Enviroment.objects.get_or_create(
-#                  behaviorenviroment=enviroment_name,
-#                  student=student_instance,
-#                  user=user_instance
-#             )
-#         else:
-#             enviroment_instance = None
-
-     
-#         try:
-#             Case.objects.create(
-#                 behavior=behavior_instance,
-#                 frequency=frequency_value,
-#                 anticedent=anticedent_instance,
-#                 consequence=consequence_instance,
-#                 function=function_instance,
-#                 date_created=date_created,
-#                 student=student_instance,
-#                 user=user_instance,
-#                 enviroment=enviroment_instance,
-#                 duration=duration_value 
-#                 # Add other fields from your model accordingly
-#             )
-#         except IntegrityError:
-#             # Handle IntegrityError (log, pass, or customize as needed)
-#             pass
-
-#     context = {}
-#     return render(request, template, context)
-
-
-
-
-
-
-# def case_upload_csv(request):
-#     template = "bip/upload.html"
-#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment'}
-
-#     if request.method == "GET":
-#         return render(request, template, prompt)
-
-#     csv_file = request.FILES['file']
-
-#     if not csv_file.name.endswith('.csv'):
-#         messages.error(request, 'THIS IS NOT A CSV FILE')
-
-#     data_set = csv_file.read().decode('UTF-8')
-#     io_string = io.StringIO(data_set)
-#     next(io_string)
-
-#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#         username = column[0]
-#         student_name = column[1]
-#         behavior_name = column[2]
-#         frequency_value = column[3]
-#         anticedent_name = column[4]
-#         consequence_name = column[5]
-#         function_name = column[6]
-#         date_created = column[7]
-#         enviroment_name = column[8] if len(column) > 8 else None
-#         duration_value = column[9] if len(column) > 9 else None  # Assuming duration is at index 9 in CSV
-
-#         user_instance, _ = User.objects.get_or_create(username=username)
-#         student_instance, _ = Student.objects.get_or_create(
-#             studentname=student_name,
-#             user_student=user_instance
-#         )
-
-#         behavior_instance, _ = Behavior.objects.get_or_create(
-#             behaviorincident=behavior_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         anticedent_instance, _ = Anticedent.objects.get_or_create(
-#             anticedentincident=anticedent_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         consequence_instance, _ = Consequence.objects.get_or_create(
-#             behaviorconsequence=consequence_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         function_instance, _ = Function.objects.get_or_create(
-#             behaviorfunction=function_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         # Check if there is no environment data but there is duration data
-#         if not enviroment_name and duration_value:
-#             # Set duration from column 8
-#             duration_value = column[8]
-#             enviroment_name = None  # Set environment to None as there's no data
-
-#         # Initialize environment and duration values to None
-#         enviroment_instance = None
-
-#         if enviroment_name:
-#             enviroment_instance, _ = Enviroment.objects.get_or_create(
-#                 behaviorenviroment=enviroment_name,
-#                 student=student_instance,
-#                 user=user_instance
-#             )
-
-#         # Try creating the Case instance
-#         try:
-#             Case.objects.create(
-#                 behavior=behavior_instance,
-#                 frequency=frequency_value,
-#                 anticedent=anticedent_instance,
-#                 consequence=consequence_instance,
-#                 function=function_instance,
-#                 date_created=date_created,
-#                 student=student_instance,
-#                 user=user_instance,
-#                 enviroment=enviroment_instance,
-#                 duration=duration_value
-#                 # Add other fields from your model accordingly
-#             )
-#         except IntegrityError:
-#             # Handle IntegrityError (log, pass, or customize as needed)
-#             pass
-
-#     context = {}
-#     return render(request, template, context)
-
-
-
-# def case_upload_csv(request):
-#     template = "bip/upload.html"
-#     prompt = {'order': 'Order of the CSV should be case, behavior, anticedent, consequence, function, environment'}
-
-#     if request.method == "GET":
-#         return render(request, template, prompt)
-
-#     csv_file = request.FILES['file']
-
-#     if not csv_file.name.endswith('.csv'):
-#         messages.error(request, 'THIS IS NOT A CSV FILE')
-
-#     data_set = csv_file.read().decode('UTF-8')
-
-#     io_string = io.StringIO(data_set)
-#     next(io_string)
-
-
-#     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-
-#         enviroment_name = None
-#         username = None
-#         student_name = None 
-#         behavior_name = None
-#         frequency_value = None
-#         anticedent_name = None
-#         consequence_name = None 
-#         function_name = None
-#         date_created = None
-
-#         if enviroment_name is  None:
-#             for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#                 username = column[0]
-#                 student_name = column[1]
-#                 behavior_name = column[2]
-#                 frequency_value = column[3]
-#                 anticedent_name = column[4]
-#                 consequence_name = column[5]
-#                 function_name = column[6]
-#                 date_created = column[7]
-            
-            
-            
-#         if enviroment_name is not None:
-#             for column in csv.reader(io_string, delimiter=',', quotechar="|"):
-#                 username = column[0]
-#                 student_name = column[1]
-#                 behavior_name = column[2]
-#                 frequency_value = column[3]
-#                 anticedent_name = column[4]
-#                 consequence_name = column[5]
-#                 function_name = column[6]
-#                 date_created = column[7]
-#                 enviroment_name = column[8] 
-                
-#             # duration_value = column[9] if len(column) > 9 else None
-
-
-# # Shift header names if needed
-                
-#         # if enviroment_name is None and column[9]:
-#         #     enviroment_name = column[9]
-#         #     duration_value = None
-
-#         # # Shift header names if needed
-#         # if enviroment_name is None and duration_value:
-#         #     # Swap header names
-#         #     enviroment_name = duration_value
-#         #     duration_value = None
-
-#         # # Adjust headers if the swap occurred
-#         # if enviroment_name:
-#         #         headers[8] = enviroment_name
-#         # if len(headers) > 9 and duration_value is None:
-#         #     if headers[9] == enviroment_name:
-#         #         headers[9] = None  # Replace the header name with None or any preferred value
-            
-
-
-#         user_instance, _ = User.objects.get_or_create(username=username)
-#         student_instance, _ = Student.objects.get_or_create(
-#             studentname=student_name,
-#             user_student=user_instance
-#         )
-
-#         behavior_instance, _ = Behavior.objects.get_or_create(
-#             behaviorincident=behavior_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         anticedent_instance, _ = Anticedent.objects.get_or_create(
-#             anticedentincident=anticedent_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         consequence_instance, _ = Consequence.objects.get_or_create(
-#             behaviorconsequence=consequence_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-#         function_instance, _ = Function.objects.get_or_create(
-#             behaviorfunction=function_name,
-#             student=student_instance,
-#             user=user_instance
-#         )
-
-#         # Initialize environment and duration values to None
-#         enviroment_instance = None
-
-#         if enviroment_name:
-#             enviroment_instance, _ = Enviroment.objects.get_or_create(
-#                 behaviorenviroment=enviroment_name,
-#                 student=student_instance,
-#                 user=user_instance
-#             )
-
-#         # Try creating the Case instance
-#         try:
-#             Case.objects.create(
-#                 behavior=behavior_instance,
-#                 frequency=frequency_value,
-#                 anticedent=anticedent_instance,
-#                 consequence=consequence_instance,
-#                 function=function_instance,
-#                 date_created=date_created,
-#                 student=student_instance,
-#                 user=user_instance,
-#                 enviroment=enviroment_instance,
-#                 # duration=duration_value
-#                 # Add other fields from your model accordingly
-#             )
-#         except IntegrityError:
-#             # Handle IntegrityError (log, pass, or customize as needed)
-#             pass
-
-#     context = {}
-#     return render(request, template, context)
-
-
-# need upload page for csv optons
-
-
 def upload_options(request,pk):
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
@@ -2838,8 +1975,6 @@ def upload_options(request,pk):
         'student':student
     }
     return render(request, 'bip/upload_options.html', context) 
-
-
 
 
 # this works so far I think
@@ -2931,10 +2066,7 @@ def case_upload_csv(request):
     context = {}
     return render(request, "bip/welcome_user.html", context)
 
-
-
     # This adds Duration
-
 
 
 def case_upload_csv_duration(request):
@@ -3029,11 +2161,9 @@ def case_upload_csv_duration(request):
     context = {}
     return render(request, "bip/welcome_user.html", context)
 
-    
+
 
     # This is the time upload:
-
-
 
 
 def case_upload_csv_time(request):
