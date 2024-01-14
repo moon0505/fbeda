@@ -1437,23 +1437,19 @@ def chart_view(request, pk):
     # beging time
         cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
         cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
-        # cases_df_time= pd.DataFrame(data1).drop(['time','date_created'], axis=1) 
-
         cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
         cases_df_time.columns = cases_df_time.columns.str.replace('function__behaviorfunction', 'Function')
         cases_df_time.columns = cases_df_time.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
         cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
-
-
+        
         cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
 
-
-        cases_df_time = cases_df_time.sort_values('hour_12h',ascending=True)
+        cases_df_time = cases_df_time.sort_values('hour_12h')
 
         df_time = cases_df_time['hour_12h']
 
-
+        # sort get_box_plot_time x axis to be in order from earliest time 
         box_graph_time = get_box_plot_time( x= df_time, data=cases_df_time) 
 
     except:
@@ -1765,6 +1761,9 @@ def raw_data(request, pk):
         }
 
     return render(request, 'bip/raw_data.html', context)
+
+
+# download the raw_data.html as a word dument and write the function xxxxxxxx
 
 
 # Create an HTML file for the upload form
@@ -3246,3 +3245,4 @@ def case_upload_csv_multiple(request):
             messages.error(request, f'An error occurred while creating a case: {e}')
 
     return render(request, "bip/welcome_user.html", {})
+
