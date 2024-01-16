@@ -129,7 +129,6 @@ urlpatterns = [
     path('update_behavior/<pk>/',views.updateBehavior,name='update_behavior'),
     path('delete_behavior/<pk>/', views.deleteBehavior, name='delete_behavior'),
     
-    path('abc/<pk>/', views.abc_view, name='abc'),
 
     path('edit_behavior/<pk>/', views.edit_behavior_view, name='edit_behavior'),
     path('edit_anticedent/<pk>/', views.edit_anticedent_view, name='edit_anticedent'),

@@ -76,7 +76,7 @@ import html2text
 
 def luna(request):
     
-    return render(request,'bip/home.html')
+    return render(request,'bip/luna.html')
 
 
 def error_page(request,  pk):
@@ -182,21 +182,8 @@ def case_manager_dashboard_view(request,pk):
     
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
 
-    # print(case_manager_entry)
-    # data_entry=models.DataEntry.objects.all().filter(status=True)
-    # print(data_entry)
-
     specific_data_entry =models.DataEntry.objects.filter(assignedCaseManagerSlug=case_manager_entry.slug)
     print(specific_data_entry)
-
-
-    # data_entry_hold=models.DataEntry.objects.all().filter(status=False)
-
-    # try:
-    #     specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.slug)
-    #     print(specific_data_entry)
-    # except:
-    #     specific_data_entry =None
 
     mydict={
         'specific_data_entry':specific_data_entry,
@@ -649,7 +636,7 @@ def updateAnticedent(request, pk):
           instance = form.save(commit=False)
           instance.user = request.user   
           instance.save()       
-          return redirect("bip:abc", antiupdate.student.id)
+          return redirect("bip:edit_anticedent", antiupdate.student.id)
     context = {'form':form}
     
     return render(request, "bip/create_anticedent.html", context)
@@ -707,7 +694,7 @@ def updatFunction(request, pk):
           instance.user = request.user  
           instance.save()  
           
-          return redirect("bip:abc", funcupdate.student.id)
+          return redirect("bip:edit_function", funcupdate.student.id)
     context = {'form':form}
     
     return render(request, "bip/create_function.html", context)
@@ -717,7 +704,7 @@ def deleteFunction(request, pk):
     funcdelete = Function.objects.get(id=pk)    
     if request.method == "POST":
         funcdelete.delete()
-        return redirect("bip:abc", funcdelete.student.id)
+        return redirect("bip:dashboard", funcdelete.student.id)
     
     context = {'item':funcdelete}
     return render(request, "bip/delete_function.html", context)
@@ -761,7 +748,7 @@ def updateConsequence(request, pk):
           instance.user = request.user  
           instance.save()  
           
-          return redirect("bip:abc", conqupdate.student.id)
+          return redirect("bip:edit_consequence", conqupdate.student.id)
     context = {'form':form}
     
     return render(request, "bip/create_consequence.html", context)
@@ -775,31 +762,6 @@ def deleteConsequence(request, pk):
     
     context = {'item':conqdelete}
     return render(request, "bip/delete_consequence.html", context)
-
-@login_required(login_url='case_manager_login')
-@user_passes_test(is_case_manager)
-def abc_view(request, pk ):
-    student = Student.objects.get(id=pk) 
-    function = Function.objects.all()
-    functionset = student.function_set.all()
-    anticedent = Anticedent.objects.all()
-    anticedentset = student.anticedent_set.all()
-    behaviors = Behavior.objects.all()
-    behaivorpest  = Behavior.objects.filter(user=request.user)
-    behaviorset = student.behavior_set.all()
-    consequence = Consequence.objects.all()
-    consequencepest  = Consequence.objects.filter(user=request.user)
-    conseqenceset = student.consequence_set.all()
-     
-    context= {
-        'behaviorset':behaviorset,
-        'anticedentset':anticedentset,
-        'functionset': functionset,
-        'conseqenceset':conseqenceset,
-        'student':student,  
-    }
-    
-    return render(request, 'bip/abc.html', context)
 
 @login_required
 def create_setting_view(request,pk):
@@ -839,7 +801,7 @@ def updateSetting(request, pk):
           instance.user = request.user  
           instance.save()  
           
-          return redirect("bip:update_setting", enviromentupdate.student.id)
+          return redirect("bip:edit_setting", enviromentupdate.student.id)
     context = {'form':form}
     
     return render(request, "bip/create_setting.html", context)
