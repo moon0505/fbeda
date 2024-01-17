@@ -1084,12 +1084,15 @@ def snapshot_data_entry_view(request, pk):
     
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')  
+    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 
+                                                             'consequence__behaviorconsequence','date_created','time','id')  
     cases_df = pd.DataFrame(data)
 
     cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
     cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
     cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+    cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+
     cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
     cases_df.columns = cases_df.columns.str.replace('time', 'Time')
     cases_df.columns = cases_df.columns.str.replace('id', 'ID')
@@ -1103,10 +1106,133 @@ def snapshot_data_entry_view(request, pk):
 
     bar_graph = get_bar_chart(x=df3, y = df4)
   
+
+
+    df_beh_count = cases_df['Behavior']
+    beh_count_graph = get_count_beh_plot( x= df_beh_count, data=cases_df)  
+
+
+    # multiple bar graph
+
+
+
+    df_multiple_bar = cases_df[['Behavior','Date']]
+
+    pivot = pd.pivot_table(df_multiple_bar,  
+                                index='Date', 
+                                columns='Behavior', 
+                                aggfunc=len,fill_value=0)
+    
+    
+    dlpivot = pivot.reset_index()
+    
+    multiple_line_plot_five = None
+    
+    try:       
+    
+        multiple_line_plot_five = get_multiple_line_plot_five(
+            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
+            z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
+            g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
+            m=dlpivot['Date'], n=dlpivot.iloc[:,4],data3=dlpivot,
+            b=dlpivot['Date'], c=dlpivot.iloc[:,5],data4=dlpivot
+        )
+     
+    except:
+        pass
+    
+    multiple_line_plot_four = None
+ 
+    try:       
+    
+        multiple_line_plot_four = get_multiple_line_plot_four(
+            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
+            z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
+            g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
+            m=dlpivot['Date'], n=dlpivot.iloc[:,4],data3=dlpivot
+        )
+     
+    except:
+        pass
+    
+    multiple_line_plot_three = None
+
+    try:       
+    
+        multiple_line_plot_three = get_multiple_line_plot_three(
+            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
+            z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
+            g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
+        )
+     
+    except:
+        pass
+    
+    multiple_line_plot_two = None
+    
+    try:       
+    
+        multiple_line_plot_two = get_multiple_line_plot_two(
+            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
+            z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
+        )
+     
+    except:
+        pass
+    
+    multiple_line_plot_one = None
+
+    try:       
+    
+        multiple_line_plot_one = get_multiple_line_plot_one(
+            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot
+        )
+     
+    except:
+        pass
+    
+    
+    multiple_line_plot_chatgpt = None
+    y_column_name = 'Behavior'  # Replace with the actual desired column name
+
+# Check if the selected column has any data
+    if y_column_name in dlpivot.columns and len(dlpivot[y_column_name]) > 0:
+        multiple_line_plot_chatgpt = get_multiple_line_plot_chatgpt(
+            x=dlpivot['Date'],
+            y=dlpivot[y_column_name],
+            data=dlpivot
+    )
+    else:
+        # print("Selected y column is empty or does not exist.")
+        pass
+
+        # pie charts
+
+
+    df2 = cases_df['Behavior'].value_counts()
+    pie_graph = get_pie_chart( x=df2, labels=df2.index)
+    df3 = cases_df['Anticedent'].value_counts()
+    pie_anticedent_graph = get_pie__chart_anticedent( x=df3, labels=df3.index)
+    df4 = cases_df['Function'].value_counts()
+    pie_function_graph = get_pie__chart_function( x=df4, labels=df4.index)
+    df5 = cases_df['Consequence'].value_counts()
+    pie_consequence_graph = get_pie__chart_consequence( x=df5, labels=df5.index)
+
+
     context= {
     
         'student':student,
         'bar_graph':bar_graph,
+        'beh_count_graph':beh_count_graph,
+        'multiple_line_plot_one':multiple_line_plot_one,
+        'multiple_line_plot_two':multiple_line_plot_two,
+        'multiple_line_plot_three':multiple_line_plot_three,
+        'multiple_line_plot_four':multiple_line_plot_four,
+        'multiple_line_plot_five':multiple_line_plot_five, 
+        'pie_graph':pie_graph,
+        'pie_anticedent_graph':pie_anticedent_graph,
+        'pie_function_graph':pie_function_graph,
+        'pie_consequence_graph':pie_consequence_graph,
        
     }
     

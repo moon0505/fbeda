@@ -11,8 +11,8 @@
                  <div class="navbar-nav ml-auto">
                         {% if user|is_case_manager %}
 
-              <a class="nav-item nav-link" href="{% url 'bip:create_student' %}">Add Case</a>
-              <a class="nav-item nav-link" href="{% url 'bip:for_user' username=user.username %}">Case List</a>
+              <a class="colorwhite" href="{% url 'bip:create_student' %}">Add Case</a>
+              <a class="colorwhite" href="{% url 'bip:for_user' username=user.username %}">Case List</a>
                 </div>
                 {% endif %}
         {% else %}
