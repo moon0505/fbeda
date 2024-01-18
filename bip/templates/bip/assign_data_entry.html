@@ -12,7 +12,7 @@
 
   <div class="instruction-card card mb-4">
       <div class="card-body">
-          <h5 class="card-title">Introduction</h5>
+          <h5 class="card-title">Directions</h5>
           <p class="card-text">
             To assign an individual to input data, you must create a unique identification for yourself and the case. The person inputting the data will be limited to the Functional Behavior Observation Form only and will not have access to other components of the website, i.e., dashboard, data analysis, and so forth.
           </p>
@@ -21,9 +21,9 @@
 
   <div class="steps-card card mb-4">
       <div class="card-body">
-          <h5 class="card-title">Follow the steps below:</h5>
+          <h5 class="card-title">Follow the Steps Below:</h5>
           <ol class="steps-list">
-            <li>Click on the following link to create your unique identification if the following is blank or need to change it: 
+            <li>Click on the following link to create your unique identification: 
               <a href="{% url 'bip:case_manager_unique_identifier' request.user.casemanager.id %}" class="card-link">
                 Unique identification ({{ request.user.casemanager.slug }})
               </a>
@@ -33,12 +33,12 @@
                 Unique identification ({{ student.slug }})
               </a>
             </li>
-            <li>Provide the individual who will be inputting the data both unique identification and the following link:
+            <li>Provide the individual who will be inputting the data both unique identifications and the following link:
               <a href="{% url 'bip:data_entry_signup' %}" class="card-link">Register</a>
             </li>
-            <li>The individual will then need to create their account and provide the unique identification to access the case.</li>
+            <li>The individual when regestering will need to create an account and provide the unique identifications to access the case.</li>
             <li>Once provided, check the following link to approve/reject the individual's access to 
-              the FBO form:              <a href="{% url 'bip:case_manager_dashboard' user.id %}" class="card-link">Confirmation</a>
+              the FBO form: <a href="{% url 'bip:case_manager_dashboard' user.id %}" class="card-link">Confirmation</a>
             </li>
             
           </ol>

@@ -17,9 +17,9 @@ import matplotlib.ticker as ticker
 
 
 
-def get_salesman_from_id(val):
-    salesman = MyUser.objects.get(id=val)
-    return salesman
+# def get_salesman_from_id(val):
+#     salesman = MyUser.objects.get(id=val)
+#     return salesman
 
 def get_image():
     buffer = BytesIO()
@@ -80,7 +80,7 @@ def get_heatmap( *args, **kwargs):
     y = kwargs.get('y')
     data = kwargs.get('data')
 
-    title = "Correlation Heatmap (Behavior, Anticedent, Function"
+    title = "Correlation Heatmap (Behavior, Antecedent, Function)"
     plt.title(title)
        
     sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
@@ -277,7 +277,7 @@ def get_multiple_line_plot_five( *args, **kwargs):
                     hspace=0.9)
     
     
-    fig.tight_layout() 
+    # fig.tight_layout() 
     
     ax1.bar(x, y)
     ax2.bar(z, k)
@@ -343,7 +343,7 @@ def get_multiple_line_plot_four( *args, **kwargs):
                     hspace=0.9)
     
     
-    fig.tight_layout() 
+    # fig.tight_layout() 
     
     ax1.bar(x, y)
     ax2.bar(z, k)
@@ -398,7 +398,7 @@ def get_multiple_line_plot_three( *args, **kwargs):
                     hspace=0.9)
     
     
-    fig.tight_layout() 
+    # fig.tight_layout() 
 
     ax1.bar(x, y)
     ax2.bar(z, k)
@@ -451,7 +451,7 @@ def get_multiple_line_plot_two( *args, **kwargs):
                     hspace=0.9)
     
     
-    fig.tight_layout() 
+    # fig.tight_layout() 
 
 
     ax1.bar(x, y)
@@ -496,7 +496,7 @@ def get_multiple_line_plot_one( *args, **kwargs):
                     hspace=0.9)
     
     
-    fig.tight_layout() 
+    # fig.tight_layout() 
 
 
     ax1.plot(x, y, marker='o')
@@ -740,7 +740,6 @@ def get_multiple_scatter_plot_two( *args, **kwargs):
     data = kwargs.get('data')
     data1 = kwargs.get('data1')
 
-   
 
     title = "Target Behavior Incidents by Day"
     plt.title(title)
@@ -748,7 +747,7 @@ def get_multiple_scatter_plot_two( *args, **kwargs):
     ax.xaxis.set_major_formatter(date_form)
     ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
     plt.grid(True)
-    plt.xlabel(' ')
+    plt.xlabel('')
     plt.ylabel('Count')
   
     # plt.style.use('seaborn')
@@ -759,7 +758,6 @@ def get_multiple_scatter_plot_two( *args, **kwargs):
   
     plt.scatter(z, k,  marker = 4,   s = 175,label=data.columns[2])
     
-   
 
     plt.legend()
     
@@ -793,10 +791,6 @@ def get_multiple_scatter_plot_one( *args, **kwargs):
 
     plt.scatter(x, y, marker = 6, s = 175, label=data.columns[1])
     
-  
-    
-   
-
     plt.legend()
     
     multiple_scater_plot_one = get_image()
@@ -884,10 +878,6 @@ def get_pie__chart_consequence( *args, **kwargs):
         return pie_consequence_graph  
     
     
-
-
-
-
 def get_duration_bar_chart( *args, **kwargs):
     
     plt.switch_backend('AGG')

@@ -541,6 +541,20 @@ def deleteUser(request, pk):
     context = {'item':user_delete,'user':user}
     return render(request, "bip/delete_user.html", context)
 
+
+
+def user_account(request, pk):
+    user_account= User.objects.get(pk=request.user.id)
+    user = User.objects.get(id=pk)
+
+    context = {'user_account':user_account,'user':user}
+
+    return render(request,'bip/user_account.html')
+
+
+
+
+
 def create_behavior(request,pk):
     user = User.objects.get(pk=request.user.id)
     student = Student.objects.get(id=pk) 

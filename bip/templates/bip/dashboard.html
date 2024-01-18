@@ -23,7 +23,7 @@
                       <li class="list-group-item"><a href="{% url 'bip:create_consequence' student.id %}" class="card-link">Consequence/</a><a href="{% url 'bip:edit_consequence' student.id %}">Edit</a></li>
                       <li class="list-group-item"><a  href="{% url 'bip:create_function' student.id %}" class="card-link">Function/</a><a  href="{% url 'bip:edit_function' student.id %}">Edit</a></li>
                       <li class="list-group-item"><a  href="{% url 'bip:create_setting' student.id %}" class="card-link">Setting</a>/<a  href="{% url 'bip:edit_setting' student.id %}">Edit</a></li> 
-                      <li class="list-group-item"><a  href="{% url 'bip:student_profile' student.id %}" class="card-link">Student</a></li> 
+                      <li class="list-group-item"><a  href="{% url 'bip:student_profile' student.id %}" class="card-link">Case</a></li> 
 
                   
               </ul>
@@ -60,7 +60,7 @@
     <div class="card card" style="width: 18rem;">
       <div class="card-body">
         <h5 class="card-title">Overview</h5>
-        <p class="card-text">Download as csv file for excel, numbers, google sheet, Assign a data entry</p>
+        <p class="card-text">Download data as csv file for excel, numbers, google sheet; Assign a data collector to the case.</p>
       </div>
       {% comment %} <ul class="list-group list-group-flush">
         <li class="list-group-item"><a href="#" class="card-link">Visual Spreadsheet</a></li> {% endcomment %}

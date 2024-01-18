@@ -116,6 +116,8 @@ urlpatterns = [
      
     path('delete_user/<pk>/',views.deleteUser,name='delete_user'),
 
+    path('user_account/<pk>/',views.user_account,name='user_account'),
+
 
 
 
