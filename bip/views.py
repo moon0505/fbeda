@@ -55,6 +55,7 @@ from .utils import  (
     get_box_plot_consequence,
     get_box_plot_setting,
     get_box_plot_time,
+    get_intensity_bar_chart,
     
     
     )
@@ -933,6 +934,9 @@ def snapshot_view(request, pk):
     data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
     cases_df = pd.DataFrame(data)
 
+
+
+
     try:
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
 
@@ -953,8 +957,20 @@ def snapshot_view(request, pk):
 
     bar_graph = get_bar_chart(x=df3, y = df4)
   
+
+
+
+
+
+    df_beh_count = cases_df['Behavior']
+    beh_count_graph = get_count_beh_plot( x= df_beh_count, data=cases_df)  
+
+
     # multiple dddbar graph- line plot origniallyxxxxxxxxxxxxxxxxxxxxxxxxx
       
+
+
+
     df_multiple_bar = cases_df[['Behavior','Date']]
 
     pivot = pd.pivot_table(df_multiple_bar,  
@@ -1082,6 +1098,7 @@ def snapshot_view(request, pk):
         'student':student,
         'bar_graph':bar_graph,
         'iheat_graph':iheat_graph,
+        'beh_count_graph':beh_count_graph,
         'iclustermap_graph':iclustermap_graph, 
         'multiple_line_plot_one':multiple_line_plot_one,
         'multiple_line_plot_two':multiple_line_plot_two,
@@ -1495,7 +1512,7 @@ def filter_data(request, pk):
     if is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior':
         qs = qs.filter(Q(behavior__behaviorincident=behavior_query))
 
-    if is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Anticedent':
+    if is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Antecedent':
         qs = qs.filter(Q(anticedent__anticedentincident=anticedent_query))
 
     if is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence':
@@ -1547,7 +1564,9 @@ def chart_view(request, pk):
     try:
     # beging time
         cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
-        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%Y-%m-%d %H:%M:%S')
+
         cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
         cases_df_time.columns = cases_df_time.columns.str.replace('function__behaviorfunction', 'Function')
@@ -1672,6 +1691,24 @@ def chart_view(request, pk):
         
         pass
 
+    data_intensity = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','intensity')
+    cases_df_intensity= pd.DataFrame(data_intensity)
+
+    # intensitiy formula:
+    box_intensity_graph = None
+    
+    try:
+        intensity_behavior = cases_df_intensity.groupby('behavior__behaviorincident')['intensity'].mean().round(1) 
+        intensity_behavior = intensity_behavior.to_frame().reset_index()        
+        df_intensity = intensity_behavior['behavior__behaviorincident']
+        dfy_intensity = intensity_behavior['intensity']
+      
+        box_intensity_graph = get_intensity_bar_chart ( x= df_intensity, y= dfy_intensity, data=intensity_behavior)  
+                
+    except:
+        
+        pass
+
     context = {
         'student':student,
         'beh_count_graph':beh_count_graph,
@@ -1686,7 +1723,7 @@ def chart_view(request, pk):
         'pie_consequence_graph':pie_consequence_graph,
         'box_duration_graph':box_duration_graph,
         'box_graph_time':box_graph_time,
-
+        'box_intensity_graph':box_intensity_graph,
         }
     return render(request, 'bip/chart.html', context)
     

@@ -42,6 +42,13 @@
         <img src="data:image/png;base64, {{ box_duration_graph | safe}}">
       </div>
     {% endif %}
+
+
+    {% if box_intensity_graph %}
+    <div class="box-graph">
+      <img src="data:image/png;base64, {{ box_intensity_graph | safe}}">
+    </div>
+  {% endif %}
   </div>
 </body>
 

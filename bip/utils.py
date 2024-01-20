@@ -16,11 +16,6 @@ import matplotlib.ticker as ticker
 
 
 
-
-# def get_salesman_from_id(val):
-#     salesman = MyUser.objects.get(id=val)
-#     return salesman
-
 def get_image():
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
@@ -80,7 +75,7 @@ def get_heatmap( *args, **kwargs):
     y = kwargs.get('y')
     data = kwargs.get('data')
 
-    title = "Correlation Heatmap (Behavior, Antecedent, Function)"
+    title = "Correlation Heatmap (Behavior, Antecedent, Fmmmunction)"
     plt.title(title)
        
     sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
@@ -542,23 +537,17 @@ def get_multiple_line_plot_chatgpt(*args, **kwargs):
 
 def get_count_beh_plot( *args, **kwargs):
     plt.switch_backend('AGG')
-    
     fig = plt.figure()
-    
     x = kwargs.get('x')
     y = kwargs.get('y')
     data = kwargs.get('data')
-    title = "Function and Behavior Association"
-    plt.title(title)
     
-   
-       
     sns.countplot(x=x, data=data)
     plt.xticks(rotation=45)
     plt.xlabel('Behavior')
-    plt.ylabel('Count')
+    plt.ylabel('Frequency')
 
-    title = "# of Incidents by Behavior"
+    title = "Behavior Frequency"
     plt.title(title)
 
     plt.tight_layout()
@@ -577,9 +566,6 @@ def get_count_time_plot( *args, **kwargs):
     y = kwargs.get('y')
     data = kwargs.get('data')
     
-    
-   
-       
     sns.countplot(x=x, data=data)
     plt.xticks(rotation=45)
     plt.xlabel('Time')
@@ -905,6 +891,33 @@ def get_duration_bar_chart( *args, **kwargs):
     box_duration_graph = get_image()
 
     return box_duration_graph
+
+
+def get_intensity_bar_chart( *args, **kwargs):
+    
+    plt.switch_backend('AGG')
+    fig = plt.figure()
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+   
+        
+
+    plt.tight_layout()
+
+     
+    plt.bar(x, y) 
+      
+    title = "Average Intensity of Behavior"
+    plt.title(title)
+    
+  
+   
+    plt.ylabel('Intensity')
+ 
+    box_intensity_graph = get_image()
+
+    return box_intensity_graph
 
 def get_box_plot_time( *args, **kwargs):
     plt.switch_backend('AGG')    

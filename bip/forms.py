@@ -5,12 +5,15 @@ from django.forms import ModelForm
 from .models import  Case, Behavior, Function, Student,Anticedent,Consequence, Enviroment
 from django import forms
 # from accounts.models import MyUser
+from django.core.exceptions import ValidationError
+
 
 
 # Old one down here try it
 
 #for student related form
 class CaseManagerUserForm(forms.ModelForm):
+    
     class Meta:
         model=User
         fields=['first_name','last_name','username','password','email']
@@ -58,7 +61,7 @@ class BehaviorForm(forms.ModelForm):
  
     class Meta():
         model = Case
-        fields = ('behavior','anticedent','consequence','function','date_created','time','duration','frequency','enviroment')
+        fields = ('behavior','anticedent','consequence','function','date_created','time','duration','frequency','intensity','enviroment')
         widgets = {
             'date_created': DateInput(),
             'behavior':forms.RadioSelect(),
@@ -68,13 +71,6 @@ class BehaviorForm(forms.ModelForm):
             'enviroment': forms.Select(),  
 
         }
-
-    
-            
-
-
-   
-
 
    
 class StudentForm(ModelForm):

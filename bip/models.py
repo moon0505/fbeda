@@ -5,9 +5,11 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import time
 from django.utils.text import slugify
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class CaseManager(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
+    
     slug = models.SlugField(max_length=150,null=True,unique=True,blank=True,
         verbose_name=("Unique Identification"))
     status=models.BooleanField(default=False)
@@ -89,6 +91,7 @@ class Enviroment(models.Model):
             return self.behaviorenviroment or ''
         
 class Case(models.Model):
+        
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         behavior = models.ForeignKey(Behavior, on_delete=models.CASCADE)
         user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
@@ -100,6 +103,13 @@ class Case(models.Model):
         duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='Duration')
         time = models.TimeField(null=True, blank=True)
         frequency = models.PositiveIntegerField(null=True, blank=True,  default=1, verbose_name='Frequency')
+        intensity = models.PositiveIntegerField(null=True, blank=True,  default=1, validators=[
+            MinValueValidator(1, message='Intensity must be at least 1(Mild).'),
+            MaxValueValidator(3, message='Intensity options are 1(Mild), 2(Moderate),and 3(Severe).')
+        ],
+        verbose_name='Intensity')
+      
+    
 
         class Meta:
             ordering = ['-date_created']

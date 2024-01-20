@@ -39,15 +39,14 @@
         <p class="card-text"> Data Visualization and Data Analysis.</p>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><a href="{% url 'bip:snapshot' student.id %}" class="card-link">Snap Shot</a></li>
+        <li class="list-group-item"><a href="{% url 'bip:snapshot' student.id %}" class="card-link">Behavior</a></li>
         <li class="list-group-item"><a href="{% url 'bip:function' student.pk %}" class="card-link">Function</a></li>
         <li class="list-group-item"><a href="{% url 'bip:anticedent' student.pk %}" class="card-link">Antecedent</a></li>
         <li class="list-group-item"><a href="{% url 'bip:consequence' student.pk %}" class="card-link">Consequence</a></li>
         <li class="list-group-item"><a href="{% url 'bip:setting' student.pk %}" class="card-link">Setting</a></li>
-
-        <li class="list-group-item"><a a href="{% url 'bip:chart' student.id %}" class="card-link">Visual Data</a></li>  
+        <li class="list-group-item"><a a href="{% url 'bip:chart' student.id %}" class="card-link">Statistics</a></li>  
        <li class="list-group-item"><a a href="{% url 'bip:filter_data' student.id %}" class="card-link">Data Analysis</a></li>  
-      
+
        <li class="list-group-item"><a a href="{% url 'bip:raw_data' student.id %}" class="card-link">Data Tables</a></li>  
 
       </ul>
@@ -91,6 +90,9 @@
 
           <th>Setting</th>
           {% endif %}
+
+
+          <th>Intensity</th>
           
           {% if student_time %}
 
@@ -116,12 +118,17 @@
           <td>{{incident.consequence}}</td>
           <td>{{incident.function}}</td>
           {% if incident.enviroment%}
-
           <td>{{incident.enviroment}}</td>
+          {% endif %}
+          {% if incident.intensity %}
+          <td>{{incident.intensity}}</td>
           {% endif %}
           {% if incident.time %}
           <td>{{incident.time}}</td>
           {% endif %}
+
+
+          
 
           {% if incident.duration%}
           <td>{{incident.time_change}}</td>

@@ -18,7 +18,11 @@
         
         
       </div>
-
+      {% if beh_count_graph %}
+      <div class="graph-container">
+        <img src="data:image/png;base64, {{ beh_count_graph | safe}}">
+      </div>
+    {% endif %}
       <div class="container">
         <img src="data:image/png;base64, {{ bar_graph | safe }}">
       </div>
