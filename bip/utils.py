@@ -867,13 +867,13 @@ def get_pie__chart_consequence( *args, **kwargs):
 def get_duration_bar_chart( *args, **kwargs):
     
     plt.switch_backend('AGG')
-    fig = plt.figure(figsize=(6,4))
+    fig = plt.figure()
+
     x = kwargs.get('x')
     y = kwargs.get('y')
     data = kwargs.get('data')
    
         
-    fig, ax = plt.subplots(figsize=(10,6)) 
 
    
      
@@ -882,9 +882,8 @@ def get_duration_bar_chart( *args, **kwargs):
     title = "Average Duration of Behavior"
     plt.title(title)
     
-    plt.yticks(np.arange(min(y), max(y)+10, 30.0))
+    # plt.yticks(np.arange(min(y), max(y)+10, 30.0))
   
-    ax.grid(axis='y')
    
     plt.ylabel('Seconds')
  

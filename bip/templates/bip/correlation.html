@@ -11,42 +11,27 @@
         <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">  <b> Dashboard</b></a>
       </div>
         <br/>
+        
+      
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        
+      </li>
+      <li class="page-item"><a class="page-link"  href="{% url 'bip:correlation' student.pk %}" class="card-link">Correlation</a></li>
+      <li class="page-item"><a class="page-link"  href="{% url 'bip:pie_charts' student.pk %}" class="card-link">Pie Charts</a></li>
+      <li class="page-item"><a class="page-link"  href="{% url 'bip:frequency_charts' student.pk %}" class="card-link">Frquency Charts</a></li>
+      <li class="page-item"><a class="page-link"  href="{% url 'bip:raw_data' student.pk %}" class="card-link">Data Tables</a></li>
 
 
-      </div>
-      {% if beh_count_graph %}
-      <div class="graph-container">
-        <img src="data:image/png;base64, {{ beh_count_graph | safe}}">
-      </div>
-    {% endif %}
-      <div class="container">
-        <img src="data:image/png;base64, {{ bar_graph | safe }}">
-      </div>
-      <br><br>
 
-      {% if multiple_line_plot_five %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_five | safe }}">
-        </div>
-      {% elif multiple_line_plot_four %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_four | safe }}">
-        </div>
-      {% elif multiple_line_plot_three %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_three | safe }}">
-        </div>
-      {% elif multiple_line_plot_two %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_two | safe }}">
-        </div>
-      {% elif multiple_line_plot_one %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_one | safe }}">
-        </div>
-      {% endif %}
+      
+      <li class="page-item">
+        </a>
+      </li>
+    </ul>
+  </nav>
 
-      <br><br><br>
 
       <div class="container">
         {% if iheat_graph %}

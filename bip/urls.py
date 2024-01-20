@@ -73,6 +73,7 @@ urlpatterns = [
 
 
     path('luna/', views.luna, name="luna"),
+    path('statistics/<pk>/', views.statistics, name="statistics"),
 
     
     
@@ -164,6 +165,15 @@ urlpatterns = [
 
     path('error_page/<pk>/', views.error_page, name='error_page'),
 
+    
+    
+    path('correlation/<pk>/', views.correlation_view, name='correlation'),
+    path('pie_charts/<pk>/', views.pie_chart_view, name='pie_charts'),
+    path('frequency_charts/<pk>/', views.frequency_charts_view, name='frequency_charts'),
+
+
+
+    
     path('snapshot/<pk>/', views.snapshot_view, name='snapshot'),
     path('snapshot_data_entry/<pk>/', views.snapshot_data_entry_view, name='snapshot_data_entry'),
 
