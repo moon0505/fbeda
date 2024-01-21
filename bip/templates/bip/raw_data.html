@@ -9,7 +9,20 @@
     <div class="nav-button">
       <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard ({{student.studentname}})</a>
     </div>
-
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          
+        </li>
+        <li class="page-item"><a class="page-link"  href="{% url 'bip:correlation' student.pk %}" class="card-link">Correlation</a></li>
+        <li class="page-item"><a class="page-link"  href="{% url 'bip:pie_charts' student.pk %}" class="card-link">Pie Charts</a></li>
+        <li class="page-item"><a class="page-link"  href="{% url 'bip:frequency_charts' student.pk %}" class="card-link">Frquency Charts</a></li>
+        <li class="page-item"><a class="page-link"  href="{% url 'bip:raw_data' student.pk %}" class="card-link">Data Tables</a></li>
+        <li class="page-item">
+          </a>
+        </li>
+      </ul>
+    </nav>
     <!-- Content Sections -->
     <div class="content-section">
       <div class="stats-row">

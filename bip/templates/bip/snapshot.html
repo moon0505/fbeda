@@ -19,47 +19,61 @@
         <img src="data:image/png;base64, {{ beh_count_graph | safe}}">
       </div>
     {% endif %}
+
+    {% if multiple_line_plot_five %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_five | safe }}">
+    </div>
+  {% elif multiple_line_plot_four %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_four | safe }}">
+    </div>
+  {% elif multiple_line_plot_three %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_three | safe }}">
+    </div>
+  {% elif multiple_line_plot_two %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_two | safe }}">
+    </div>
+  {% elif multiple_line_plot_one %}
+    <div class="container">
+      <img src="data:image/png;base64, {{ multiple_line_plot_one | safe }}">
+    </div>
+  {% endif %}
+
+  <br><br><br>
+
+  
       <div class="container">
         <img src="data:image/png;base64, {{ bar_graph | safe }}">
       </div>
       <br><br>
 
-      {% if multiple_line_plot_five %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_five | safe }}">
-        </div>
-      {% elif multiple_line_plot_four %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_four | safe }}">
-        </div>
-      {% elif multiple_line_plot_three %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_three | safe }}">
-        </div>
-      {% elif multiple_line_plot_two %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_two | safe }}">
-        </div>
-      {% elif multiple_line_plot_one %}
-        <div class="container">
-          <img src="data:image/png;base64, {{ multiple_line_plot_one | safe }}">
-        </div>
+      <br><br><br>
+
+      <div class="graph-container">
+        <img src="data:image/png;base64, {{ box_graph_time | safe}}">
+      </div>
+
+
+
+      {% if box_duration_graph %}
+      <div class="container">
+        <img src="data:image/png;base64, {{ box_duration_graph | safe }}">
+      </div>
+      {% endif %}
+<br>
+
+      {% if box_intensity_graph %}
+      <div class="container">
+        <img src="data:image/png;base64, {{ box_intensity_graph | safe }}">
+      </div>
       {% endif %}
 
-      <br><br><br>
 
-      <div class="container">
-        {% if iheat_graph %}
-          <img src="data:image/png;base64, {{ iheat_graph | safe }}">
-        {% endif %}
-      </div>
-      <br><br><br>
 
-      <div class="container">
-        {% if iclustermap_graph %}
-          <img src="data:image/png;base64, {{ iclustermap_graph | safe }}">
-        {% endif %}
-      </div>
+      
       <br><br>
     </div>
   </body>

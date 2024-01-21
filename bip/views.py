@@ -1063,7 +1063,11 @@ def frequency_charts_view(request, pk):
     try:
     # beging time
         cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
-        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%Y-%m-%d %H:%M:%S')
+
+        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%H:%M:%S')
+        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+
+
         cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
         cases_df_time.columns = cases_df_time.columns.str.replace('function__behaviorfunction', 'Function')
@@ -1138,13 +1142,90 @@ def frequency_charts_view(request, pk):
 
 
 def snapshot_view(request, pk):
-    
+    error_message=None
+    df = None
+    graph = None
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
+    
+    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction', 'date_created','time','id')
     cases_df = pd.DataFrame(data)
 
+    # beging time
 
+    cases_df_time = None
+
+    box_graph_time = None
+
+    try:
+
+        cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
+        print(cases_df_time)
+
+        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%H:%M:%S')
+        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+
+
+        cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df_time.columns = cases_df_time.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df_time.columns = cases_df_time.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+        cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
+        
+        cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
+
+        cases_df_time = cases_df_time.sort_values('hour_12h')
+
+        df_time = cases_df_time['hour_12h']
+
+        # sort get_box_plot_time x axis to be in order from earliest time 
+        box_graph_time = get_box_plot_time( x= df_time, data=cases_df_time) 
+ 
+    except:
+        pass
+# ending time
+    
+
+    # duration begiing
+    data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
+    cases_df_duration = pd.DataFrame(data_duration)
+
+    box_duration_graph = None
+    
+    try:
+        duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
+        duration_behavior = duration_behavior.to_frame().reset_index()        
+        df_duration = duration_behavior['behavior__behaviorincident']
+        dfy_duration = duration_behavior['duration']
+      
+        box_duration_graph = get_duration_bar_chart ( x= df_duration, y= dfy_duration, data=duration_behavior)  
+                
+    except:
+        
+        pass
+
+
+
+
+     # intensity charts
+    
+    data_intensity = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','intensity')
+    cases_df_intensity= pd.DataFrame(data_intensity)
+
+    # intensitiy formula:
+    box_intensity_graph = None
+    
+    try:
+        intensity_behavior = cases_df_intensity.groupby('behavior__behaviorincident')['intensity'].mean().round(1) 
+        intensity_behavior = intensity_behavior.to_frame().reset_index()        
+        df_intensity = intensity_behavior['behavior__behaviorincident']
+        dfy_intensity = intensity_behavior['intensity']
+      
+        box_intensity_graph = get_intensity_bar_chart ( x= df_intensity, y= dfy_intensity, data=intensity_behavior)  
+                
+    except:
+        
+        pass
 
 
     try:
@@ -1152,6 +1233,7 @@ def snapshot_view(request, pk):
 
         cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
         cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+        
         cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
         cases_df.columns = cases_df.columns.str.replace('time', 'Time')
         cases_df.columns = cases_df.columns.str.replace('id', 'ID')
@@ -1168,19 +1250,12 @@ def snapshot_view(request, pk):
     bar_graph = get_bar_chart(x=df3, y = df4)
   
 
-
-
-
-
     df_beh_count = cases_df['Behavior']
     beh_count_graph = get_count_beh_plot( x= df_beh_count, data=cases_df)  
 
 
     # multiple dddbar graph- line plot origniallyxxxxxxxxxxxxxxxxxxxxxxxxx
       
-
-
-
     df_multiple_bar = cases_df[['Behavior','Date']]
 
     pivot = pd.pivot_table(df_multiple_bar,  
@@ -1271,53 +1346,33 @@ def snapshot_view(request, pk):
         # print("Selected y column is empty or does not exist.")
         pass
   
-  
-    # cluster heatmapcorrelation matrixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    
-    behavior = pd.get_dummies(cases_df['Behavior'])
-    anticedent = pd.get_dummies(cases_df['Anticedent'])
-    function = pd.get_dummies(cases_df['Function'])
-    df_matrix = pd.concat([cases_df,behavior, anticedent,function], axis=1)
-    df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
-    matrix = df_matrix.corr().round(2) 
-    iclustermap_graph = None
-    
-    try:
-        iclustermap_graph = get_clustermap(data=matrix)
 
-    except:
-        pass
-  
-# heatmap correaltion matrix
-    behavior = pd.get_dummies(cases_df['Behavior'])
-    anticedent = pd.get_dummies(cases_df['Anticedent'])
-    function = pd.get_dummies(cases_df['Function'])
-    df_matrix = pd.concat([cases_df,behavior, anticedent,function], axis=1)
-    df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
-    matrix = df_matrix.corr().round(2) 
-    iheat_graph = None
-    
-    try:
-        iheat_graph = get_heatmap(data=matrix)
 
-    except:
-        pass
-   
+    
     context= {
     
         'student':student,
         'bar_graph':bar_graph,
-        'iheat_graph':iheat_graph,
         'beh_count_graph':beh_count_graph,
-        'iclustermap_graph':iclustermap_graph, 
         'multiple_line_plot_one':multiple_line_plot_one,
         'multiple_line_plot_two':multiple_line_plot_two,
         'multiple_line_plot_three':multiple_line_plot_three,
         'multiple_line_plot_four':multiple_line_plot_four,
         'multiple_line_plot_five':multiple_line_plot_five, 
         'multiple_line_plot_chatgpt':multiple_line_plot_chatgpt,
+        'box_graph_time':box_graph_time,
+        'box_duration_graph':box_duration_graph,
+        'box_intensity_graph':box_intensity_graph,
+
     }
     
+
+
+
+
+
+
+
     return render(request, 'bip/snapshot.html', context)
 
 
@@ -1775,7 +1830,7 @@ def chart_view(request, pk):
     # beging time
         cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
         # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
-        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%Y-%m-%d %H:%M:%S')
+        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%H:%M:%S')
 
         cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
@@ -1784,6 +1839,8 @@ def chart_view(request, pk):
         cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
         
         cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
+
+
 
         cases_df_time = cases_df_time.sort_values('hour_12h')
 
