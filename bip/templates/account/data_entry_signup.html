@@ -100,7 +100,7 @@
               {% render_field userForm.email class="form-control" placeholder="Email" %}
             </div>
             <div class="form-group">
-              {% render_field caseManagerForm.address class="form-control" placeholder="Address" %}
+              {% render_field userForm.bio class="form-control" placeholder="Occupation/Title" %}
             </div>
           </div>
           <div class="col-md-6">
@@ -112,10 +112,10 @@
             </div>
           
             <div class="form-group">
-              {% render_field dataEntryForm.assignedCaseManagerSlug class="form-control" placeholder="Case Manager" %}
+              {% render_field dataEntryForm.assignedCaseManagerSlug class="form-control" placeholder="Case Manager: Unique Identification" %}
             </div>
             <div class="form-group">
-              {% render_field dataEntryForm.assignedStudentSlug class="form-control" placeholder="Student" %}
+              {% render_field dataEntryForm.assignedStudentSlug class="form-control" placeholder="Case: Unique Identification" %}
             </div>
           </div>
         </div>

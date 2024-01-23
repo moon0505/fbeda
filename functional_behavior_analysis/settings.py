@@ -42,10 +42,11 @@ INSTALLED_APPS = [
     'crispy_forms',
     'widget_tweaks',
     'crispy_bootstrap4',
+    
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# AUTH_USER_MODEL = 'account.MyUser'  #add this
+AUTH_USER_MODEL = 'bip.CustomUser'  #add this
 
 
 MIDDLEWARE = [

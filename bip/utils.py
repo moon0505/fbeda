@@ -88,6 +88,26 @@ def get_heatmap( *args, **kwargs):
 
     return iheat_graph
 
+# antecedent correlation
+def get_heatmap_antecedent( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Correlation Heatmap (Behavior and Antecedent)"
+    plt.title(title)
+       
+    sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+
+    
+    iheat_graph_antecedent = get_image()
+
+    return iheat_graph_antecedent
 
 
 # clustermap
@@ -117,6 +137,28 @@ def get_clustermap( *args, **kwargs):
     return iclustermap_graph
 
 
+def get_clustermap_antecedent( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Clustermap (Behaviors and Antecedents)"
+    plt.title(title)
+  
+
+
+
+  
+    sns.clustermap(data,  annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+    
+    iclustermap_graph_antecedent = get_image()
+
+    return iclustermap_graph_antecedent
 
 def get_box_plot_function( *args, **kwargs):
     plt.switch_backend('AGG')    
@@ -143,6 +185,46 @@ def get_box_plot_function( *args, **kwargs):
     return box_graph_function
 
 
+# function correlation
+def get_heatmap_function( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Correlation Heatmap (Behavior and Function)"
+    plt.title(title)
+       
+    sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+
+    
+    iheat_graph_function = get_image()
+
+    return iheat_graph_function
+
+
+def get_clustermap_function( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Clustermap (Behaviors and Antecedents)"
+    plt.title(title)
+  
+    sns.clustermap(data,  annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+    
+    iclustermap_graph_function = get_image()
+
+    return iclustermap_graph_function
 
 
 def get_box_plot_consequence( *args, **kwargs):

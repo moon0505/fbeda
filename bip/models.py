@@ -1,14 +1,20 @@
    
 from django.db import models
 from django.views import generic
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.utils import timezone
 import time
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
+
+
+class CustomUser(AbstractUser):
+    bio = models.CharField(max_length=20, blank=True, null=True, verbose_name='Occupation')
+
 class CaseManager(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     
     slug = models.SlugField(max_length=150,null=True,unique=True,blank=True,
         verbose_name=("Unique Identification"))
@@ -21,7 +27,7 @@ class CaseManager(models.Model):
         return self.user.id
     
 class DataEntry(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     assignedCaseManagerSlug = models.CharField(max_length=20,blank=True,null=True)
     assignedStudentSlug = models.CharField(max_length=20,blank=True,null=True)
     admitDate=models.DateField(auto_now=True)
@@ -43,7 +49,7 @@ class Student(models.Model):
             "*Unique Identification allows another to use FBO form if provided by you only"
         ),
     )
-        user_student = models.ForeignKey(User, on_delete=models.CASCADE,  default=None,related_name="postts")     
+        user_student = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None,related_name="postts")     
 
         def __str__(self):
           return str(self.studentname)
@@ -52,7 +58,7 @@ class Anticedent(models.Model):
         anticedentincident = models.CharField(max_length=50,verbose_name= 'Antecedent', null=True, blank=True)
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         anticedent_definition = models.CharField(null=True, blank=True, max_length=1000, verbose_name= 'Antecedent Definition')
-        user = models.ForeignKey(User, on_delete=models.CASCADE,  default=None)
+        user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
         def __str__(self):
           return self.anticedentincident      
      
@@ -60,7 +66,7 @@ class Behavior(models.Model):
         behaviorincident = models.CharField(max_length=30,verbose_name= 'Behavior')
         behavior_definition = models.CharField(null=True, blank=True, max_length=1000,verbose_name= 'Behavior Definition')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
-        user = models.ForeignKey(User, on_delete=models.CASCADE,  default=None)
+        user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
         
         def __str__(self):
           return self.behaviorincident
@@ -68,7 +74,7 @@ class Behavior(models.Model):
 class Function(models.Model):
         behaviorfunction = models.CharField(max_length=30, null=True, blank=True,verbose_name= 'Function')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
-        user = models.ForeignKey(User, on_delete=models.CASCADE,  default=None)
+        user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
         def __str__(self):
           return self.behaviorfunction  
       
@@ -76,14 +82,14 @@ class Function(models.Model):
 class Consequence(models.Model):
         behaviorconsequence = models.CharField(max_length=30, null=True, blank=True,verbose_name= 'Consequence')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
-        user = models.ForeignKey(User, on_delete=models.CASCADE,  default=None)
+        user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
         def __str__(self):
           return self.behaviorconsequence  
 
 class Enviroment(models.Model):
         behaviorenviroment = models.CharField(max_length=50, null=True, blank=True,verbose_name= 'Setting')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
-        user = models.ForeignKey(User, on_delete=models.CASCADE,  default=None)
+        user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
         
         
         # May need to check this if it causes issues with data table or more
@@ -94,7 +100,7 @@ class Case(models.Model):
         
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         behavior = models.ForeignKey(Behavior, on_delete=models.CASCADE)
-        user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+        user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=None)
         anticedent = models.ForeignKey(Anticedent,on_delete=models.CASCADE, verbose_name='Antecedent')
         function = models.ForeignKey(Function,on_delete=models.CASCADE)
         consequence = models.ForeignKey(Consequence,on_delete=models.CASCADE)

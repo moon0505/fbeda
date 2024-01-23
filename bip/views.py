@@ -26,7 +26,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 
 from django.contrib.auth.decorators import login_required,user_passes_test
-from .models import   Student, Behavior, Case, Anticedent, Function, Consequence,Enviroment
+from .models import   Student, Behavior, Case, Anticedent, Function, Consequence,Enviroment,CustomUser
 from .forms import BehaviorForm, StudentForm,StudentUpdateForm, CreateBehaviorForm,CreateAnticedentForm,CreateFunctionForm, CreateConsequenceForm, StudentFormSlug, UpdateCaseManagerForm,CreateEnviromentForm
 from .utils import  (
     get_bar_chart,
@@ -56,6 +56,10 @@ from .utils import  (
     get_box_plot_setting,
     get_box_plot_time,
     get_intensity_bar_chart,
+    get_heatmap_antecedent,
+    get_clustermap_antecedent, 
+    get_clustermap_function,
+    get_heatmap_function
     
     
     )
@@ -133,6 +137,10 @@ def case_manager_signup_view(request):
         userForm=forms.CaseManagerUserForm(request.POST)
         caseManagerForm=forms.CaseManagerForm(request.POST,request.FILES)
         if userForm.is_valid() and caseManagerForm.is_valid():
+            
+
+
+
             user=userForm.save()
             user.set_password(user.password)
             user.save()
@@ -330,10 +338,10 @@ class UserPosts(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         try:
-            self.post_user = User.objects.prefetch_related("postts").get(
+            self.post_user = CustomUser.objects.prefetch_related("postts").get(
                 username__iexact=self.kwargs.get("username")
             )
-        except User.DoesNotExist:
+        except CustomUser.DoesNotExist:
             raise Http404
         else:
             return self.post_user.postts.all()
@@ -482,7 +490,7 @@ def deletePost(request, pk):
 
 def create_student(request):
     
-    user_student = User.objects.get(pk=request.user.id)
+    user_student = CustomUser.objects.get(pk=request.user.id)
     form = StudentForm()
     if  is_case_manager(request.user):
 
@@ -495,7 +503,7 @@ def create_student(request):
                     
                     if form.is_valid():
                         obj = form.save(commit=False)
-                        obj.user_student = User.objects.get(pk=request.user.id)
+                        obj.user_student = CustomUser.objects.get(pk=request.user.id)
                         obj.save()                 
                         
                         return redirect("bip:for_user", username=request.user.username)
@@ -546,10 +554,10 @@ def deleteStudent(request, pk):
 
 
 def deleteUser(request, pk):
-    user_delete= User.objects.get(pk=request.user.id)
+    user_delete= CustomUser.objects.get(pk=request.user.id)
 
     print(user_delete)
-    user = User.objects.get(id=pk)
+    user = CustomUser.objects.get(id=pk)
     
     if request.method == "POST":
         user_delete.delete()
@@ -561,8 +569,8 @@ def deleteUser(request, pk):
 
 
 def user_account(request, pk):
-    user_account= User.objects.get(pk=request.user.id)
-    user = User.objects.get(id=pk)
+    user_account= CustomUser.objects.get(pk=request.user.id)
+    user = CustomUser.objects.get(id=pk)
 
     context = {'user_account':user_account,'user':user}
 
@@ -573,7 +581,7 @@ def user_account(request, pk):
 
 
 def create_behavior(request,pk):
-    user = User.objects.get(pk=request.user.id)
+    user = CustomUser.objects.get(pk=request.user.id)
     student = Student.objects.get(id=pk) 
 
     form = CreateBehaviorForm()
@@ -586,7 +594,7 @@ def create_behavior(request,pk):
             
             if form.is_valid():
                  obj = form.save(commit=False)
-                 obj.user = User.objects.get(pk=request.user.id)
+                 obj.user = CustomUser.objects.get(pk=request.user.id)
                  obj.student = student
                  obj.save()
                  return redirect("bip:dashboard", student.id)                
@@ -631,7 +639,7 @@ def deleteBehavior(request, pk):
 
 @login_required
 def create_anticedent(request,pk):
-    user = User.objects.get(pk=request.user.id)
+    user = CustomUser.objects.get(pk=request.user.id)
     
     student = Student.objects.get(id=pk) 
 
@@ -645,7 +653,7 @@ def create_anticedent(request,pk):
             
             if form.is_valid():
                  obj = form.save(commit=False)
-                 obj.user = User.objects.get(pk=request.user.id)
+                 obj.user = CustomUser.objects.get(pk=request.user.id)
                  obj.student = student
                  obj.save() 
                  return redirect("bip:dashboard", student.id)                 
@@ -686,7 +694,7 @@ def deleteAnticedent(request, pk):
 
 @login_required
 def create_function(request,pk):
-    user = User.objects.get(pk=request.user.id)
+    user = CustomUser.objects.get(pk=request.user.id)
     
     student = Student.objects.get(id=pk) 
 
@@ -700,7 +708,7 @@ def create_function(request,pk):
             
             if form.is_valid():
                  obj = form.save(commit=False)
-                 obj.user = User.objects.get(pk=request.user.id)
+                 obj.user = CustomUser.objects.get(pk=request.user.id)
                  obj.student = student
                  obj.save()
                  return redirect("bip:dashboard", student.id)                              
@@ -743,7 +751,7 @@ def deleteFunction(request, pk):
 
 @login_required
 def create_consequence(request,pk):
-    user = User.objects.get(pk=request.user.id)
+    user = CustomUser.objects.get(pk=request.user.id)
     
     student = Student.objects.get(id=pk) 
 
@@ -757,7 +765,7 @@ def create_consequence(request,pk):
             
             if form.is_valid():
                  obj = form.save(commit=False)
-                 obj.user = User.objects.get(pk=request.user.id)
+                 obj.user = CustomUser.objects.get(pk=request.user.id)
                  obj.student = student
                  obj.save() 
                  return redirect("bip:dashboard", student.id)                 
@@ -796,7 +804,7 @@ def deleteConsequence(request, pk):
 
 @login_required
 def create_setting_view(request,pk):
-    user = User.objects.get(pk=request.user.id) 
+    user = CustomUser.objects.get(pk=request.user.id) 
     student = Student.objects.get(id=pk) 
 
     form = CreateEnviromentForm()
@@ -809,7 +817,7 @@ def create_setting_view(request,pk):
             
             if form.is_valid():
                  obj = form.save(commit=False)
-                 obj.user = User.objects.get(pk=request.user.id)
+                 obj.user = CustomUser.objects.get(pk=request.user.id)
                  obj.student = student
                  obj.save()
                  return redirect("bip:dashboard", student.id)                              
@@ -1162,8 +1170,8 @@ def snapshot_view(request, pk):
         cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
         print(cases_df_time)
 
-        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%H:%M:%S')
-        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%H:%M:%S')
+        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
 
 
         cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
@@ -1571,7 +1579,7 @@ def function_view(request,pk):
     try:
         filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
     
-        iheat_graph = get_heatmap(data=filterDX)
+        iheat_graph_function = get_heatmap_function(data=filterDX)
     except:
         pass
     
@@ -1579,13 +1587,14 @@ def function_view(request,pk):
     iclustermap_graph = None
     
     try:
-        iclustermap_graph = get_clustermap(data=matrix)
+        iclustermap_graph_function = get_clustermap_function(data=matrix)
 
     except:
         pass
   
-    context= {'student':student,'iclustermap_graph':iclustermap_graph, 
-    'iheat_graph':iheat_graph, 
+    context= {'student':student,
+              'iclustermap_graph_function':iclustermap_graph_function, 
+    'iheat_graph_function':iheat_graph_function, 
     'box_graph_function':box_graph_function,}
     
     return render(request, 'bip/function.html', context)
@@ -1677,20 +1686,21 @@ def anticedent_view(request,pk):
     try:
         filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
     
-        iheat_graph = get_heatmap(data=filterDX)
+        iheat_graph_antecedent = get_heatmap_antecedent(data=filterDX)
     except:
         pass
-    iclustermap_graph = None
+    iclustermap_graph_antecedent = None
     
     try:
-        iclustermap_graph = get_clustermap(data=matrix)
+        iclustermap_graph_antecedent = get_clustermap_antecedent(data=matrix)
 
     except:
         pass
   
   
-    context= {'student':student,'iclustermap_graph':iclustermap_graph, 
-    'iheat_graph':iheat_graph, 
+    context= {'student':student,
+              'iclustermap_graph_antecedent':iclustermap_graph_antecedent, 
+    'iheat_graph_antecedent':iheat_graph_antecedent, 
     'box_graph':box_graph,}
     
     

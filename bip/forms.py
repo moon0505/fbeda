@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from bip import models
 from django.forms import ModelForm
-from .models import  Case, Behavior, Function, Student,Anticedent,Consequence, Enviroment
+from .models import  Case, Behavior, Function, Student,Anticedent,Consequence, Enviroment,CustomUser
 from django import forms
 # from accounts.models import MyUser
 from django.core.exceptions import ValidationError
@@ -15,8 +15,8 @@ from django.core.exceptions import ValidationError
 class CaseManagerUserForm(forms.ModelForm):
     
     class Meta:
-        model=User
-        fields=['first_name','last_name','username','password','email']
+        model=CustomUser
+        fields=['first_name','last_name','username','password','bio','email',]
         widgets = {
         'password': forms.PasswordInput()
         }
@@ -33,8 +33,8 @@ class UpdateCaseManagerForm(forms.ModelForm):
 #for teacher related form
 class DataEntryUserForm(forms.ModelForm):
     class Meta:
-        model=User
-        fields=['first_name','last_name','username','password','email']
+        model=CustomUser
+        fields=['first_name','last_name','username','password','bio','email']
         widgets = {
         'password': forms.PasswordInput()
         }
