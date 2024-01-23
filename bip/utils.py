@@ -250,6 +250,46 @@ def get_box_plot_consequence( *args, **kwargs):
     return box_graph_consequence
 
 
+# consequence correlation
+def get_heatmap_consequence( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Correlation Heatmap (Behavior and Consequence)"
+    plt.title(title)
+       
+    sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+
+    
+    iheat_graph_consequence = get_image()
+
+    return iheat_graph_consequence
+
+
+def get_clustermap_consequence( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Clustermap (Behaviors and Consequence)"
+    plt.title(title)
+  
+    sns.clustermap(data,  annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+    
+    iclustermap_graph_consequence = get_image()
+
+    return iclustermap_graph_consequence
 
 
 def get_box_plot( *args, **kwargs):
@@ -296,6 +336,47 @@ def get_box_plot_setting( *args, **kwargs):
     box_graph_setting = get_image()
 
     return box_graph_setting
+
+def get_heatmap_setting( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Correlation Heatmap (Behavior and Setting)"
+    plt.title(title)
+       
+    sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+
+    
+    iheat_graph_setting = get_image()
+
+    return iheat_graph_setting
+
+
+def get_clustermap_setting( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Clustermap (Behaviors and Setting)"
+    plt.title(title)
+  
+    sns.clustermap(data,  annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+    
+    iclustermap_graph_setting = get_image()
+
+    return iclustermap_graph_setting
+
 
 
 def get_multiple_line_plot_five( *args, **kwargs):

@@ -59,10 +59,15 @@ from .utils import  (
     get_heatmap_antecedent,
     get_clustermap_antecedent, 
     get_clustermap_function,
-    get_heatmap_function
-    
-    
+    get_heatmap_function,
+    get_heatmap_consequence,
+    get_clustermap_consequence,
+    get_heatmap_setting,
+    get_clustermap_setting
+
     )
+
+
 import pandas as pd
 import numpy as np
 import csv,io
@@ -371,7 +376,7 @@ def dashboard(request, pk):
     student_duration = student.case_set.filter(duration__isnull=False).first()
     student_enviroment = student.case_set.filter(enviroment__isnull=False).first()
 
-    behavior = Behavior.objects.all()
+    
 
     context = {
     'student_behaviors': student_behaviors,
@@ -388,11 +393,22 @@ def dashboard(request, pk):
 def behavior_form_view(request, pk):
 
     student = Student.objects.get(id=pk) 
+    student_cases = student.case_set.all() 
+    student_behaviors = student.case_set.all()
+
     behaviorset = student.behavior_set.all()
+
+    
+
     anticedentset = student.anticedent_set.all()
     functionset = student.function_set.all()
     consequset = student.consequence_set.all()
     enviromentset = student.enviroment_set.all()
+
+
+
+    unique_behaviors = student.behavior_set.values('behaviorincident', 'behavior_definition').distinct()
+
 
 
     if request.method == 'POST':
@@ -419,7 +435,7 @@ def behavior_form_view(request, pk):
         form.fields["enviroment"].queryset=enviromentset
 
         
-    return render(request, 'bip/fbo_form.html', {'form': form,'student':student})
+    return render(request, 'bip/fbo_form.html', {'form': form,'student':student,'student_cases':student_cases,'unique_behaviors':unique_behaviors})
 
 
 @login_required      
@@ -1634,20 +1650,21 @@ def consequence_view(request,pk):
     try:
         filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
     
-        iheat_graph = get_heatmap(data=filterDX)
+        iheat_graph_consequence = get_heatmap_consequence(data=filterDX)
     except:
         pass
 
-    iclustermap_graph = None
+    iclustermap_graph_consequence = None
     
     try:
-        iclustermap_graph = get_clustermap(data=matrix)
+        iclustermap_graph_consequence = get_clustermap_consequence(data=matrix)
 
     except:
         pass
 
-    context= {'student':student,'iclustermap_graph':iclustermap_graph, 
-    'iheat_graph':iheat_graph, 
+    context= {'student':student,
+              'iclustermap_graph_consequence':iclustermap_graph_consequence, 
+    'iheat_graph_consequence':iheat_graph_consequence, 
     'box_graph_consequence':box_graph_consequence,}
     
     return render(request, 'bip/consequence.html', context)
@@ -1741,22 +1758,23 @@ def enviroment_view(request,pk):
     try:
         filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
     
-        iheat_graph = get_heatmap(data=filterDX)
+        iheat_graph_setting = get_heatmap_setting(data=filterDX)
     except:
         pass
     
 
-    iclustermap_graph = None
+    iclustermap_graph_setting = None
     
     try:
-        iclustermap_graph = get_clustermap(data=matrix)
+        iclustermap_graph_setting = get_clustermap_setting(data=matrix)
 
     except:
         pass
   
   
-    context= {'student':student,'iclustermap_graph':iclustermap_graph, 
-    'iheat_graph':iheat_graph, 
+    context= {'student':student,
+        'iclustermap_graph_setting':iclustermap_graph_setting, 
+    'iheat_graph_setting':iheat_graph_setting, 
     'box_graph_setting':box_graph_setting,}
     
     

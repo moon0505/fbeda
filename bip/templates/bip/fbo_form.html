@@ -7,7 +7,19 @@
 <body>
   <div id="container" >
     <div class="form-wrap" >
-      <h1>Functional Behavioral Observation Form</h1>
+      <h1>
+        
+        Functional     <a data-toggle="tooltip" data-placement="left" data-html="true" title="<div class='tooltip-left'>
+          <ul>
+              {% for behavior in unique_behaviors %}
+                  <li>{{ behavior.behaviorincident }} - {{ behavior.behavior_definition }}</li> <br>
+              {% endfor %}
+          </ul>
+      </div>">
+          <label for="{{ form.behavior.id_for_label }}" style="color: blue;">Behavioral</label>
+      </a>
+         Observation Form</h1>
+
         <form method="POST" class"card p-3 mt-5"autocomnplete="off">
           <table border="3" class='center' style='font-family: Courier, monospace; font-size:125%'>
           {% csrf_token %}
@@ -19,8 +31,54 @@
       </form>
     </div>
   </div>
+ 
 </body>
 
+<a onclick="showTooltip()">
+</a>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+crossorigin="anonymous"></script>
+
+<script>
+
+$('[data-toggle="tooltip"]').tooltip();
+
+function showTooltip() {
+  $('#hello').tooltip('show');
+}
+
+function hideTooltip() {
+  $('#hello').tooltip('hide');
+}
+
+function toggleTooltip() {
+  $('#hello').tooltip('toggle');
+}
+
+// Tooltip Events
+$('#hello').on('show.bs.tooltip', function () {
+  console.log('Tooltip Show');
+});
+
+$('#hello').on('shown.bs.tooltip', function () {
+  console.log('Tooltip Shown');
+});
+
+$('#hello').on('hide.bs.tooltip', function () {
+  console.log('Tooltip Hide');
+});
+
+$('#hello').on('hidden.bs.tooltip', function () {
+  console.log('Tooltip Hidden');
+});
+
+
+</script>
 <style>
 
 body {
@@ -85,7 +143,9 @@ body {
     color: #fff;
     cursor: pointer;
   }
-
+  .blue-text {
+    color: blue;
+}
   .form-wrap button:hover {
     background: #37a08e;
   }
@@ -121,5 +181,9 @@ body {
     flex-basis: 100%;
   }
 }
+
+.tooltip-left {
+            text-align: left;
+        }
 </style>
   {% endblock %}
