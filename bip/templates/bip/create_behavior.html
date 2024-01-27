@@ -18,11 +18,14 @@
           <div class="col-12">
             <b>{{ form.behavior_definition | as_crispy_field }}</b>
           </div>
+          <div class="col-12">
+            <b>{{ form.intensity_definition | as_crispy_field }}</b>
+          </div>
         </div>
         <button type="submit" class="btn btn-success btn-block">Submit</button>
       </form>
 
-
+      
     </div>
 
     <!-- Information Card -->
@@ -43,8 +46,7 @@
 <style>
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #f0f0f0; /* Updated to gray background */
-      color: #505050;
+      /* background-color: #f0f0f0;  */
       line-height: 1.6;
     }
   .container {

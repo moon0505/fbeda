@@ -3,22 +3,21 @@
 {% block content %}
 
 <title>Form (FBA/EDA)</title>
-
 <body>
   <div id="container" >
     <div class="form-wrap" >
       <h1>
-        
-        Functional     <a data-toggle="tooltip" data-placement="left" data-html="true" title="<div class='tooltip-left'>
-          <ul>
-              {% for behavior in unique_behaviors %}
-                  <li>{{ behavior.behaviorincident }} - {{ behavior.behavior_definition }}</li> <br>
-              {% endfor %}
-          </ul>
-      </div>">
-          <label for="{{ form.behavior.id_for_label }}" style="color: blue;">Behavioral</label>
-      </a>
-         Observation Form</h1>
+        Functional
+        <a data-toggle="popover" data-placement="left" title="<b>Definitions</b>" data-html="true" 
+           data-content="
+           {% for behavior in unique_behaviors %}
+           <b> {{ behavior.behaviorincident }} </b>- {{ behavior.behavior_definition }}<br>
+           {% endfor %}
+           ">
+          <span style="color: blue;">Behavioral</span>
+        </a>
+        Observation Form
+      </h1>
 
         <form method="POST" class"card p-3 mt-5"autocomnplete="off">
           <table border="3" class='center' style='font-family: Courier, monospace; font-size:125%'>
@@ -34,8 +33,17 @@
  
 </body>
 
-<a onclick="showTooltip()">
-</a>
+<!--         
+        <a data-toggle="tooltip" data-placement="left" data-html="true" title="<div class='tooltip-left'>
+          <ul>
+              {% for behavior in unique_behaviors %}
+                  <li>{{ behavior.behaviorincident }} - {{ behavior.behavior_definition }}</li> <br>
+              {% endfor %}
+          </ul>
+      </div>">
+          <label for="{{ form.behavior.id_for_label }}" style="color: blue;">Behavioral</label> -->
+     
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 crossorigin="anonymous"></script>
@@ -43,41 +51,38 @@ crossorigin="anonymous"></script>
 crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
 crossorigin="anonymous"></script>
-
 <script>
+// Init Popover
+$('[data-toggle="popover"]').popover();
 
-$('[data-toggle="tooltip"]').tooltip();
-
-function showTooltip() {
-  $('#hello').tooltip('show');
+function showPopover() {
+  $('#hello').popover('show');
 }
 
-function hideTooltip() {
-  $('#hello').tooltip('hide');
+function hidePopover() {
+  $('#hello').popover('hide');
 }
 
-function toggleTooltip() {
-  $('#hello').tooltip('toggle');
+function togglePopover() {
+  $('#hello').popover('toggle');
 }
 
-// Tooltip Events
-$('#hello').on('show.bs.tooltip', function () {
-  console.log('Tooltip Show');
+// Popover events
+$('#hello').on('show.bs.popover', function () {
+  console.log('Popover show');
 });
 
-$('#hello').on('shown.bs.tooltip', function () {
-  console.log('Tooltip Shown');
+$('#hello').on('shown.bs.popover', function () {
+  console.log('Popover shown');
 });
 
-$('#hello').on('hide.bs.tooltip', function () {
-  console.log('Tooltip Hide');
+$('#hello').on('hide.bs.popover', function () {
+  console.log('Popover hide');
 });
 
-$('#hello').on('hidden.bs.tooltip', function () {
-  console.log('Tooltip Hidden');
+$('#hello').on('hidden.bs.popover', function () {
+  console.log('Popover hidden');
 });
-
-
 </script>
 <style>
 

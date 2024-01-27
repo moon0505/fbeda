@@ -17,7 +17,7 @@
       <div class='container'>
         <img src="data:image/png;base64, {{ box_graph_function | safe}}">
       </div>
-      <br>
+      <br><br>
     </div>
     
     <div class='container'>
@@ -25,13 +25,14 @@
       <img src="data:image/png;base64, {{ iheat_graph_function | safe}} ">
       {% endif %}
     </div>
-    <br>
+    <br><br>
+    
     <div class="container">
       {% if iclustermap_graph_function %}
         <img src="data:image/png;base64, {{ iclustermap_graph_function | safe }}">
       {% endif %}
     </div>
-    <br>
+    <br><br>
   </div>
 </body>
 

@@ -4,7 +4,7 @@
   <title>FBA/EDA</title>
   <br>
   <br>
-  <br>
+  
 <br>
 
 
@@ -40,9 +40,14 @@
         <h5 class="card-title">Behaviors to be logged:</h5>
         <ol class="steps-list">
           {% for behavior in unique_behaviors %}
-          <li>{{ behavior.behaviorincident }} - {{ behavior.behavior_definition }}</li> <br>
+          <li>{{ behavior.behaviorincident }} - {{ behavior.behavior_definition }} 
+            
+            {% if behavior.intensity_definition %}
+            <br> {{ behavior.intensity_definition }}</li> <br>
+            {% endif %}
       {% endfor %}
-
+      {% for behavior in unique_behaviors %}
+  {% endfor %}
 
 
           

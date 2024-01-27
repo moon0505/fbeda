@@ -90,12 +90,13 @@ class StudentFormSlug(ModelForm):
         model = Student
         fields = ('slug',) 
         
-        
-   
 class CreateBehaviorForm(ModelForm):
     class Meta():
         model = Behavior
-        fields = ('behaviorincident','behavior_definition') 
+        fields = ('behaviorincident','behavior_definition','intensity_definition') 
+        widgets = {
+            'intensity_definition': forms.Textarea(attrs={'rows': 3, 'cols': 40}),
+        }
 
 class CreateAnticedentForm(ModelForm):
     class Meta():
@@ -107,8 +108,7 @@ class CreateFunctionForm(ModelForm):
         model = Function
         fields = ('behaviorfunction',) 
  
- 
- 
+  
 class CreateConsequenceForm(ModelForm):
     class Meta():
         model = Consequence

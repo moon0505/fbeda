@@ -1,53 +1,49 @@
-
 {% extends 'partials/base.html' %} 
 {% block content %}
-{%load crispy_forms_tags %}
+{% load crispy_forms_tags %}
 
-<body>
-  <div id="container" >
-    <div class="form-wrap" >
-      <h1>Update Behavior</h1>
-       
-      <form method="POST" class"btn btn-primary mt-3">
-        {% csrf_token %}
-        <div class='row'>
-          <div class='col-6'><b> {{ form.behaviorincident |as_crispy_field }}</b></div>
-          <div class='col-12'><b> {{ form.behavior_definition |as_crispy_field }}</b></div>
-      
+<div id="container">
+  <div class="form-wrap">
+    <h1>Update Behavior</h1>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class='row'>
+        <div class='col-6'><b>{{ form.behaviorincident | as_crispy_field }}</b></div>
+        <div class='col-12'><b>{{ form.behavior_definition | as_crispy_field }}</b></div>
+        <div class='col-12'><b>{{ form.intensity_definition | as_crispy_field }}</b></div>
+
       </div>
-        <button class="btn btn-primary mt-3" type="submit" style='width:90px'>Submit</button>
-      </form>
-    </div>
+      <button class="btn btn-success" type="submit" style='width:90px'>Submit</button>
+    </form>
   </div>
-</body>
+</div>
 
 <style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
-  a {
-    text-decoration: none;
-  }
-
   #container {
     margin: 30px auto;
     max-width: 800px;
-    
     padding: 10px;
   }
 
   .form-wrap {
-    background: #fff;
+    background: #f8f7f7; /* Light gray background */
     padding: 15px 25px;
     color: #333;
-    margin-top: px;
+    margin-top: 30px;
   }
 
-  .form-wrap h1,
-  .form-wrap p {
+  .form-wrap h1, .form-wrap p {
     text-align: center;
   }
 
@@ -72,7 +68,6 @@
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    {% comment %} background: #17a2b8; {% endcomment %}
     color: #fff;
     cursor: pointer;
   }
@@ -91,17 +86,20 @@
     margin-right: auto;
   }
 
-  table  {
+  table {
     border-collapse: collapse;
     width: 100%;
     border: 1px solid #ddd;
   }
-  
+
   th, td {
     padding: 15px;
     padding-left: 35px;
     padding-bottom: 1px;
+  }
 
+  .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 </style>
-  {% endblock %}
+{% endblock %}

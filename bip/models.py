@@ -65,6 +65,7 @@ class Anticedent(models.Model):
 class Behavior(models.Model):
         behaviorincident = models.CharField(max_length=30,verbose_name= 'Behavior')
         behavior_definition = models.CharField(null=True, blank=True, max_length=1000,verbose_name= 'Behavior Definition')
+        intensity_definition = models.TextField(max_length=1000, null=True, blank=True,verbose_name= 'Define Intensity for 1(Mild), 2(Moderate), 3(Severe)')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
         
@@ -90,6 +91,7 @@ class Enviroment(models.Model):
         behaviorenviroment = models.CharField(max_length=50, null=True, blank=True,verbose_name= 'Setting')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
+
         
         
         # May need to check this if it causes issues with data table or more

@@ -80,7 +80,9 @@
     <div class="card card-body">
       <table class="table table-striped">
         <tr>
-          <th>Behavior (Frequency)</th>
+          <th>Behavior(<a  data-toggle="popover" data-placement="top" data-content="Why Frequency? 
+            To count the number of times the same behavior occured within one incident 
+            (ie. headbanging, hitting etc.)."><span style="color: blue;">Frequency</span></a>)</th>
           <th>Antecedent</th>
           <th>Consequence</th>
           <th>Function</th>
@@ -160,6 +162,45 @@
 
 </div>
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+crossorigin="anonymous"></script>
+<script>
+// Init Popover
+$('[data-toggle="popover"]').popover();
+
+function showPopover() {
+  $('#hello').popover('show');
+}
+
+function hidePopover() {
+  $('#hello').popover('hide');
+}
+
+function togglePopover() {
+  $('#hello').popover('toggle');
+}
+
+// Popover events
+$('#hello').on('show.bs.popover', function () {
+  console.log('Popover show');
+});
+
+$('#hello').on('shown.bs.popover', function () {
+  console.log('Popover shown');
+});
+
+$('#hello').on('hide.bs.popover', function () {
+  console.log('Popover hide');
+});
+
+$('#hello').on('hidden.bs.popover', function () {
+  console.log('Popover hidden');
+});
+</script>
 <style>
      body {
       font-family: 'Roboto', sans-serif;

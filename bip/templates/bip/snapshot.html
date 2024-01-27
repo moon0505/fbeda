@@ -11,6 +11,7 @@
         <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">  <b> Dashboard</b></a>
       </div>
         <br/>
+        <br>
 
 
       </div>
@@ -19,7 +20,7 @@
         <img src="data:image/png;base64, {{ beh_count_graph | safe}}">
       </div>
     {% endif %}
-
+<br>
     {% if multiple_line_plot_five %}
     <div class="container">
       <img src="data:image/png;base64, {{ multiple_line_plot_five | safe }}">
@@ -42,7 +43,7 @@
     </div>
   {% endif %}
 
-  <br><br><br>
+  <br><br>
 
   
       <div class="container">
@@ -50,31 +51,35 @@
       </div>
       <br><br>
 
-      <br><br><br>
+      
+      {% if box_graph_time %}
 
       <div class="graph-container">
         <img src="data:image/png;base64, {{ box_graph_time | safe}}">
       </div>
-
+      <br><br>
+      {% endif %}
 
 
       {% if box_duration_graph %}
       <div class="container">
         <img src="data:image/png;base64, {{ box_duration_graph | safe }}">
       </div>
+      <br><br>
       {% endif %}
-<br>
+
 
       {% if box_intensity_graph %}
       <div class="container">
         <img src="data:image/png;base64, {{ box_intensity_graph | safe }}">
       </div>
+      <br><br>
       {% endif %}
 
 
 
       
-      <br><br>
+
     </div>
   </body>
 

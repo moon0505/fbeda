@@ -2,29 +2,101 @@
 
 
 {% extends 'partials/base.html' %} {% block content %}
-<div class="container">
-<div class ="row">
-      <div class="card card-body">
-
-<h2>
-    <p> Are you sure you want to <b>DELETE</b> this Behavior: <b>{{item}}</b>  </p>
 
 
-    <form action="{% url 'bip:delete_behavior' item.id %}" method="POST">
-      
-      {% csrf_token %}
 
-{% comment %} 
-      <a  class="btn btn-warning" href="{% url 'bip:dashboard' incident.student.pk %}">Cancel</a> {% endcomment %}
+      <br><br>
 
-    <input class="btn btn-danger" type="submit" name="Confirm">  </h1>
 
-   </form>
-
-    </div>
+      <div class="container">
+            <div class="row">
+              <div class="card card-body">
+                <h2>
+                  <p>Are you sure you want to <b>DELETE</b> this Behavior: <b>{{ item }}</b></p>
+                </h2>
+          
+                <form action="{% url 'bip:delete_behavior' item.id %}" method="POST">
+                  {% csrf_token %}
+                  {% comment %} 
+                  <a class="btn btn-warning" href="{% url 'bip:dashboard' incident.student.pk %}">Cancel</a> 
+                  {% endcomment %}
+                  <input class="btn btn-danger" type="submit" name="Confirm">
+                </form>
+              </div>
+            </div>
+          </div>
+          
 
 </div>
 
-</div>
 
-{% endblock %}
+
+
+<style>
+      body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0; /* Grey background */
+    color: #505050;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: auto;
+  }
+    /* 
+    .container {
+     max-width: 1200px; 
+     margin: auto;
+     padding: 15px;
+    } */
+    
+    .nav-button {
+     margin-bottom: 20px;
+    }
+    .btn-outline-info {
+     width: 100%;
+     padding: 10px;
+     margin-bottom: 20px;
+    }
+    
+    
+    
+    .btn-primary {
+     background-color: #007bff;
+     border-color: #007bff;
+    }
+    
+    .card {
+     margin-bottom: 20px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-title {
+     color: #333;
+    }
+    
+    .card-link {
+     color: #007bff;
+    }
+    
+    .table {
+     margin-top: 20px;
+    }
+    
+    @media (max-width: 768px) {
+     .container {
+       padding: 15px;
+     }
+    }
+    @media (max-width: 768px) {
+     .chart-row {
+       flex-direction: column;
+     }
+     .chart-item {
+       flex-basis: 100%;
+     }
+    }
+    </style>
+    
+    {% endblock %}

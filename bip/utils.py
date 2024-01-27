@@ -75,7 +75,7 @@ def get_heatmap( *args, **kwargs):
     y = kwargs.get('y')
     data = kwargs.get('data')
 
-    title = "Correlation Heatmap (Behavior, Antecedent, Fmmmunction)"
+    title = "Correlation Heatmap (Behavior, Antecedent, Function)"
     plt.title(title)
        
     sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
