@@ -105,8 +105,8 @@ class Case(models.Model):
         function = models.ForeignKey(Function,on_delete=models.CASCADE)
         consequence = models.ForeignKey(Consequence,on_delete=models.CASCADE)
         enviroment = models.ForeignKey(Enviroment,on_delete=models.CASCADE, null=True, blank=True, verbose_name='Setting')
-        date_created = models.DateField(null=True, blank=True, default=timezone.now)
-        duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='Duration')
+        date_created = models.DateField(null=True, blank=True, default=timezone.now, verbose_name='Date')
+        duration = models.PositiveIntegerField(null=True, blank=True, verbose_name='Duration(Sec)')
         time = models.TimeField(null=True, blank=True)
         frequency = models.PositiveIntegerField(null=True, blank=True,  default=1, verbose_name='Frequency')
         intensity = models.PositiveIntegerField(null=True, blank=True,  default=1, validators=[

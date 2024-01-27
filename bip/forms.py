@@ -69,6 +69,7 @@ class BehaviorForm(forms.ModelForm):
             'function':forms.RadioSelect(),
             'consequence':forms.RadioSelect(),
             'enviroment': forms.Select(),  
+            'time': forms.TimeInput(attrs={'placeholder': '12:00', 'type': 'time'}),
 
         }
 

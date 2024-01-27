@@ -3,71 +3,36 @@
 {% extends 'partials/base.html' %} 
 {% block content %}
 <br>
-<body> 
-  <div class="container text-center">
 
-<div class="container">
-  <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:data_entry_input' student.id %}">Dashboard</a>
-  <br/>
+<body style="background-color: #f0f0f0;"> <!-- Adding a gray background color here -->
+  <div class="container">
+    <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:data_entry_input' student.id %}">Dashboard</a>
+    <br/>
 
-  <div class="container" >
-
-
-    {% if beh_count_graph %}
-    <div class="graph-container">
-      <img src="data:image/png;base64, {{ beh_count_graph | safe}}">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="white-box">
+          <div class="stat-item">{{ table_df | safe }}</div>
+        </div>
+      </div>
     </div>
-  {% endif %}
-<br> 
-    <img src="data:image/png;base64, {{ bar_graph | safe }}">
   </div>
-  <br>
-
-  {% if multiple_line_plot_five %}
-  <div class="container">
-    <img src="data:image/png;base64, {{ multiple_line_plot_five | safe }}">
-  </div>
-{% elif multiple_line_plot_four %}
-  <div class="container">
-    <img src="data:image/png;base64, {{ multiple_line_plot_four | safe }}">
-  </div>
-{% elif multiple_line_plot_three %}
-  <div class="container">
-    <img src="data:image/png;base64, {{ multiple_line_plot_three | safe }}">
-  </div>
-{% elif multiple_line_plot_two %}
-  <div class="container">
-    <img src="data:image/png;base64, {{ multiple_line_plot_two | safe }}">
-  </div>
-{% elif multiple_line_plot_one %}
-  <div class="container">
-    <img src="data:image/png;base64, {{ multiple_line_plot_one | safe }}">
-  </div>
-{% endif %}
-
-<br><br><br>
-
- <!-- Pie Charts -->
- <div class="pie-charts">
-  <div class="chart-row">
-    <div class="chart-item"><img src="data:image/png;base64, {{ pie_graph | safe}}"></div>
-    <div class="chart-item"><img src="data:image/png;base64, {{ pie_anticedent_graph | safe}}"></div>
-  </div>
-  <div class="chart-row">
-    <div class="chart-item"><img src="data:image/png;base64, {{ pie_consequence_graph | safe}}"></div>
-    <div class="chart-item"><img src="data:image/png;base64, {{ pie_function_graph | safe}}"></div>
-  </div>
-</div>
-
-
-
-  <br>
-</div>
-
-</div>
+  
 </body>
 
 <style>
+   .white-box {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  .btn-outline-info {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
   .main-container {
     background: white;
     padding: 20px;
@@ -119,4 +84,4 @@
     }
 </style>
 
-{% endblock %}s
+{% endblock %}

@@ -83,18 +83,15 @@ import html2text
 
 
 
-
 def luna(request):
     
     return render(request,'bip/luna.html')
-
 
 
 def statistics(request,pk):
     student = get_object_or_404(Student, pk=pk)
     student_behaviors = student.case_set.all()
     
-    print(student.pk)
 
     context = {
     'student_behaviors': student_behaviors,
@@ -213,7 +210,6 @@ def case_manager_dashboard_view(request,pk):
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
 
     specific_data_entry =models.DataEntry.objects.filter(assignedCaseManagerSlug=case_manager_entry.slug)
-    print(specific_data_entry)
 
     mydict={
         'specific_data_entry':specific_data_entry,
@@ -232,8 +228,12 @@ def data_entry_dashboard_view(request):
     
     assigned_student =models.Student.objects.get(slug=data_entry.assignedStudentSlug)
  
+    unique_behaviors = assigned_student.behavior_set.values('behaviorincident', 'behavior_definition').distinct()
+
+
     mydict={
     'data_entry':data_entry,
+    'unique_behaviors':unique_behaviors,
     'case_manager':case_manager,
     'case_manager_name':case_manager.get_name,
     'assigned_student':assigned_student,
@@ -246,9 +246,12 @@ def data_entry_dashboard_view(request):
 def data_entry_input_view(request, pk):
   
     student = get_object_or_404(Student, pk=pk)
-    student_behaviors = student.case_set.all()[:10] 
+    student_behaviors = student.case_set.all()[:15] 
     behavior = Behavior.objects.all()
     case = Case.objects.all()
+
+    student_time = student.case_set.filter(time__isnull=False).first()
+    student_duration = student.case_set.filter(duration__isnull=False).first()
       
     # this works:
     stbehavior = student.behavior_set.all() 
@@ -258,6 +261,8 @@ def data_entry_input_view(request, pk):
     
     context = {'student_behaviors':student_behaviors,
                "student":student,
+               "student_time":student_time,
+                "student_duration":student_duration,
 
                }
      
@@ -274,7 +279,6 @@ def admin_approve_data_entry_view(request,pk):
     # specific_data_entry =models.DataEntry.objects.get(assignedCaseManagerSlug=case_manager_entry.pk)
     
     specific_data_entry=models.DataEntry.objects.all().filter(status=False)
-    print(specific_data_entry)
 
     context = {
         'specific_data_entry':specific_data_entry
@@ -293,7 +297,6 @@ def approved_data_entry_view(request,pk):
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
 
     return redirect('bip:case_manager_dashboard',case_manager_entry.id)
-
 
 @login_required(login_url='case_manager_login')
 @user_passes_test(is_case_manager)
@@ -405,10 +408,7 @@ def behavior_form_view(request, pk):
     consequset = student.consequence_set.all()
     enviromentset = student.enviroment_set.all()
 
-
-
     unique_behaviors = student.behavior_set.values('behaviorincident', 'behavior_definition').distinct()
-
 
 
     if request.method == 'POST':
@@ -572,7 +572,6 @@ def deleteStudent(request, pk):
 def deleteUser(request, pk):
     user_delete= CustomUser.objects.get(pk=request.user.id)
 
-    print(user_delete)
     user = CustomUser.objects.get(id=pk)
     
     if request.method == "POST":
@@ -644,7 +643,6 @@ def updateBehavior(request, pk):
 def deleteBehavior(request, pk):
     
     behdelete = Behavior.objects.get(id=pk)
-    print(behdelete)
     
     if request.method == "POST":
         behdelete.delete()
@@ -963,10 +961,7 @@ def student_profile(request, pk ):
 
 # Exploratory 
 # 
-# 
-
-
-
+#
 # 
 # Data Analysisxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -974,8 +969,13 @@ def student_profile(request, pk ):
 def correlation_view(request, pk):
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
+    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident',
+                                                             'anticedent__anticedentincident',
+                                                             'function__behaviorfunction', 'date_created','time','id')
     cases_df = pd.DataFrame(data)
+
+
+
     try:
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
 
@@ -1098,7 +1098,9 @@ def frequency_charts_view(request, pk):
         cases_df_time.columns = cases_df_time.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
         cases_df_time.columns = cases_df_time.columns.str.replace('enviroment__behaviorenviroment', 'Setting')
         
+
         cases_df_time['hour_12h'] = cases_df_time['combined_datetime'].dt.strftime('%I %p')
+
 
         cases_df_time = cases_df_time.sort_values('hour_12h')
 
@@ -1184,10 +1186,9 @@ def snapshot_view(request, pk):
     try:
 
         cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
-        print(cases_df_time)
 
-        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%H:%M:%S')
-        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%H:%M:%S')
+        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
 
 
         cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
@@ -1392,11 +1393,6 @@ def snapshot_view(request, pk):
     
 
 
-
-
-
-
-
     return render(request, 'bip/snapshot.html', context)
 
 
@@ -1404,19 +1400,43 @@ def snapshot_data_entry_view(request, pk):
     
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
-    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 
-                                                             'consequence__behaviorconsequence','date_created','time','id')  
+
+    data = models.Case.objects.filter(student__id=pk).values(
+    'behavior__behaviorincident', 'anticedent__anticedentincident', 'function__behaviorfunction',
+    'consequence__behaviorconsequence', 'enviroment__behaviorenviroment', 'date_created', 'time', 
+    'duration', 'id'
+)
+
+    # Creating DataFrame
     cases_df = pd.DataFrame(data)
 
-    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-    cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+    # Renaming the columns
+    rename_columns = {
+        'behavior__behaviorincident': 'Behavior',
+        'anticedent__anticedentincident': 'Antecedent',
+        'function__behaviorfunction': 'Function',
+        'consequence__behaviorconsequence': 'Consequence',
+        'enviroment__behaviorenviroment': 'Setting',
+        'date_created': 'Date',
+        'time': 'Time',
+        'duration': 'Duration',
+        'id': 'ID'
+    }
+    cases_df.rename(columns=rename_columns, inplace=True)
 
-    cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-    cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-    cases_df.columns = cases_df.columns.str.replace('id', 'ID')
-  
+    # Checking for empty columns and dropping them
+    empty_columns = [col for col in ['Duration', 'Setting', 'Time'] if cases_df[col].isna().all()]
+    cases_df.drop(columns=empty_columns, inplace=True, errors='ignore')
+
+    # Final DataFrame for the table
+    table_df = cases_df.drop(['ID'], axis=1) 
+
+
+
+    
+
+
+
     df1 = cases_df['Date'].value_counts()
     df1 = df1.to_frame().reset_index() 
     df2 = df1.reset_index()
@@ -1531,7 +1551,7 @@ def snapshot_data_entry_view(request, pk):
 
     df2 = cases_df['Behavior'].value_counts()
     pie_graph = get_pie_chart( x=df2, labels=df2.index)
-    df3 = cases_df['Anticedent'].value_counts()
+    df3 = cases_df['Antecedent'].value_counts()
     pie_anticedent_graph = get_pie__chart_anticedent( x=df3, labels=df3.index)
     df4 = cases_df['Function'].value_counts()
     pie_function_graph = get_pie__chart_function( x=df4, labels=df4.index)
@@ -1542,6 +1562,7 @@ def snapshot_data_entry_view(request, pk):
     context= {
     
         'student':student,
+        'table_df':table_df.to_html(),
         'bar_graph':bar_graph,
         'beh_count_graph':beh_count_graph,
         'multiple_line_plot_one':multiple_line_plot_one,
@@ -1857,8 +1878,8 @@ def chart_view(request, pk):
     try:
     # beging time
         cases_df_time= pd.DataFrame(data).drop(['id',], axis=1) 
-        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
-        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%H:%M:%S')
+        cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str))
+        # cases_df_time['combined_datetime'] = pd.to_datetime(cases_df_time['date_created'].astype(str) + ' ' + cases_df_time['time'].astype(str), format='%H:%M:%S')
 
         cases_df_time.columns = cases_df_time.columns.str.replace('behavior__behaviorincident', 'Behavior')
         cases_df_time.columns = cases_df_time.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
@@ -2352,28 +2373,31 @@ def export(request, pk):
     
     has_setting = student_behaviors.filter(enviroment__isnull=False).exists()
 
+    has_intensity = student_behaviors.filter(intensity__isnull=False).exists()
+
+
     has_duration = student_behaviors.filter(duration__isnull=False).exists()
     # has_frequency = student_behaviors.filter(frequency__isnull=False).exists()
     # has_date = student_behaviors.filter(date_created__isnull=False).exists()
 
     has_time = student_behaviors.filter(time__isnull=False).exists()
 
-    
-    
-    if has_duration:
-        headers.append("Duration(Sec)")
-
 
     if has_setting:
         headers.append("Setting")
 
+    if has_intensity:
+        headers.append("Intensity")
+   
+    
+    if has_duration:
+        headers.append("Duration(Sec)")
 
-    # if has_frequency:
-    #     headers.append("Frequency")
-    # if has_date:
-    #     headers.append("Date")
     if has_time:
         headers.append("Time")
+
+
+      
 
     writer.writerow(headers)
 
@@ -2385,6 +2409,10 @@ def export(request, pk):
 
         time_value = case.time if case.time is not None else ''
         duration_value = case.duration if case.duration is not None else ''
+
+
+        intensity_value = case.intensity if case.intensity is not None else ''
+
 
 
         # frequency_value = case.frequency if case.frequency is not None else ''
@@ -2405,24 +2433,20 @@ def export(request, pk):
 
         ]
 
-        if has_duration:
-            row.append(duration_value)
-
         if has_setting:
             row.append(setting_value)
+
+        if has_intensity:
+            row.append(intensity_value)
+
+        if has_duration:
+            row.append(duration_value)
 
 
         if has_time:
             row.append(time_value)
 
         
-        
-        # if has_frequency:
-        #     row.append(frequency_value)
-
-        # if has_date:    
-        #     row.append(date_value)  
-
         writer.writerow(row)
 
     return response

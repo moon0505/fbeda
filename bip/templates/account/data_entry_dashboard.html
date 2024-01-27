@@ -6,6 +6,9 @@
   <br>
   <br>
 <br>
+
+
+<div class="container mt-4">
   <div class="container">
     <!-- Second Market Update Block in a Row -->
     <div class="row justify-content-center">
@@ -22,6 +25,32 @@
       </div>
     </div>
 
+
+  <div class="instruction-card card mb-4">
+      <div class="card-body">
+          <h5 class="card-title">Directions</h5>
+          <p class="card-text">
+            Click on link above to input data for the assigned case.
+          </p>
+      </div>
+  </div>
+
+  <div class="steps-card card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Behaviors to be logged:</h5>
+        <ol class="steps-list">
+          {% for behavior in unique_behaviors %}
+          <li>{{ behavior.behaviorincident }} - {{ behavior.behavior_definition }}</li> <br>
+      {% endfor %}
+
+
+
+          
+        </ol>
+    </div>
+</div>
+
+  
     <div class="container">
       <!-- First Market Update Block in a Row -->
       <div class="row justify-content-center">
@@ -39,8 +68,17 @@
   </div>
 
   <!-- Add spacing or additional content as needed -->
-
+  
+</div>
+  
   <style>
+
+body {
+   font-family: 'Roboto', sans-serif;
+   background-color: #f0f0f0; /* Updated to gray background */
+   color: #505050;
+   line-height: 1.6;
+ }
     /* Common styles for market update blocks (unchanged) */
     .market-update-block {
       padding: 30px; /* Increase padding to make blocks longer */
@@ -56,7 +94,7 @@
 
     /* Customize background colors for different blocks */
     .clr-block-1 {
-      background: #007bff;
+      background: black;
     }
 
     .clr-block-2-green { /* Changed color class name */

@@ -11,7 +11,7 @@ from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
     # Define the fields you want to display in the admin list view
-    list_display = ('username', 'email', 'first_name', 'last_name', 'bio', 'is_staff')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'bio', 'last_login','is_staff')
 
 class CaseMangerAdmin(admin.ModelAdmin):
     pass

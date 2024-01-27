@@ -10,7 +10,8 @@
   <div class="text-center mb-4">
     <h3>Filter Data</h3>
   </div>
-
+  <div class="card">
+    <div class="card-body">
   <form method="GET" action="." class="filter-form">
     <div class="form-row">
       <div class="form-group col-md-2">
@@ -66,6 +67,10 @@
     </div>
     <button type="submit" class="btn btn-success btn-filter">Filter</button>
   </form>
+
+  </div>
+</div>
+
   <div class="query-count text-center my-4">
     <h4>Count Query: <b>{{ qs_count }}</b> / {{ total_beh }}</h4>
     <p>{{ beh_devide|floatformat:1 }}% of all behaviors</p>

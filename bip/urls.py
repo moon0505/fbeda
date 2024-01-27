@@ -26,7 +26,7 @@ urlpatterns = [
     path('data_entry_login/', LoginView.as_view(template_name='account/data_entry_login.html'), name='data_entry_login'),
     
 
-    path('data_entry_dashboard/', views.data_entry_dashboard_view,name='data_entry_dashboard'),
+    path('data_entry_dashboard', views.data_entry_dashboard_view,name='data_entry_dashboard'),
 
     path('casemanagerclick', views.casemangerclick_view),
     path('dataentryclick', views.dataentryclick_view),
