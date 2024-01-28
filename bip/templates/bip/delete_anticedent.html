@@ -8,7 +8,7 @@
       <div class="card card-body">
 
 <h2>
-    <p> Are you sure you want to <b>DELETE</b> this Anticedent: <b>{{item}}</b>  </p>
+    <p> Are you sure you want to <b>DELETE</b> this Antecedent: <b>{{item}}</b>  </p>
 
 
     <form action="{% url 'bip:delete_anticedent' item.id %}" method="POST">
@@ -25,5 +25,46 @@
 </div>
 
 </div>
+
+
+<style>
+  body {
+font-family: 'Roboto', sans-serif;
+background-color: #eef2f4; 
+color: #505050;
+line-height: 1.6;
+}
+
+.container {
+max-width: 1000px;
+margin: auto;
+}
+/* 
+.container {
+ max-width: 1200px; 
+ margin: auto;
+ padding: 15px;
+} */
+
+.nav-button {
+ margin-bottom: 20px;
+}
+.btn-outline-info {
+ width: 100%;
+ padding: 10px;
+ margin-bottom: 20px;
+}
+
+
+
+.btn-primary {
+ background-color: #007bff;
+ border-color: #007bff;
+}
+
+.card {
+ margin-bottom: 20px;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 {% endblock %}

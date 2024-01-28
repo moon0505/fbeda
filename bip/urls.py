@@ -3,6 +3,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView
+from django.contrib.auth import views as auth_views
 
 from bip import views
 
@@ -33,39 +34,52 @@ urlpatterns = [
 
     path('data_entry_input/<pk>/', views.data_entry_input_view, name='data_entry_input'),
 
-
     path('case_manager_dashboard/<int:pk>', views.case_manager_dashboard_view,name='case_manager_dashboard'),
-
 
     path('admin_data_entry_approve/<int:pk>', views.admin_approve_data_entry_view,name='admin_data_entry_approve'),
     
     path('approved_data_entry/<int:pk>', views.approved_data_entry_view,name='approved_data_entry'),
     
-
-
     path('admin_delete_data_entry/<int:pk>', views.admin_delete_data_entry_view,name='admin_delete_data_entry'),
     
-
-
     path('delete_data_entry/<int:pk>', views.delete_data_entry_view,name='delete_data_entry'),
-
 
     path('reject_data_entry/<int:pk>', views.reject_data_entry_view,name='reject_data_entry'),
     
-
-
-
-
-
-    
-        
+   
     path('assign_data_entry/<pk>/', views.assign_data_entry, name='assign_data_entry'),
-    
     
     path('updateunique_case_identifier/<pk>/', views.updateunique_case_identifier, name='updateunique_case_identifier'),
     
-    
+
     path('case_manager_unique_identifier/<pk>/', views.case_manager_unique_identifier, name='case_manager_unique_identifier'),
+    
+
+
+
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name= 'account/password_reset.html'), name='reset_password'),
+
+   
+   
+
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name='account/password_reset_sent.html'), name='password_reset_done'),
+
+
+
+
+    path('reset/uidb64/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    
+
+
+
+
+
+
+
     
     # the core of the website--------------------------------
     
@@ -73,33 +87,20 @@ urlpatterns = [
 
 
     path('luna/', views.luna, name="luna"),
+    
     path('statistics/<pk>/', views.statistics, name="statistics"),
 
-    
-    
     path('description/', views.description_view, name="description"),
     
     path('student_list/<pk>/', views.list_view, name='student_list'),
 
-
-
-
-    
-    
     path("by/<username>/",views.UserPosts.as_view(),name="for_user"),
     
     path('dashboard/<pk>/', views.dashboard, name='dashboard'),
     
     path('create_incident/<pk>/', views.behavior_form_view, name='create_incident'),
     
-
-
-
-    
     path('updatepost/<int:pk>/<int:student_id>/', views.updatePost, name='updatepost'),
-
-
-
 
     path("by/<username>/",views.UserPosts.as_view(),name="for_user"),
 
@@ -110,17 +111,12 @@ urlpatterns = [
     
     path('update_student/<pk>/',views.updateStudent,name='update_student'),
     
-
-
     
     path('delete_student/<pk>/',views.deleteStudent,name='delete_student'),
      
     path('delete_user/<pk>/',views.deleteUser,name='delete_user'),
 
     path('user_account/<pk>/',views.user_account,name='user_account'),
-
-
-
 
 
     path('create_unique_id/<pk>/',views.create_unique_id,name='create_unique_id'),
@@ -165,14 +161,10 @@ urlpatterns = [
 
     path('error_page/<pk>/', views.error_page, name='error_page'),
 
-    
-    
     path('correlation/<pk>/', views.correlation_view, name='correlation'),
     path('pie_charts/<pk>/', views.pie_chart_view, name='pie_charts'),
 
 
-
-    
     path('snapshot/<pk>/', views.snapshot_view, name='snapshot'),
     path('snapshot_data_entry/<pk>/', views.snapshot_data_entry_view, name='snapshot_data_entry'),
 
@@ -196,31 +188,18 @@ urlpatterns = [
 
 
 
-
     path('raw_data/<pk>/', views.raw_data, name='raw_data'),
 
     path('export/<pk>/', views.export, name='export'),
 
-    # path('import_csv', views.import_csv, name='import_csv'),
-
-
-    # path('import_csv/<int:pk>/', import_csv, name='import_csv'),  # Route for import_csv view with pk
-
-
-    #  path('upload/', upload_csv, name='upload_csv'),
-    # path('case_upload_csv/<int:pk>/', views.case_upload_csv, name='case_upload_csv'),  # Route for upload_csv view with pk
-
 
     path('upload_page/<pk>/', views.upload_page, name='upload_page'),
     path('case_upload_csv/', views.case_upload_csv, name='case_upload_csv'),  
-
     path('upload_options/<pk>/', views.upload_options, name='upload_options'),
     path('case_upload_csv_duration/', views.case_upload_csv_duration, name='case_upload_csv_duration'),  
     path('case_upload_csv_time/', views.case_upload_csv_time, name='case_upload_csv_time'),  
     path('case_upload_csv_multiple/', views.case_upload_csv_multiple, name='case_upload_csv_multiple'),  
 
-
-    
 
     path('download/<path:url>/', views.download_webpage_to_word, name='download_webpage'),
     
@@ -231,62 +210,3 @@ urlpatterns = [
 
 ]
 
-
-# from django.urls import path
-# from django.contrib.auth import views as auth_views
-# from django.contrib.auth.views import LoginView
-
-# from bip import views
-
-
-
-# app_name = 'bip'
-
-
-# urlpatterns = [
-   
-#     path('afterlogin', views.afterlogin_view,name='afterlogin'),
-
-#     path('case_manager_signup/', views.case_manager_signup_view,name='case_manager_signup'),
-#     path('case_manager_login/', LoginView.as_view(template_name='account/case_manager_login.html')),
-    
-#     path('data_entry_signup/', views.data_entry_signup_view),
-#     path('data_entry_login/', LoginView.as_view(template_name='account/data_entry_login.html')),
-    
-#     path('case_manager_dashboard/', views.case_manager_dashboard_view,name='case_manager_dashboard'),
-
-#     path('data_entry_dashboard/', views.data_entry_dashboard_view,name='data_entry_dashboard'),
-
-#     path('casemanagerclick', views.casemangerclick_view),
-#     path('dataentryclick', views.dataentryclick_view),
-    
-#     path('data_entry_input/<pk>/', views.data_entry_input_view, name='data_entry_input'),
-
-#     path('admin_data_entry_approve', views.admin_approve_data_entry_view,name='admin_data_entry_approve'),
-    
-    
-#     path('approved_data_entry/<int:pk>', views.approved_data_entry_view,name='approved_data_entry'),
-    
-    
-#     path('admin_delete_data_entry', views.admin_delete_data_entry_view,name='admin_delete_data_entry'),
-    
-#     path('delete_data_entry/<int:pk>', views.delete_data_entry_view,name='delete_data_entry'),
-
-#     path('reject_data_entry/<int:pk>', views.reject_data_entry_view,name='reject_data_entry'),
-    
-    
-#     path('delete_post/<pk>/', views.deletePost, name='delete_post'),
-    
-    
-#     path('snapshot/<pk>/', views.snapshot_view, name='snapshot'),
-    
-    
-#     path('dashboard/<pk>/', views.dashboard, name='dashboard'),
-
-
-# ]
-
-# def product_detail(request, slug):
-
-# product_by_category, name="product_by_category"),
-#     path("<slug:slug>", views.product_detail, name="product_detail"),

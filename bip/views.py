@@ -16,11 +16,7 @@ from bip.forms import CaseManagerUserForm, CaseManagerForm,CsvUploadForm
 from datetime import datetime
 
 from django.db import IntegrityError
-
 from django import template
-
-
-
 from django.views.generic import (View,TemplateView,ListView,DetailView,CreateView,UpdateView,DeleteView,FormView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
@@ -72,8 +68,6 @@ import pandas as pd
 import numpy as np
 import csv,io
 from django.contrib import messages 
-
-
 import requests
 from docx import Document
 from django.shortcuts import render
@@ -250,12 +244,16 @@ def data_entry_input_view(request, pk):
     behavior = Behavior.objects.all()
     case = Case.objects.all()
 
+
+
     student_time = student.case_set.filter(time__isnull=False).first()
     student_duration = student.case_set.filter(duration__isnull=False).first()
+    student_enviroment = student.case_set.filter(enviroment__isnull=False).first()
+
       
     # this works:
     stbehavior = student.behavior_set.all() 
-      
+    
         
     behaivorpest  = behavior.filter(pk=pk).filter(behaviorincident__icontains="behaviorincident")
     
@@ -263,6 +261,7 @@ def data_entry_input_view(request, pk):
                "student":student,
                "student_time":student_time,
                 "student_duration":student_duration,
+                'student_enviroment':student_enviroment,
 
                }
      
