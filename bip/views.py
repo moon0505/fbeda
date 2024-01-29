@@ -14,6 +14,10 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponseForbidden
 from bip.forms import CaseManagerUserForm, CaseManagerForm,CsvUploadForm
 from datetime import datetime
+from django.contrib.auth import views as auth_views
+
+from django.utils import timezone
+import datetime
 
 from django.db import IntegrityError
 from django import template
@@ -204,6 +208,8 @@ def case_manager_dashboard_view(request,pk):
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
 
     specific_data_entry =models.DataEntry.objects.filter(assignedCaseManagerSlug=case_manager_entry.slug)
+
+    
 
     mydict={
         'specific_data_entry':specific_data_entry,

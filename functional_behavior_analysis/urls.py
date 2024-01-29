@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('bip.urls')),
     path('', include('django.contrib.auth.urls'))
+
     # path('', include('csvs.urls', namespace='csvs')),
 
   
