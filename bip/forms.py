@@ -12,14 +12,67 @@ from django.core.exceptions import ValidationError
 # Old one down here try it
 
 #for student related form
-class CaseManagerUserForm(forms.ModelForm):
+# class CaseManagerUserForm(forms.ModelForm):
     
+#     class Meta:
+#         model=CustomUser
+#         fields=['first_name','last_name','username','password','bio','email',]
+        # widgets = {
+        # 'password': forms.PasswordInput()
+        # }
+
+
+# class CaseManagerUserForm(forms.ModelForm):
+#     password = forms.CharField(widget=forms.PasswordInput(), label="Password")
+#     password_confirmation = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password")
+    
+#     class Meta:
+#         model = CustomUser
+#         fields = ['first_name', 'last_name', 'username', 'email', 'bio']  # Removed 'password' from here, it's manually added above
+
+#     def clean(self):
+#         cleaned_data = super().clean()
+#         password = cleaned_data.get("password")
+#         password_confirmation = cleaned_data.get("password_confirmation")
+
+#         if password and password_confirmation and password != password_confirmation:
+#             msg = "The two password fields didn't match."
+#             self.add_error('password_confirmation', msg)
+#             # Or raise ValidationError(msg) if you want it to be form-wide rather than field-specific
+            
+#         return cleaned_data
+
+
+
+class CaseManagerUserForm(forms.ModelForm):
+    email = forms.EmailField(required=True)  # Makes the email field explicitly required
+
+    password = forms.CharField(widget=forms.PasswordInput())
+    password_confirmation = forms.CharField(widget=forms.PasswordInput())
+
     class Meta:
-        model=CustomUser
-        fields=['first_name','last_name','username','password','bio','email',]
-        widgets = {
-        'password': forms.PasswordInput()
-        }
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio']
+
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email:
+            raise forms.ValidationError("This field is required.")
+        # Add any additional custom validation for the email field here
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_confirmation = cleaned_data.get("password_confirmation")
+
+        if password and password_confirmation and password != password_confirmation:
+            self.add_error('password_confirmation', "The two password fields didn't match.")
+
+        return cleaned_data
+    
+
 class CaseManagerForm(forms.ModelForm):
     class Meta:
         model=models.CaseManager

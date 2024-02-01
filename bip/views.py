@@ -15,6 +15,7 @@ from django.http import HttpResponseForbidden
 from bip.forms import CaseManagerUserForm, CaseManagerForm,CsvUploadForm
 from datetime import datetime
 from django.contrib.auth import views as auth_views
+from django.contrib import messages
 
 from django.utils import timezone
 import datetime
@@ -128,29 +129,108 @@ def dataentryclick_view(request):
         return HttpResponseRedirect('afterlogin')
     return render(request,'account/dataentryclick.html')
 
+# def case_manager_signup_view(request):
+#     userForm = forms.CaseManagerUserForm()
+#     caseManagerForm = forms.CaseManagerForm()
+#     mydict = {'userForm': userForm, 'caseManagerForm': caseManagerForm}
+
+#     if request.method == 'POST':
+#         userForm = forms.CaseManagerUserForm(request.POST)
+#         caseManagerForm = forms.CaseManagerForm(request.POST, request.FILES)
+
+#         if userForm.is_valid() and caseManagerForm.is_valid():
+#             password = userForm.cleaned_data['password']
+#             password2 = userForm.cleaned_data['password2']
+
+#             if password != password2:
+#                 messages.error(request, 'Passwords do not match')
+#                 return render(request, 'account/case_manager_signup.html', context=mydict)
+
+#             user = userForm.save(commit=False)
+#             user.set_password(password)
+#             user.save()
+
+#             casemanager = caseManagerForm.save(commit=False)
+#             casemanager.user = user
+#             casemanager.save()
+
+#             casemanager_group, created = Group.objects.get_or_create(name='CASE MANAGER')
+#             casemanager_group.user_set.add(user)
+
+#             return HttpResponseRedirect(reverse('bip:case_manager_login'))
+
+#     return render(request, 'account/case_manager_signup.html', context=mydict)
+
+# def case_manager_signup_view(request):
+#     userForm=forms.CaseManagerUserForm()
+#     caseManagerForm=forms.CaseManagerForm()
+#     mydict={'userForm':userForm,'caseManagerForm':caseManagerForm}
+#     if request.method=='POST':
+#         userForm=forms.CaseManagerUserForm(request.POST)
+#         caseManagerForm=forms.CaseManagerForm(request.POST,request.FILES)
+#         if userForm.is_valid() and caseManagerForm.is_valid():
+            
+            
+            
+            
+#             user=userForm.save()
+#             user.set_password(user.password)
+#             user.save()
+#             casemanager=caseManagerForm.save(commit=False)
+#             casemanager.user=user
+#             casemanager=casemanager.save()
+#             casemanager_group = Group.objects.get_or_create(name='CASE MANAGER')
+#             casemanager_group[0].user_set.add(user)
+#         return HttpResponseRedirect(reverse('bip:case_manager_login'))
+#     return render(request,'account/case_manager_signup.html',context=mydict)
+
+
+# def case_manager_signup_view(request):
+#     userForm = CaseManagerUserForm()
+#     caseManagerForm = CaseManagerForm()
+#     mydict = {'userForm': userForm, 'caseManagerForm': caseManagerForm}
+#     if request.method == 'POST':
+#         userForm = CaseManagerUserForm(request.POST)
+#         caseManagerForm = CaseManagerForm(request.POST, request.FILES)
+#         if userForm.is_valid() and caseManagerForm.is_valid():
+#             user = userForm.save(commit=False)
+#             user.set_password(userForm.cleaned_data['password'])
+#             user.save()
+#             casemanager = caseManagerForm.save(commit=False)
+#             casemanager.user = user
+#             casemanager.save()
+#             casemanager_group, created = Group.objects.get_or_create(name='CASE MANAGER')
+#             casemanager_group.user_set.add(user)
+#             return HttpResponseRedirect(reverse('bip:case_manager_login'))
+#     return render(request, 'account/case_manager_signup.html', context=mydict)
+
 
 def case_manager_signup_view(request):
-    userForm=forms.CaseManagerUserForm()
-    caseManagerForm=forms.CaseManagerForm()
-    mydict={'userForm':userForm,'caseManagerForm':caseManagerForm}
-    if request.method=='POST':
-        userForm=forms.CaseManagerUserForm(request.POST)
-        caseManagerForm=forms.CaseManagerForm(request.POST,request.FILES)
+    if request.method == 'POST':
+        userForm = CaseManagerUserForm(request.POST)
+        caseManagerForm = CaseManagerForm(request.POST, request.FILES)
         if userForm.is_valid() and caseManagerForm.is_valid():
-            
-
-
-
-            user=userForm.save()
-            user.set_password(user.password)
+            user = userForm.save(commit=False)
+            user.set_password(userForm.cleaned_data['password'])
             user.save()
-            casemanager=caseManagerForm.save(commit=False)
-            casemanager.user=user
-            casemanager=casemanager.save()
-            casemanager_group = Group.objects.get_or_create(name='CASE MANAGER')
-            casemanager_group[0].user_set.add(user)
-        return HttpResponseRedirect(reverse('bip:case_manager_login'))
-    return render(request,'account/case_manager_signup.html',context=mydict)
+            
+            casemanager = caseManagerForm.save(commit=False)
+            casemanager.user = user
+            casemanager.save()
+            
+            casemanager_group, created = Group.objects.get_or_create(name='CASE MANAGER')
+            casemanager_group.user_set.add(user)
+            
+            return redirect(reverse('bip:case_manager_login'))  # Ensure this URL name is correct
+        else:
+            # Form(s) has errors, render them back to the user
+            mydict = {'userForm': userForm, 'caseManagerForm': caseManagerForm}
+            return render(request, 'account/case_manager_signup.html', context=mydict)
+    else:
+        userForm = CaseManagerUserForm()
+        caseManagerForm = CaseManagerForm()
+        mydict = {'userForm': userForm, 'caseManagerForm': caseManagerForm}
+        return render(request, 'account/case_manager_signup.html', context=mydict)
 
 def data_entry_signup_view(request):
     userForm=forms.DataEntryUserForm()
@@ -249,7 +329,6 @@ def data_entry_input_view(request, pk):
     student_behaviors = student.case_set.all()[:15] 
     behavior = Behavior.objects.all()
     case = Case.objects.all()
-
 
 
     student_time = student.case_set.filter(time__isnull=False).first()
@@ -1316,8 +1395,8 @@ def snapshot_data_entry_view(request, pk):
 
     data = models.Case.objects.filter(student__id=pk).values(
     'behavior__behaviorincident', 'anticedent__anticedentincident', 'function__behaviorfunction',
-    'consequence__behaviorconsequence', 'enviroment__behaviorenviroment', 'date_created', 'time', 
-    'duration', 'id'
+    'consequence__behaviorconsequence', 'enviroment__behaviorenviroment', 'intensity','duration','time','date_created',  
+    'id'
 )
 
     # Creating DataFrame
@@ -1330,9 +1409,11 @@ def snapshot_data_entry_view(request, pk):
         'function__behaviorfunction': 'Function',
         'consequence__behaviorconsequence': 'Consequence',
         'enviroment__behaviorenviroment': 'Setting',
+        'intensity': 'Intensity',
         'date_created': 'Date',
-        'time': 'Time',
         'duration': 'Duration',
+
+        'time': 'Time',
         'id': 'ID'
     }
     cases_df.rename(columns=rename_columns, inplace=True)
@@ -1345,148 +1426,143 @@ def snapshot_data_entry_view(request, pk):
     table_df = cases_df.drop(['ID'], axis=1) 
 
 
+#     df1 = cases_df['Date'].value_counts()
+#     df1 = df1.to_frame().reset_index() 
+#     df2 = df1.reset_index()
+#     df2 = df2.sort_values(by=['index'])
+#     df3 = df2['Date']
+#     df4 = df2['count']
 
-    
-
-
-
-    df1 = cases_df['Date'].value_counts()
-    df1 = df1.to_frame().reset_index() 
-    df2 = df1.reset_index()
-    df2 = df2.sort_values(by=['index'])
-    df3 = df2['Date']
-    df4 = df2['count']
-
-    bar_graph = get_bar_chart(x=df3, y = df4)
+#     bar_graph = get_bar_chart(x=df3, y = df4)
   
 
 
-    df_beh_count = cases_df['Behavior']
-    beh_count_graph = get_count_beh_plot( x= df_beh_count, data=cases_df)  
+#     df_beh_count = cases_df['Behavior']
+#     beh_count_graph = get_count_beh_plot( x= df_beh_count, data=cases_df)  
 
 
-    # multiple bar graph
+#     # multiple bar graph
 
 
 
-    df_multiple_bar = cases_df[['Behavior','Date']]
+#     df_multiple_bar = cases_df[['Behavior','Date']]
 
-    pivot = pd.pivot_table(df_multiple_bar,  
-                                index='Date', 
-                                columns='Behavior', 
-                                aggfunc=len,fill_value=0)
+#     pivot = pd.pivot_table(df_multiple_bar,  
+#                                 index='Date', 
+#                                 columns='Behavior', 
+#                                 aggfunc=len,fill_value=0)
     
     
-    dlpivot = pivot.reset_index()
+#     dlpivot = pivot.reset_index()
     
-    multiple_line_plot_five = None
+#     multiple_line_plot_five = None
     
-    try:       
+#     try:       
     
-        multiple_line_plot_five = get_multiple_line_plot_five(
-            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
-            z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
-            g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
-            m=dlpivot['Date'], n=dlpivot.iloc[:,4],data3=dlpivot,
-            b=dlpivot['Date'], c=dlpivot.iloc[:,5],data4=dlpivot
-        )
+#         multiple_line_plot_five = get_multiple_line_plot_five(
+#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
+#             z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
+#             g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
+#             m=dlpivot['Date'], n=dlpivot.iloc[:,4],data3=dlpivot,
+#             b=dlpivot['Date'], c=dlpivot.iloc[:,5],data4=dlpivot
+#         )
      
-    except:
-        pass
+#     except:
+#         pass
     
-    multiple_line_plot_four = None
+#     multiple_line_plot_four = None
  
-    try:       
+#     try:       
     
-        multiple_line_plot_four = get_multiple_line_plot_four(
-            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
-            z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
-            g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
-            m=dlpivot['Date'], n=dlpivot.iloc[:,4],data3=dlpivot
-        )
+#         multiple_line_plot_four = get_multiple_line_plot_four(
+#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
+#             z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
+#             g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
+#             m=dlpivot['Date'], n=dlpivot.iloc[:,4],data3=dlpivot
+#         )
      
-    except:
-        pass
+#     except:
+#         pass
     
-    multiple_line_plot_three = None
+#     multiple_line_plot_three = None
 
-    try:       
+#     try:       
     
-        multiple_line_plot_three = get_multiple_line_plot_three(
-            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
-            z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
-            g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
-        )
+#         multiple_line_plot_three = get_multiple_line_plot_three(
+#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
+#             z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
+#             g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
+#         )
      
-    except:
-        pass
+#     except:
+#         pass
     
-    multiple_line_plot_two = None
+#     multiple_line_plot_two = None
     
-    try:       
+#     try:       
     
-        multiple_line_plot_two = get_multiple_line_plot_two(
-            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
-            z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
-        )
+#         multiple_line_plot_two = get_multiple_line_plot_two(
+#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
+#             z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
+#         )
      
-    except:
-        pass
+#     except:
+#         pass
     
-    multiple_line_plot_one = None
+#     multiple_line_plot_one = None
 
-    try:       
+#     try:       
     
-        multiple_line_plot_one = get_multiple_line_plot_one(
-            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot
-        )
+#         multiple_line_plot_one = get_multiple_line_plot_one(
+#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot
+#         )
      
-    except:
-        pass
+#     except:
+#         pass
     
     
-    multiple_line_plot_chatgpt = None
-    y_column_name = 'Behavior'  # Replace with the actual desired column name
+#     multiple_line_plot_chatgpt = None
+#     y_column_name = 'Behavior'  # Replace with the actual desired column name
 
-# Check if the selected column has any data
-    if y_column_name in dlpivot.columns and len(dlpivot[y_column_name]) > 0:
-        multiple_line_plot_chatgpt = get_multiple_line_plot_chatgpt(
-            x=dlpivot['Date'],
-            y=dlpivot[y_column_name],
-            data=dlpivot
-    )
-    else:
-        # print("Selected y column is empty or does not exist.")
-        pass
+# # Check if the selected column has any data
+#     if y_column_name in dlpivot.columns and len(dlpivot[y_column_name]) > 0:
+#         multiple_line_plot_chatgpt = get_multiple_line_plot_chatgpt(
+#             x=dlpivot['Date'],
+#             y=dlpivot[y_column_name],
+#             data=dlpivot
+#     )
+#     else:
+#         # print("Selected y column is empty or does not exist.")
+#         pass
 
-        # pie charts
+#         # pie charts
 
 
-    df2 = cases_df['Behavior'].value_counts()
-    pie_graph = get_pie_chart( x=df2, labels=df2.index)
-    df3 = cases_df['Antecedent'].value_counts()
-    pie_anticedent_graph = get_pie__chart_anticedent( x=df3, labels=df3.index)
-    df4 = cases_df['Function'].value_counts()
-    pie_function_graph = get_pie__chart_function( x=df4, labels=df4.index)
-    df5 = cases_df['Consequence'].value_counts()
-    pie_consequence_graph = get_pie__chart_consequence( x=df5, labels=df5.index)
+#     df2 = cases_df['Behavior'].value_counts()
+#     pie_graph = get_pie_chart( x=df2, labels=df2.index)
+#     df3 = cases_df['Antecedent'].value_counts()
+#     pie_anticedent_graph = get_pie__chart_anticedent( x=df3, labels=df3.index)
+#     df4 = cases_df['Function'].value_counts()
+#     pie_function_graph = get_pie__chart_function( x=df4, labels=df4.index)
+#     df5 = cases_df['Consequence'].value_counts()
+#     pie_consequence_graph = get_pie__chart_consequence( x=df5, labels=df5.index)
 
 
     context= {
     
         'student':student,
         'table_df':table_df.to_html(),
-        'bar_graph':bar_graph,
-        'beh_count_graph':beh_count_graph,
-        'multiple_line_plot_one':multiple_line_plot_one,
-        'multiple_line_plot_two':multiple_line_plot_two,
-        'multiple_line_plot_three':multiple_line_plot_three,
-        'multiple_line_plot_four':multiple_line_plot_four,
-        'multiple_line_plot_five':multiple_line_plot_five, 
-        'pie_graph':pie_graph,
-        'pie_anticedent_graph':pie_anticedent_graph,
-        'pie_function_graph':pie_function_graph,
-        'pie_consequence_graph':pie_consequence_graph,
+        # 'bar_graph':bar_graph,
+        # 'beh_count_graph':beh_count_graph,
+        # 'multiple_line_plot_one':multiple_line_plot_one,
+        # 'multiple_line_plot_two':multiple_line_plot_two,
+        # 'multiple_line_plot_three':multiple_line_plot_three,
+        # 'multiple_line_plot_four':multiple_line_plot_four,
+        # 'multiple_line_plot_five':multiple_line_plot_five, 
+        # 'pie_graph':pie_graph,
+        # 'pie_anticedent_graph':pie_anticedent_graph,
+        # 'pie_function_graph':pie_function_graph,
+        # 'pie_consequence_graph':pie_consequence_graph,
        
     }
     

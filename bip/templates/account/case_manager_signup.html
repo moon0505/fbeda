@@ -10,91 +10,93 @@
 
 
 
+<div class="container mt-5">
+  <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card rounded-card">
+          <div class="card-header black-card-header card-header rounded-card-header card-header text-center">Register</div>
+          <div class="card-body rounded-card-body">
+            <form method="POST">
+                      {% csrf_token %}
+                      {{ userForm|crispy }}
+                      {% if userForm.non_field_errors %}
+                          <div class="alert alert-danger" role="alert">
+                              {% for error in userForm.non_field_errors %}
+                                  {{ error }}
+                              {% endfor %}
+                          </div>
+                      {% endif %}
+                      <div class="form-group text-center">
+                          <button type="submit" class="btn btn-success">Submit</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <div class="text-center mt-3">
+              Already have an account? <a href="{% url 'bip:case_manager_login' %}">Login here</a>
+          </div>
+      </div>
+  </div>
+  <br>
+</div>
 
-<html lang="en" dir="ltr">
+<style>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Register</title>
 
-  <style>
-  
-    .container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .note {
+.black-card-header {
     background-color: black;
     color: white;
-    padding: 10px;
-    text-align: center;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .form-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-control {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-  }
-  
-  .btnSubmit {
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  .btnSubmit:hover {
-    background-color: #218838;
-  }
-  
-  .text-center {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .text-center a {
-    color: #007bff;
-  }
-  
-  .text-center a:hover {
-    text-decoration: underline;
-  }
-    
-    
-    </style>
+}
 
-</head>
+body {
+   font-family: 'Roboto', sans-serif;
+   background-color: #eef2f4; 
+   color: #505050;
+   line-height: 1.6;
+ }
 
+ .rounded-card {
+        border-radius: 10px !important; /* Apply a larger radius for more pronounced rounding */
+    }
+    .rounded-card-header {
+        border-radius: 10px 10px 0 0 !important; /* Round top corners */
+        background-color: black;
+        color: white;
+    }
+    .rounded-card-body {
+        border-radius: 0 0 10px 10px !important; /* Round bottom corners */
+    }
+</style>
 
-<body>
+<!-- 
   <br>
   <br>
   <br>
   <br>
 
+<div class ='content-section'> 
+  <form method="POST" >
+  {% csrf_token %}
+  <fieldset class="form-group">
+    <legend class="border-bottom mb-4">Register</legend>
+    {{ userForm|crispy }}
 
+  </fieldset>
+
+  {% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+      {{ error }}
+    {% endfor %}
+  </div>
+{% endif %}
+  <div class="form-group">
+    <button class="btn btn-outline-info" type="submit">Register</button>
+  </div>
+
+</form>
+</div> -->
+<!-- 
 
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
@@ -121,9 +123,7 @@
               {% render_field userForm.bio class="form-control" placeholder="Occupation" %}
             </div>
             
-            <!-- <div class="form-group">
-              {% render_field caseManagerForm.slug class="form-control" placeholder="Slug" %}
-            </div> -->
+           
           </div>
 
         
@@ -134,6 +134,11 @@
             <div class="form-group">
               {% render_field userForm.password class="form-control" placeholder="Password" %}
             </div>
+            <div class="form-group">
+              {% render_field userForm.password2 class="form-control" placeholder="Confirm Password" %}
+            </div>
+
+            
           </div>
         </div>
         <button type="submit" class="btnSubmit">Register</button>
@@ -142,77 +147,9 @@
       </div>
     </div>
   </div>
-</form>
+</form> -->
 
 </body>
 
 
-</html>
-
-<style>
-  body {
-font-family: 'Roboto', sans-serif;
-background-color: #eef2f4; 
-color: #505050;
-line-height: 1.6;
-}
-
-.container {
-max-width: 1000px;
-margin: auto;
-}
-/* 
-.container {
- max-width: 1200px; 
- margin: auto;
- padding: 15px;
-} */
-
-.nav-button {
- margin-bottom: 20px;
-}
-.btn-outline-info {
- width: 100%;
- padding: 10px;
- margin-bottom: 20px;
-}
-
-
-
-.btn-primary {
- background-color: #007bff;
- border-color: #007bff;
-}
-
-.card {
- margin-bottom: 20px;
- box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
- color: #333;
-}
-
-.card-link {
- color: #007bff;
-}
-
-.table {
- margin-top: 20px;
-}
-
-@media (max-width: 768px) {
- .container {
-   padding: 15px;
- }
-}
-@media (max-width: 768px) {
- .chart-row {
-   flex-direction: column;
- }
- .chart-item {
-   flex-basis: 100%;
- }
-}
-</style>
 {% endblock %} 
