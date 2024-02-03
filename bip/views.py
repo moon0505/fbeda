@@ -232,13 +232,70 @@ def case_manager_signup_view(request):
         mydict = {'userForm': userForm, 'caseManagerForm': caseManagerForm}
         return render(request, 'account/case_manager_signup.html', context=mydict)
 
+
+
+
+# def data_entry_signup_view(request):
+#     userForm = forms.DataEntryUserForm()
+#     dataEntryForm = forms.DataEntryForm()
+#     if request.method == 'POST':
+#         userForm = forms.DataEntryUserForm(request.POST)
+#         dataEntryForm = forms.DataEntryForm(request.POST, request.FILES)
+#         # Extract password and password confirmation from request.POST
+#         password = request.POST.get('password')
+#         password_confirmation = request.POST.get('password_confirmation', '')  # Default to empty if not found
+
+#         if password != password_confirmation:
+#             # If passwords don't match, add an error message
+#             messages.error(request, "Passwords do not match.")
+#             # Re-render the page with the form data and error message
+#             return render(request, 'account/data_entry_signup.html', {'userForm': userForm, 'dataEntryForm': dataEntryForm})
+
+#         if userForm.is_valid() and dataEntryForm.is_valid():
+#             user = userForm.save(commit=False)
+#             user.set_password(password)  # Set password from the validated form data
+#             user.save()
+
+#             dataentry = dataEntryForm.save(commit=False)
+#             dataentry.user = user
+#             dataentry.save()  # No need to re-assign dataentry since save() doesn't return anything
+
+#             # Add the user to the 'DATA ENTRY' group
+#             my_dataentry_group, _ = Group.objects.get_or_create(name='DATA ENTRY')
+#             my_dataentry_group.user_set.add(user)
+
+#             # Redirect to login page upon successful registration
+#             return HttpResponseRedirect(reverse('bip:data_entry_login'))
+
+#     # If GET request or passwords don't match, render page with form
+#     return render(request, 'account/data_entry_signup.html', {'userForm': userForm, 'dataEntryForm': dataEntryForm})
+
+
+
 def data_entry_signup_view(request):
     userForm=forms.DataEntryUserForm()
     dataEntryForm=forms.DataEntryForm()
     mydict={'userForm':userForm,'dataEntryForm':dataEntryForm}
+    
+    
+    
     if request.method=='POST':
         userForm=forms.DataEntryUserForm(request.POST)
         dataEntryForm=forms.DataEntryForm(request.POST,request.FILES)
+        
+        
+        password = request.POST.get('password')
+        password_confirmation = request.POST.get('password_confirmation', '')  # Default to empty if not found
+        
+        
+        if password != password_confirmation:
+            # If passwords don't match, add an error message
+            messages.error(request, "Passwords do not match.")
+            # Re-render the page with the form data and error message
+            return render(request, 'account/data_entry_signup.html', {'userForm': userForm, 'dataEntryForm': dataEntryForm})
+        
+        
+        
         if userForm.is_valid() and dataEntryForm.is_valid():
             user=userForm.save()
             user.set_password(user.password)
@@ -288,7 +345,6 @@ def case_manager_dashboard_view(request,pk):
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)
 
     specific_data_entry =models.DataEntry.objects.filter(assignedCaseManagerSlug=case_manager_entry.slug)
-
     
 
     mydict={
@@ -402,7 +458,7 @@ def admin_delete_data_entry_view(request,pk):
 @user_passes_test(is_case_manager)
 def delete_data_entry_view(request,pk):
     data_entry=models.DataEntry.objects.get(id=pk)
-    user=models.User.objects.get(id=data_entry.user_id)
+    user=models.CustomUser.objects.get(id=data_entry.user_id)
     user.delete()
     data_entry.delete()
 
@@ -415,7 +471,7 @@ def delete_data_entry_view(request,pk):
 @user_passes_test(is_case_manager)
 def reject_data_entry_view(request,pk):
     data_entry=models.DataEntry.objects.get(id=pk)
-    user=models.User.objects.get(id=data_entry.user_id)
+    user=models.CustomUser.objects.get(id=data_entry.user_id)
     user.delete()
     data_entry.delete()
     case_manager_entry =models.CaseManager.objects.get(user_id=request.user.id)

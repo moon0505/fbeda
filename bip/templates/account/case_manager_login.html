@@ -6,7 +6,9 @@
 <title>Login</title>
 
 <div id="container">
+
   <div class="form-wrap">
+    
     <h1>FBA/EDA</h1>
     <form method="post">
       {% csrf_token %}
@@ -32,8 +34,8 @@
 <style>
   body {
   font-family: "Nunito", sans-serif;
-  background: white;
-  color: #333;
+  background-color: #eef2f4; 
+  color: #505050;
   line-height: 1.6;
 }
 
@@ -44,7 +46,7 @@
 }
 
 .form-wrap {
-  background: #eeeeee;
+  background: #fff;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
@@ -107,6 +109,19 @@
   color: #1e7e34;
 }
 
+@media (max-width: 768px) {
+ .container {
+   padding: 15px;
+ }
+}
+@media (max-width: 768px) {
+ .chart-row {
+   flex-direction: column;
+ }
+ .chart-item {
+   flex-basis: 100%;
+ }
+}
 </style>
 
 {% endblock %}
