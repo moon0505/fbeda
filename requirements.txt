@@ -64,7 +64,6 @@ requests==2.31.0
 rlPyCairo==0.3.0
 scipy==1.11.3
 seaborn==0.13.1
-six @ file:///AppleInternal/Library/BuildRoots/9dd5efe2-7fad-11ee-b588-aa530c46a9ea/Library/Caches/com.apple.xbs/Sources/python3/six-1.15.0-py2.py3-none-any.whl
 soupsieve==2.5
 sqlparse==0.4.4
 stack-data==0.6.3
