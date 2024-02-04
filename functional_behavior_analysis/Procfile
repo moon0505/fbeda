@@ -1,0 +1,2 @@
+web: gunicorn functional_behavior_analysis.wsgi --log-file -
+
