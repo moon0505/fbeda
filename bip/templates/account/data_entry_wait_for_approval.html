@@ -2,36 +2,114 @@
 
 <!DOCTYPE html>
 
-  {% block titlte %}Not Approved{% endblock %} 
 {% load crispy_forms_tags %} {% block content %}
 {% load widget_tweaks %}
 <html lang="en" dir="ltr">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <html lang="en">
+    <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      />
+  
+      <!-- Bootstrap CSS -->
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"crossorigin="anonymous"
+      />
+      <!-- semantic UI -->
+  
+      <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+  
+      <script src="https://kit.fontawesome.com/0e1798cd98.js" crossorigin="anonymous"></script>
+     
+  
+  
+      <!--Chartjs CDN-->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+  
+    </head>
   <title>Not Approved</title>
 
 
 
   <br>
+  <div class="container">
 
   <div class="jumbotron" style="margin-top: 0px;
     margin-bottom: 0px;">
-    <h1 class="display-4">Hello {{request.user.first_name}}</h1>
-    <p class="lead">  <h1><br> Soon your account will be confirmed!!!</h1> </p>
-    <p class="lead">  <h1> If you do not recieve confirmation within 48 hours, please send<a href="mailto:krsgnzlz@gmail.com" > email.</a> </h1> </p>
+    <h1 class="display-4">Hello {{request.user.first_name}},</h1>
+    <p class="lead">  <h1> Contact Case Manager that you have regestered.</a> </h1> </p>
+    <p class="lead">  <h1> Your account can only be confirmed by the Case Manager.</h1> </p>
 
    
     <hr class="my-4">
-    <p class="lead">Check Later</p>
     <p class="lead">
-      <a class="btn btn-primary btn-lg" href="/logout" role="button">Logout For Now</a>
+      <a class="btn btn-success btn-lg" href="/logout" role="button">Return to Homepage</a>
     </p>
   </div>
 
-
+</div>
 
 </html>
+
+
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #eef2f4; 
+    line-height: 1.6;
+  }
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 15px;
+}
+
+.form-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.form-section h1 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.behavior-form {
+  margin-top: 10px;
+}
+
+.behavior-form .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  margin-top: 10px;
+}
+
+.card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.behavior-list li {
+  margin-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+}
+</style>
+
+
+
 {% endblock %} 
 

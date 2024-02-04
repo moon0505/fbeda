@@ -104,28 +104,9 @@ class DataEntryUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['first_name', 'last_name', 'username', 'password', 'bio', 'email']
-        widgets = {
-            'password': forms.PasswordInput(),
-        }
+        
 
-    def clean(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get("password")
-        password_confirmation = cleaned_data.get("password_confirmation")
-
-        if password != password_confirmation:
-            raise ValidationError("Passwords must match.")
-
-        return cleaned_data
-
-    def save(self, commit=True):
-        # Use the parent class's save method to save the model instance
-        user = super().save(commit=False)
-        # Set the password properly
-        user.set_password(self.cleaned_data["password"])
-        if commit:
-            user.save()
-        return user
+   
 
 
 

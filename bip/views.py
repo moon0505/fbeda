@@ -221,7 +221,9 @@ def case_manager_signup_view(request):
             casemanager_group, created = Group.objects.get_or_create(name='CASE MANAGER')
             casemanager_group.user_set.add(user)
             
-            return redirect(reverse('bip:case_manager_login'))  # Ensure this URL name is correct
+            
+            return render(request,'account/case_manager_wait_for_approval.html')
+            # return redirect(reverse('bip:case_manager_login'))  # Ensure this URL name is correct
         else:
             # Form(s) has errors, render them back to the user
             mydict = {'userForm': userForm, 'caseManagerForm': caseManagerForm}
@@ -302,12 +304,17 @@ def data_entry_signup_view(request):
             user.save()
             dataentry =dataEntryForm.save(commit=False)
             dataentry.user=user
+            
             dataentry.assignedCaseManagerSlug=request.POST.get('assignedCaseManagerSlug')
             dataentry.assignedStudentSlug=request.POST.get('assignedStudentSlug')
             dataentry=dataentry.save()
             my_dataentry_group = Group.objects.get_or_create(name='DATA ENTRY')
             my_dataentry_group[0].user_set.add(user)
         return HttpResponseRedirect(reverse('bip:data_entry_login'))
+
+
+
+
     return render(request,'account/data_entry_signup.html',context=mydict)
 
 def is_case_manager(user):
@@ -330,6 +337,7 @@ def afterlogin_view(request):
             return render(request,'account/case_manager_wait_for_approval.html')
     elif is_data_entry(request.user):
         accountapproval=models.DataEntry.objects.all().filter(user_id=request.user.id,status=True)
+        
         if accountapproval:
             return redirect('bip:data_entry_dashboard')
         else:
