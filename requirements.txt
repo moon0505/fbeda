@@ -11,7 +11,6 @@ executing==2.0.0
 filelock==3.12.4
 fonttools==4.43.0
 freetype-py==2.3.0
-future @ file:///AppleInternal/Library/BuildRoots/9dd5efe2-7fad-11ee-b588-aa530c46a9ea/Library/Caches/com.apple.xbs/Sources/python3/future-0.18.2-py3-none-any.whl
 gunicorn==21.2.0
 html2text==2020.1.16
 html5lib==1.1
@@ -23,7 +22,6 @@ jedi==0.19.1
 jupyterlab-widgets==3.0.9
 kiwisolver==1.4.5
 lxml==4.9.3
-macholib @ file:///AppleInternal/Library/BuildRoots/9dd5efe2-7fad-11ee-b588-aa530c46a9ea/Library/Caches/com.apple.xbs/Sources/python3/macholib-1.15.2-py2.py3-none-any.whl
 MarkupPy==1.14
 matplotlib==3.8.2
 matplotlib-inline==0.1.6
