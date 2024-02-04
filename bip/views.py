@@ -129,80 +129,6 @@ def dataentryclick_view(request):
         return HttpResponseRedirect('afterlogin')
     return render(request,'account/dataentryclick.html')
 
-# def case_manager_signup_view(request):
-#     userForm = forms.CaseManagerUserForm()
-#     caseManagerForm = forms.CaseManagerForm()
-#     mydict = {'userForm': userForm, 'caseManagerForm': caseManagerForm}
-
-#     if request.method == 'POST':
-#         userForm = forms.CaseManagerUserForm(request.POST)
-#         caseManagerForm = forms.CaseManagerForm(request.POST, request.FILES)
-
-#         if userForm.is_valid() and caseManagerForm.is_valid():
-#             password = userForm.cleaned_data['password']
-#             password2 = userForm.cleaned_data['password2']
-
-#             if password != password2:
-#                 messages.error(request, 'Passwords do not match')
-#                 return render(request, 'account/case_manager_signup.html', context=mydict)
-
-#             user = userForm.save(commit=False)
-#             user.set_password(password)
-#             user.save()
-
-#             casemanager = caseManagerForm.save(commit=False)
-#             casemanager.user = user
-#             casemanager.save()
-
-#             casemanager_group, created = Group.objects.get_or_create(name='CASE MANAGER')
-#             casemanager_group.user_set.add(user)
-
-#             return HttpResponseRedirect(reverse('bip:case_manager_login'))
-
-#     return render(request, 'account/case_manager_signup.html', context=mydict)
-
-# def case_manager_signup_view(request):
-#     userForm=forms.CaseManagerUserForm()
-#     caseManagerForm=forms.CaseManagerForm()
-#     mydict={'userForm':userForm,'caseManagerForm':caseManagerForm}
-#     if request.method=='POST':
-#         userForm=forms.CaseManagerUserForm(request.POST)
-#         caseManagerForm=forms.CaseManagerForm(request.POST,request.FILES)
-#         if userForm.is_valid() and caseManagerForm.is_valid():
-            
-            
-            
-            
-#             user=userForm.save()
-#             user.set_password(user.password)
-#             user.save()
-#             casemanager=caseManagerForm.save(commit=False)
-#             casemanager.user=user
-#             casemanager=casemanager.save()
-#             casemanager_group = Group.objects.get_or_create(name='CASE MANAGER')
-#             casemanager_group[0].user_set.add(user)
-#         return HttpResponseRedirect(reverse('bip:case_manager_login'))
-#     return render(request,'account/case_manager_signup.html',context=mydict)
-
-
-# def case_manager_signup_view(request):
-#     userForm = CaseManagerUserForm()
-#     caseManagerForm = CaseManagerForm()
-#     mydict = {'userForm': userForm, 'caseManagerForm': caseManagerForm}
-#     if request.method == 'POST':
-#         userForm = CaseManagerUserForm(request.POST)
-#         caseManagerForm = CaseManagerForm(request.POST, request.FILES)
-#         if userForm.is_valid() and caseManagerForm.is_valid():
-#             user = userForm.save(commit=False)
-#             user.set_password(userForm.cleaned_data['password'])
-#             user.save()
-#             casemanager = caseManagerForm.save(commit=False)
-#             casemanager.user = user
-#             casemanager.save()
-#             casemanager_group, created = Group.objects.get_or_create(name='CASE MANAGER')
-#             casemanager_group.user_set.add(user)
-#             return HttpResponseRedirect(reverse('bip:case_manager_login'))
-#     return render(request, 'account/case_manager_signup.html', context=mydict)
 
 
 def case_manager_signup_view(request):
@@ -233,44 +159,6 @@ def case_manager_signup_view(request):
         caseManagerForm = CaseManagerForm()
         mydict = {'userForm': userForm, 'caseManagerForm': caseManagerForm}
         return render(request, 'account/case_manager_signup.html', context=mydict)
-
-
-
-
-# def data_entry_signup_view(request):
-#     userForm = forms.DataEntryUserForm()
-#     dataEntryForm = forms.DataEntryForm()
-#     if request.method == 'POST':
-#         userForm = forms.DataEntryUserForm(request.POST)
-#         dataEntryForm = forms.DataEntryForm(request.POST, request.FILES)
-#         # Extract password and password confirmation from request.POST
-#         password = request.POST.get('password')
-#         password_confirmation = request.POST.get('password_confirmation', '')  # Default to empty if not found
-
-#         if password != password_confirmation:
-#             # If passwords don't match, add an error message
-#             messages.error(request, "Passwords do not match.")
-#             # Re-render the page with the form data and error message
-#             return render(request, 'account/data_entry_signup.html', {'userForm': userForm, 'dataEntryForm': dataEntryForm})
-
-#         if userForm.is_valid() and dataEntryForm.is_valid():
-#             user = userForm.save(commit=False)
-#             user.set_password(password)  # Set password from the validated form data
-#             user.save()
-
-#             dataentry = dataEntryForm.save(commit=False)
-#             dataentry.user = user
-#             dataentry.save()  # No need to re-assign dataentry since save() doesn't return anything
-
-#             # Add the user to the 'DATA ENTRY' group
-#             my_dataentry_group, _ = Group.objects.get_or_create(name='DATA ENTRY')
-#             my_dataentry_group.user_set.add(user)
-
-#             # Redirect to login page upon successful registration
-#             return HttpResponseRedirect(reverse('bip:data_entry_login'))
-
-#     # If GET request or passwords don't match, render page with form
-#     return render(request, 'account/data_entry_signup.html', {'userForm': userForm, 'dataEntryForm': dataEntryForm})
 
 
 
@@ -1490,143 +1378,10 @@ def snapshot_data_entry_view(request, pk):
     table_df = cases_df.drop(['ID'], axis=1) 
 
 
-#     df1 = cases_df['Date'].value_counts()
-#     df1 = df1.to_frame().reset_index() 
-#     df2 = df1.reset_index()
-#     df2 = df2.sort_values(by=['index'])
-#     df3 = df2['Date']
-#     df4 = df2['count']
-
-#     bar_graph = get_bar_chart(x=df3, y = df4)
-  
-
-
-#     df_beh_count = cases_df['Behavior']
-#     beh_count_graph = get_count_beh_plot( x= df_beh_count, data=cases_df)  
-
-
-#     # multiple bar graph
-
-
-
-#     df_multiple_bar = cases_df[['Behavior','Date']]
-
-#     pivot = pd.pivot_table(df_multiple_bar,  
-#                                 index='Date', 
-#                                 columns='Behavior', 
-#                                 aggfunc=len,fill_value=0)
-    
-    
-#     dlpivot = pivot.reset_index()
-    
-#     multiple_line_plot_five = None
-    
-#     try:       
-    
-#         multiple_line_plot_five = get_multiple_line_plot_five(
-#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
-#             z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
-#             g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
-#             m=dlpivot['Date'], n=dlpivot.iloc[:,4],data3=dlpivot,
-#             b=dlpivot['Date'], c=dlpivot.iloc[:,5],data4=dlpivot
-#         )
-     
-#     except:
-#         pass
-    
-#     multiple_line_plot_four = None
- 
-#     try:       
-    
-#         multiple_line_plot_four = get_multiple_line_plot_four(
-#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
-#             z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
-#             g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
-#             m=dlpivot['Date'], n=dlpivot.iloc[:,4],data3=dlpivot
-#         )
-     
-#     except:
-#         pass
-    
-#     multiple_line_plot_three = None
-
-#     try:       
-    
-#         multiple_line_plot_three = get_multiple_line_plot_three(
-#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
-#             z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
-#             g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
-#         )
-     
-#     except:
-#         pass
-    
-#     multiple_line_plot_two = None
-    
-#     try:       
-    
-#         multiple_line_plot_two = get_multiple_line_plot_two(
-#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
-#             z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
-#         )
-     
-#     except:
-#         pass
-    
-#     multiple_line_plot_one = None
-
-#     try:       
-    
-#         multiple_line_plot_one = get_multiple_line_plot_one(
-#             x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot
-#         )
-     
-#     except:
-#         pass
-    
-    
-#     multiple_line_plot_chatgpt = None
-#     y_column_name = 'Behavior'  # Replace with the actual desired column name
-
-# # Check if the selected column has any data
-#     if y_column_name in dlpivot.columns and len(dlpivot[y_column_name]) > 0:
-#         multiple_line_plot_chatgpt = get_multiple_line_plot_chatgpt(
-#             x=dlpivot['Date'],
-#             y=dlpivot[y_column_name],
-#             data=dlpivot
-#     )
-#     else:
-#         # print("Selected y column is empty or does not exist.")
-#         pass
-
-#         # pie charts
-
-
-#     df2 = cases_df['Behavior'].value_counts()
-#     pie_graph = get_pie_chart( x=df2, labels=df2.index)
-#     df3 = cases_df['Antecedent'].value_counts()
-#     pie_anticedent_graph = get_pie__chart_anticedent( x=df3, labels=df3.index)
-#     df4 = cases_df['Function'].value_counts()
-#     pie_function_graph = get_pie__chart_function( x=df4, labels=df4.index)
-#     df5 = cases_df['Consequence'].value_counts()
-#     pie_consequence_graph = get_pie__chart_consequence( x=df5, labels=df5.index)
-
-
     context= {
     
         'student':student,
         'table_df':table_df.to_html(),
-        # 'bar_graph':bar_graph,
-        # 'beh_count_graph':beh_count_graph,
-        # 'multiple_line_plot_one':multiple_line_plot_one,
-        # 'multiple_line_plot_two':multiple_line_plot_two,
-        # 'multiple_line_plot_three':multiple_line_plot_three,
-        # 'multiple_line_plot_four':multiple_line_plot_four,
-        # 'multiple_line_plot_five':multiple_line_plot_five, 
-        # 'pie_graph':pie_graph,
-        # 'pie_anticedent_graph':pie_anticedent_graph,
-        # 'pie_function_graph':pie_function_graph,
-        # 'pie_consequence_graph':pie_consequence_graph,
        
     }
     
@@ -2837,7 +2592,6 @@ def is_integer(n):
         return True
     except ValueError:
         return False
-
 
 
 

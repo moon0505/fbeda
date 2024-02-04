@@ -4,7 +4,7 @@
           <div class="navbar navbar-expand-lg">
                     {% if user.is_authenticated  %} 
                     <div class="navbar-new">
-                    <h1 class="logo"> <a class="colorwhite" href="">FBA/EDA ({{ user.username }})</a></h1> 
+                    <h1 class="logo"> <a class="colorwhite" >FBA/EDA ({{ user.username }})</a></h1> 
           </div>
               <a class='colorwhite' class="nav-item nav-link" href="{% url 'bip:logout' %}"  >Log out</a>
           </div>

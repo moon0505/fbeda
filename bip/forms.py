@@ -9,40 +9,6 @@ from django.core.exceptions import ValidationError
 
 
 
-# Old one down here try it
-
-#for student related form
-# class CaseManagerUserForm(forms.ModelForm):
-    
-#     class Meta:
-#         model=CustomUser
-#         fields=['first_name','last_name','username','password','bio','email',]
-        # widgets = {
-        # 'password': forms.PasswordInput()
-        # }
-
-
-# class CaseManagerUserForm(forms.ModelForm):
-#     password = forms.CharField(widget=forms.PasswordInput(), label="Password")
-#     password_confirmation = forms.CharField(widget=forms.PasswordInput(), label="Confirm Password")
-    
-#     class Meta:
-#         model = CustomUser
-#         fields = ['first_name', 'last_name', 'username', 'email', 'bio']  # Removed 'password' from here, it's manually added above
-
-#     def clean(self):
-#         cleaned_data = super().clean()
-#         password = cleaned_data.get("password")
-#         password_confirmation = cleaned_data.get("password_confirmation")
-
-#         if password and password_confirmation and password != password_confirmation:
-#             msg = "The two password fields didn't match."
-#             self.add_error('password_confirmation', msg)
-#             # Or raise ValidationError(msg) if you want it to be form-wide rather than field-specific
-            
-#         return cleaned_data
-
-
 
 
 class CaseManagerUserForm(forms.ModelForm):
@@ -106,21 +72,6 @@ class DataEntryUserForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'username', 'password', 'bio', 'email']
         
 
-   
-
-
-
-
-# class DataEntryUserForm(forms.ModelForm):
-#     email = forms.EmailField(required=True)  # Makes the email field explicitly required
-    
-#     class Meta:
-#         model=CustomUser
-#         fields=['first_name','last_name','username','password','bio','email']
-#         widgets = {
-#         'password': forms.PasswordInput()
-#         }
-        
 class DataEntryForm(forms.ModelForm):
    
 
@@ -211,8 +162,6 @@ FORMAT_CHOICES ={
     ('csv', 'csv'),
     ('json', 'json'),
 }
-
-
 
 
 

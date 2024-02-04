@@ -87,8 +87,12 @@ WSGI_APPLICATION = 'functional_behavior_analysis.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'functionaldb',
+        'USER': 'postgres',
+        'PASSWORD': 'Luna0505@',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -158,5 +162,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'krsgnzlz@gmail.com'
-EMAIL_HOST_PASSWORD = 'tbkb pmep kqcu srmz'
+EMAIL_HOST_USER = 'exploratoryfba@gmail.com'
+EMAIL_HOST_PASSWORD = 'iadb tmfk nwti swry'

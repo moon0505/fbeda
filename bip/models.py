@@ -26,6 +26,9 @@ class CaseManager(models.Model):
     def get_id(self):
         return self.user.id
     
+    def __str__(self):
+        return str(self.user) + ' - ' + str(self.status)
+    
 class DataEntry(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     assignedCaseManagerSlug = models.CharField(max_length=20,blank=True,null=True)
