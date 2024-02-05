@@ -11,3 +11,4 @@ psycopg2-binary==2.9.9
 crispy-bootstrap4==2022.1
 dj-database-url==2.1.0
 matplotlib==3.4.2
+seaborn==0.13.1
