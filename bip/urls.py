@@ -77,11 +77,6 @@ urlpatterns = [
     
 
 
-
-
-
-
-
     
     # the core of the website--------------------------------
     
@@ -92,7 +87,8 @@ urlpatterns = [
     
     path('statistics/<pk>/', views.statistics, name="statistics"),
 
-    path('description/', views.description_view, name="description"),
+    path('', views.description_view, name="description"),
+
     
     path('student_list/<pk>/', views.list_view, name='student_list'),
 
