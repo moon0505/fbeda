@@ -76,7 +76,6 @@ from django.contrib import messages
 import requests
 from django.shortcuts import render
 from urllib.parse import unquote
-import html2text
 
 
 
