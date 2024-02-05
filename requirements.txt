@@ -13,3 +13,4 @@ dj-database-url==2.1.0
 matplotlib==3.4.2
 seaborn==0.13.1
 cufflinks==0.17.3
+requests==2.31.0
