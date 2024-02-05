@@ -12,3 +12,4 @@ crispy-bootstrap4==2022.1
 dj-database-url==2.1.0
 matplotlib==3.4.2
 seaborn==0.13.1
+cufflinks==0.17.3
