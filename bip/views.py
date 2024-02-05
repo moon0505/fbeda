@@ -74,7 +74,6 @@ import numpy as np
 import csv,io
 from django.contrib import messages 
 import requests
-from docx import Document
 from django.shortcuts import render
 from urllib.parse import unquote
 import html2text
@@ -2057,36 +2056,6 @@ def raw_data(request, pk):
 
 # donwload to word xxxxxxx
 
-def download_webpage_to_word(request, url):
-    decoded_url = unquote(url)
-
-    # Add schema if missing
-    if not decoded_url.startswith(('http://', 'https://')):
-        decoded_url = 'http://' + decoded_url
-
-    response = requests.get(decoded_url)
-
-    if response.status_code == 200:
-        # Convert HTML to plain text, except for tables
-        h = html2text.HTML2Text()
-        h.ignore_links = True
-        h.ignore_images = True
-        h.ignore_emphasis = True
-        h.skip_internal_links = True
-        content_text = h.handle(response.text)
-
-        document = Document()
-        document.add_paragraph(content_text)
-
-        response = HttpResponse(
-            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        )
-        response['Content-Disposition'] = 'attachment; filename="webpage.docx"'
-        document.save(response)
-
-        return response
-    else:
-        return HttpResponse(f"Failed to fetch the webpage: {response.status_code}")
     
 def download_page(request):
     return render(request, 'bip/download_page.html')

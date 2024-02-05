@@ -203,7 +203,6 @@ urlpatterns = [
     path('case_upload_csv_multiple/', views.case_upload_csv_multiple, name='case_upload_csv_multiple'),  
 
 
-    path('download/<path:url>/', views.download_webpage_to_word, name='download_webpage'),
     
     path('download_page/', views.download_page, name='download_page'),
 
