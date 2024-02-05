@@ -123,9 +123,6 @@ def get_clustermap( *args, **kwargs):
     title = "Clustermap (Behaviors, Antecedents, Functions)"
     plt.title(title)
   
-
-
-
   
     sns.clustermap(data,  annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
     sns.despine(top=True,right=False)

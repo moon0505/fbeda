@@ -1047,6 +1047,7 @@ def correlation_view(request, pk):
     df_matrix = pd.concat([cases_df,behavior, anticedent,function], axis=1)
     df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
     matrix = df_matrix.corr().round(2) 
+    
     iheat_graph = None
     
     try:
@@ -1427,7 +1428,7 @@ def function_view(request,pk):
         pass
     
 
-    iclustermap_graph = None
+    iclustermap_graph_function = None
     
     try:
         iclustermap_graph_function = get_clustermap_function(data=matrix)
