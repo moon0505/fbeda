@@ -11,6 +11,7 @@
 
 <h2>
     <p> Are you sure you want to <b>DELETE</b> this Behavior: <b>{{item}}</b>  </p>
+    <p> <h4> <i> *Do not delete this consequence if you have submitted <b>{{ item }}</b> in the FBO form. It will cause erros in your data. </i></h4></p>
 
 
     <form action="{% url 'bip:delete_consequence' item.id %}" method="POST">
