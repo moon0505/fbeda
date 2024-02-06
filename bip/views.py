@@ -1030,15 +1030,14 @@ def correlation_view(request, pk):
     function = pd.get_dummies(cases_df['Function'])
     df_matrix = pd.concat([cases_df,behavior, anticedent,function], axis=1)
     df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
+    
     matrix = df_matrix.corr().round(2) 
     
     iclustermap_graph = None
     
-    try:
-        iclustermap_graph = get_clustermap(data=matrix)
+    iclustermap_graph = get_clustermap(data=matrix)
 
-    except:
-        pass
+    
 
 # heatmap correaltion matrix
     behavior = pd.get_dummies(cases_df['Behavior'])
