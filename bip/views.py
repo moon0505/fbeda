@@ -1035,9 +1035,11 @@ def correlation_view(request, pk):
     
     iclustermap_graph = None
     
-    iclustermap_graph = get_clustermap(data=matrix)
+    try:
+        iclustermap_graph = get_clustermap(data=matrix)
 
-    
+    except:
+        pass
 
 # heatmap correaltion matrix
     behavior = pd.get_dummies(cases_df['Behavior'])
