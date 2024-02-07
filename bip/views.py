@@ -1984,8 +1984,7 @@ def raw_data(request, pk):
     try:
     # Group and calculate the mean frequency
         # frequency_behavior = cases_df_frequency.groupby('behavior__behaviorincident')['frequency'].mean().round(0).astype(int).reset_index()
-        frequency_behavior = cases_df_frequency.groupby('behavior__behaviorincident')['frequency'].mean().round(2).astype(int).reset_index()
-
+        frequency_behavior = cases_df_frequency.groupby('behavior__behaviorincident')['frequency'].mean().round(2).reset_index()
     
     # Rename the 'behavior__behaviorincident' column to 'Behavior'
         frequency_behavior = frequency_behavior.rename(columns={'behavior__behaviorincident': 'Behavior', 'frequency': 'Frequency'})
