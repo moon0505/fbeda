@@ -1538,7 +1538,7 @@ def anticedent_view(request,pk):
     iclustermap_graph_antecedent = None
     
     try:
-        iclustermap_graph_antecedent = get_clustermap_antecedent(data=filterDX)
+        iclustermap_graph_antecedent = get_clustermap_antecedent(data=matrix)
 
     except:
         pass
