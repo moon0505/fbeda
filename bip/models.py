@@ -31,8 +31,8 @@ class CaseManager(models.Model):
     
 class DataEntry(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    assignedCaseManagerSlug = models.CharField(max_length=20,blank=True,null=True)
-    assignedStudentSlug = models.CharField(max_length=20,blank=True,null=True)
+    assignedCaseManagerSlug = models.CharField(max_length=30,blank=True,null=True)
+    assignedStudentSlug = models.CharField(max_length=30,blank=True,null=True)
     admitDate=models.DateField(auto_now=True)
     status=models.BooleanField(default=False)
 
