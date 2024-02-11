@@ -20,9 +20,7 @@
                     {% if user.is_authenticated  %} 
                     <div class="navbar-new">
                     <h1 class="logo"> <a class="navbar-brand">EFBA ({{ user.username }})</a></h1> 
-                    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                      </button>
+                    
           </div>
               <a class='colorwhite' class="nav-item nav-link" href="{% url 'bip:logout' %}"  >Log out</a>
           </div>
