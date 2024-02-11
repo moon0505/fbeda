@@ -5,11 +5,10 @@
   <title>EFBA</title>
 
   <div class="container">
-    <br>
     <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard</a>
  
-    <div id="container">
-      <h2 class="page-title">Add Individual to Input Data</h2>
+<div class="container mt-4">
+  <h2 class="page-title">Add Individual to Input Data</h2>
 
   <div class="instruction-card card mb-4">
       <div class="card-body">
@@ -54,60 +53,64 @@
 </body>
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #eef2f4; 
 
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  #container {
-    margin: 30px auto;
-    max-width: 800px;
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f0f0; /* Updated to gray background */
+      color: #505050;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 15px;
+    }
+    
+    .page-title {
+      color: #0056b3;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .card {
+    
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-title {
+      color: #007bff;
+    }
+    
+    .card-text, .steps-list {
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .card-link {
+      color: #28a745;
+    }
+    
+    .card-link:hover {
+      text-decoration: underline;
+    }
+    
+    .steps-list {
+      padding-left: 20px;
+    }
+    .btn-outline-info {
+    width: 100%;
     padding: 10px;
+    margin-bottom: 20px;
   }
- 
-
-  .form-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-  }
-
-  .form-section h1 {
-    color: #333;
-    margin-bottom: 15px;
-  }
-
-  .antecedent-form {
-    margin-top: 10px;
-  }
-
-  .antecedent-form .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    margin-top: 10px;
-  }
-
-  .card {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .antecedent-list li {
-    margin-bottom: 5px;
-  }
-
+  
   @media (max-width: 768px) {
-    .row {
+    .chart-row {
       flex-direction: column;
     }
+    .chart-item {
+      flex-basis: 100%;
+    }
   }
-</style>
+    </style>
 {% endblock %}
