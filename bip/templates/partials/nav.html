@@ -14,7 +14,7 @@
 </head>
 
 <!-- <body data-spy="scroll" data-target="#main-nav" id="home"> -->
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" id="main-nav">
+  <nav class="navbar navbar-expand-sm navbar-dark fixed-top custom-navbar-bg" id="main-nav">
     {% if user.is_authenticated  %} 
 
     
@@ -39,7 +39,7 @@
           {% endif %}
           {% else %}
           <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" id="main-nav">
-            <a href="index.html" class="navbar-brand">EFBA ({{ user.username }})</a>
+            <a href="index.html" class="navbar-brand">Exploratory FBA</a>
 
 
           
@@ -64,3 +64,11 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
     crossorigin="anonymous"></script>
+
+
+<style>
+    .custom-navbar-bg {
+    background-color: #339933; /* Expanded form of #393 */
+}
+
+</style>
