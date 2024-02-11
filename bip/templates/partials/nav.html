@@ -19,7 +19,9 @@
 
     
     <div class="container">
-      <a href="index.html" class="navbar-brand">EFBA ({{ user.username }})</a>
+      <a href="" class="navbar-brand">EFBA ({{ user.username }})</a>
+      <a href="{% url 'bip:logout' %}" class="nav-link">Log Out</a>
+
       <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -35,12 +37,12 @@
             <a href="{% url 'bip:for_user' username=user.username %}" class="nav-link text-white">Case List</a>
           </li>
           {% endif %}
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="{% url 'bip:logout' %}" class="nav-link">Log Out</a>
-          </li>
+          </li> -->
           {% else %}
           <nav class="navbar navbar-expand-sm navbar-dark fixed-top custom-navbar-bg" id="main-nav">
-            <a href="index.html" class="navbar-brand">Exploratory FBA</a>
+            <a href="" class="navbar-brand">Exploratory FBA</a>
 
 
           
