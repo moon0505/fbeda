@@ -31,14 +31,14 @@
           {% if user|is_case_manager %}
 
           <li class="nav-item">
-            <a href="{% url 'bip:create_student' %}" class="nav-link">Add Case</a>
+            <a href="{% url 'bip:create_student' %}" class="nav-link text-white">Add Case</a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'bip:for_user' username=user.username %}" class="nav-link">Case List</a>
+            <a href="{% url 'bip:for_user' username=user.username %}" class="nav-link text-white">Case List</a>
           </li>
           {% endif %}
           {% else %}
-          <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" id="main-nav">
+          <nav class="navbar navbar-expand-sm navbar-dark fixed-top custom-navbar-bg" id="main-nav">
             <a href="index.html" class="navbar-brand">Exploratory FBA</a>
 
 
