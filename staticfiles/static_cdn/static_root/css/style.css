@@ -15,7 +15,6 @@ body {
   transition: 0.5s;
 
   width: 100%; /* Full width */
-  max-width: 1200px; /* Maximum width */
 
   margin-left: auto;
   margin-right: auto;
