@@ -25,9 +25,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a href="{% url 'bip:logout' %}" class="nav-link">Log Out</a>
-          </li>
+         
           {% if user|is_case_manager %}
 
           <li class="nav-item">
@@ -37,6 +35,9 @@
             <a href="{% url 'bip:for_user' username=user.username %}" class="nav-link text-white">Case List</a>
           </li>
           {% endif %}
+          <li class="nav-item">
+            <a href="{% url 'bip:logout' %}" class="nav-link">Log Out</a>
+          </li>
           {% else %}
           <nav class="navbar navbar-expand-sm navbar-dark fixed-top custom-navbar-bg" id="main-nav">
             <a href="index.html" class="navbar-brand">Exploratory FBA</a>
