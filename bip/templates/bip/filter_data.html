@@ -2,13 +2,11 @@
 {% block content %}
 {% load crispy_forms_tags %}
 
-
+<div class="container mt-4">
   <title>EFBA</title>
-
+<br><br>
   <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard ({{student.studentname}})</a>
   <br>
-  <div id="container">
-
   <div class="text-center mb-4">
     <h3>Filter Data</h3>
   </div>
@@ -104,71 +102,8 @@
       </div>
     </div>
   </div>
-  </div>
+</div>
 
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #eef2f4; 
-
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  #container {
-    margin: 30px auto;
-    max-width: 800px;
-    padding: 10px;
-  }
-  .container {
-    max-width: 1200px; /* Increased the maximum width */
-    margin: auto;
-    padding: 15px;
-  }
-
-  .form-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-  }
-
-  .form-section h1 {
-    color: #333;
-    margin-bottom: 15px;
-  }
-
-  .antecedent-form {
-    margin-top: 10px;
-  }
-
-  .antecedent-form .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    margin-top: 10px;
-  }
-
-  .card {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .antecedent-list li {
-    margin-bottom: 5px;
-  }
-
-  @media (max-width: 768px) {
-    .row {
-      flex-direction: column;
-    }
-  }
-</style>
-
-<!-- 
 <style>
 body {
     font-family: 'Roboto', sans-serif;
@@ -242,5 +177,5 @@ body {
     padding: 10px;
     margin-bottom: 20px;
   }
-</style> -->
+</style>
 {% endblock %}
