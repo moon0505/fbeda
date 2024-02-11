@@ -1,36 +1,5 @@
 {% load custom_filters %}
 
-  <!-- <nav class="navbar navbar-dark ">
-          <div class="navbar navbar-expand-lg">
-                    {% if user.is_authenticated  %} 
-                    <div class="navbar-new">
-                    <h1 class="logo"> <a class="colorwhite" href="">FEDA ({{ user.username }})</a></h1> 
-          </div>
-              <a class='colorwhite' class="nav-item nav-link" href="{% url 'bip:logout' %}"  >Log out</a>
-          </div>
-                 <div class="navbar-nav ml-auto">
-                        {% if user|is_case_manager %}
-
-              <a class="colorwhite" href="{% url 'bip:create_student' %}">Add Case</a>
-              <a class="colorwhite" href="{% url 'bip:for_user' username=user.username %}">Case List</a>
-                </div>
-                {% endif %}
-        {% else %}
-        <div class="navbar navbar-expand-lg">
-          <div class="navbar-new">
-          <h1 class="logo"> <a class="colorwhite" href="">FBA/EDA</a></h1> 
-</div>
-  
-</div>
-
-<div class="navbar-nav ml-auto">
-
-        {% endif %} 
-        </div> 
-</nav> -->
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,13 +16,13 @@
   <title>Bootstrap Theme</title>
 </head>
 
-<body data-spy="scroll" data-target="#main-nav" id="home">
+<!-- <body data-spy="scroll" data-target="#main-nav" id="home"> -->
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" id="main-nav">
     {% if user.is_authenticated  %} 
 
     
     <div class="container">
-      <a href="index.html" class="navbar-brand">FBA/EDA ({{ user.username }})</a>
+      <a href="index.html" class="navbar-brand">EFBA ({{ user.username }})</a>
       <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -68,12 +37,12 @@
             <a href="{% url 'bip:create_student' %}" class="nav-link">Add Case</a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'bip:for_user' username=user.username %}" class="nav-link">Case Lis</a>
+            <a href="{% url 'bip:for_user' username=user.username %}" class="nav-link">Case List</a>
           </li>
           {% endif %}
           {% else %}
           <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" id="main-nav">
-            <a href="index.html" class="navbar-brand">FBA/EDA ({{ user.username }})</a>
+            <a href="index.html" class="navbar-brand">EFBA ({{ user.username }})</a>
 
 
           
@@ -116,6 +85,6 @@
       }
     });
   </script>
-</body>
+<!-- </body> -->
 
 </html>
