@@ -3,11 +3,13 @@
 {% load crispy_forms_tags %}
 
 
-<div id="container">
+<div class="container mt-4">
   <title>EFBA</title>
-  <br>
+
   <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard ({{student.studentname}})</a>
   <br>
+  <div id="container">
+
   <div class="text-center mb-4">
     <h3>Filter Data</h3>
   </div>
@@ -103,6 +105,7 @@
       </div>
     </div>
   </div>
+  </div>
 </div>
 
 <style>
@@ -123,7 +126,11 @@
     max-width: 800px;
     padding: 10px;
   }
- 
+  .container {
+    max-width: 1200px; /* Increased the maximum width */
+    margin: auto;
+    padding: 15px;
+  }
 
   .form-section {
     background: #f8f9fa;
@@ -163,4 +170,79 @@
   }
 </style>
 
+<!-- 
+<style>
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0; /* Updated to gray background */
+    color: #505050;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1200px; /* Increased the maximum width */
+    margin: auto;
+    padding: 15px;
+  }
+
+  .filter-form .form-row {
+    margin-bottom: 15px;
+  }
+
+  .form-group {
+    margin-right: 10px;
+  }
+
+  .btn-filter {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .query-count h4, .query-count p {
+    margin: 5px 0;
+  }
+
+  .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .table {
+    margin-top: 20px;
+  }
+
+  .btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+  }
+
+  .btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+
+  @media (max-width: 768px) {
+    .chart-row {
+      flex-direction: column;
+    }
+    .chart-item {
+      flex-basis: 100%;
+    }
+  }
+
+  .btn-outline-info {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+</style> -->
 {% endblock %}
