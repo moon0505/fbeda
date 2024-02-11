@@ -196,7 +196,7 @@ def data_entry_signup_view(request):
             dataentry=dataentry.save()
             my_dataentry_group = Group.objects.get_or_create(name='DATA ENTRY')
             my_dataentry_group[0].user_set.add(user)
-        return HttpResponseRedirect(reverse('bip:data_entry_login'))
+        return HttpResponseRedirect(reverse('bip:case_manager_login'))
 
 
 
