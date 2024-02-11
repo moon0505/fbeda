@@ -9,7 +9,7 @@
 <body>
   <title>EFBA</title>
 
-  <div class="container my-4">
+  <div id="container">
     <!-- Form Section -->
     <div class="form-section">
       <h1 class="text-center">Antecedent</h1>
@@ -43,18 +43,24 @@
 </body>
 
 <style>
-
-body {
-    font-family: 'Roboto', sans-serif;
+  body {
+    font-family: Arial, sans-serif;
     background-color: #eef2f4; 
-    color: #505050;
-    line-height: 1.6;
+
   }
-  .container {
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  #container {
+    margin: 30px auto;
     max-width: 800px;
-    margin: auto;
-    padding: 15px;
+    padding: 10px;
   }
+ 
 
   .form-section {
     background: #f8f9fa;

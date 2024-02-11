@@ -5,7 +5,7 @@
 <body>
   <title>EFBA</title>
 
-  <div class="container my-4">
+  <div id="container">
     <!-- Form Section -->
     <div class="form-section">
       <h1 class="text-center">Target Behavior</h1>
@@ -36,17 +36,24 @@
 </body>
 
 <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f0f0f0; /* Updated to gray background */
-      color: #505050;
-      line-height: 1.6;
-    }
-  .container {
-    max-width: 800px;
-    margin: auto;
-    padding: 15px;
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #eef2f4; 
+
   }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  #container {
+    margin: 30px auto;
+    max-width: 800px;
+    padding: 10px;
+  }
+ 
 
   .form-section {
     background: #f8f9fa;
@@ -61,11 +68,11 @@
     margin-bottom: 15px;
   }
 
-  .behavior-form {
+  .antecedent-form {
     margin-top: 10px;
   }
 
-  .behavior-form .btn-primary {
+  .antecedent-form .btn-primary {
     background-color: #007bff;
     border-color: #007bff;
     margin-top: 10px;
@@ -75,7 +82,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .behavior-examples li {
+  .antecedent-list li {
     margin-bottom: 5px;
   }
 
@@ -85,5 +92,6 @@
     }
   }
 </style>
+
 
 {% endblock %}
