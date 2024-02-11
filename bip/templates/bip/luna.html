@@ -1,31 +1,47 @@
-
 {% extends 'partials/base.html' %} 
 {% block content %}
-<title>EFBA</title>
+<head>
+    <title>EFBA - About Me</title>
+    <style>
+        .about-section {
+            margin-top: 4rem; /* Adjusted margin to push content down, accounting for a fixed navbar if present */
+        }
+        .about-heading {
+            font-size: 2.5rem; /* Larger font size for main heading */
+            font-style: italic;
+        }
+        .about-text {
+            font-size: 1.25rem; /* More readable font size for content */
+            margin-top: 1rem;
+        }
+        .contact-info {
+            margin-top: 2rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<div class="container about-section">
 
-<div class="class container">
-
-    <br><br><br>
-
-    <p><h1><i>About me,</i></h1></p>
-<p>
-
-<h1> <i> 
-
-    I have been working as an educational school psychologist for the better part of two decades. 
-     I have had the fortune of problem solving  wih the most vulnerable and resilient of 
-     our population, including children with various challenges from intellectual, emotional 
-     and/or behavioral.  This website was created with my interest in computer programming,
-     data analysis, and school psychology. 
-     The goal of this website is to assist practitioners 
-    in developing FBA's that will support data-driven Behavior
-    Intervention Plans that are effective and  meaningful.  </h1></p>
-
-    
-    <p>    </i><h1><i> Kristian Gonzalez, M.A., Ed.S
-       </p>
-       <br>
-       <p><h3>*I developed both the front-end and the backend-end of the website and there is no third party involvment. Questions, suggestions or inquiries: <a href="mailto:exploratoryfba@gmail.com" > Contact Email</a></h3></p>
-      
+    <div class="about-heading">
+        <h1>About me,</h1>
     </div>
+    <div class="about-text">
+        <p>
+            I have been working as an educational school psychologist for the better part of two decades. 
+            I have had the fortune of problem-solving with the most vulnerable and resilient of our population, 
+            including children with various challenges from intellectual, emotional, and/or behavioral. This website 
+            was created with my interest in computer programming, data analysis, and school psychology. The goal of 
+            this website is to assist practitioners in developing FBAs that will support data-driven Behavior 
+            Intervention Plans that are effective and meaningful.
+        </p>
+        <p>Kristian Gonzalez, M.A., Ed.S</p>
+    </div>
+    <div class="contact-info">
+        <h3>
+            *I developed both the front-end and the backend of the website and there is no third party involvement. 
+            Questions, suggestions, or inquiries: <a href="mailto:exploratoryfba@gmail.com">Contact Email</a>
+        </h3>
+    </div>
+
+</div>
 {% endblock %}
