@@ -1,4 +1,140 @@
-{% extends 'partials/base.html' %}
+
+
+
+
+
+{% extends 'partials/base.html' %} {% block content %}
+
+<title>EFBA</title>
+
+
+      <br><br>
+
+
+      <div class="container">
+            <div class="row">
+              <div class="card card-body">
+                <h1>User Account</h1>
+
+                <h1>
+                  <button class="delete-button" onclick="window.location.href='{% url 'bip:delete_user' user.id %}';">
+                    <i class="fas fa-user-slash delete-icon"></i> Delete User
+                  </button>
+                </h1>
+          
+                
+              </div>
+            </div>
+          </div>
+          
+
+</div>
+
+
+
+
+<style>
+      body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #eef2f4; 
+    color: #505050;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: auto;
+  }
+    /* 
+    .container {
+     max-width: 1200px; 
+     margin: auto;
+     padding: 15px;
+    } */
+    
+    .nav-button {
+     margin-bottom: 20px;
+    }
+    .btn-outline-info {
+     width: 100%;
+     padding: 10px;
+     margin-bottom: 20px;
+    }
+    
+    
+    
+    .btn-primary {
+     background-color: #007bff;
+     border-color: #007bff;
+    }
+    
+    .card {
+     margin-bottom: 20px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-title {
+     color: #333;
+    }
+    
+    .card-link {
+     color: #007bff;
+    }
+    
+    .table {
+     margin-top: 20px;
+    }
+    
+
+
+    .delete-button {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      color: #fff;
+      background-color: #dc3545;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      display: inline-block;
+      transition: background-color 0.2s;
+      text-decoration: none; /* Removes underline from icons or text */
+      display: inline-flex; /* Aligns icon and text */
+      align-items: center; /* Centers items vertically */
+      justify-content: center; /* Centers items horizontally */
+    }
+  
+    .delete-button:hover, .delete-button:focus {
+      background-color: #c82333;
+      outline: none; /* Removes the outline to maintain a clean look */
+    }
+  
+    .delete-icon {
+      font-size: 20px; /* Adjust size as needed */
+      vertical-align: middle;
+      margin-right: 8px; /* Space between icon and text */
+    }
+
+    @media (max-width: 768px) {
+     .container {
+       padding: 15px;
+     }
+    }
+    @media (max-width: 768px) {
+     .chart-row {
+       flex-direction: column;
+     }
+     .chart-item {
+       flex-basis: 100%;
+     }
+    }
+    </style>
+    
+    {% endblock %}
+
+
+<!-- {% extends 'partials/base.html' %}
 
 {% block content %}
 <br><br><br><br><br>
@@ -12,6 +148,10 @@
         </button>
       </h1>
     </div>
+
+
+
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -68,4 +208,4 @@
       }
     }
   </style>
-  {% endblock %}
+  {% endblock %} -->
