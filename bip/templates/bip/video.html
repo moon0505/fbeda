@@ -2,9 +2,15 @@
 
 {% block content %}
 
-<div class="card video-card">
+<div class="card">
+    <div class="card-header">
+        Video Title
+    </div>
     <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/QJNMNjDxpKA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/QJNMNjDxpKA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="card-body">
+        <p class="card-text">Here's a brief description of the video content. You can add more details about the video or additional resources here.</p>
     </div>
 </div>
 
@@ -16,7 +22,19 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Card shadow for depth */
     margin: 20px auto; /* Center the card with some margin */
     max-width: 640px; /* Maximum width of the card */
-    padding: 20px; /* Padding inside the card */
+}
+
+.card-header, .card-body {
+    padding: 20px; /* Padding inside the card sections */
+}
+
+.card-header {
+    border-bottom: 1px solid #ddd; /* Border to separate the header from the content */
+    font-size: 24px; /* Larger font size for the title */
+}
+
+.card-text {
+    font-size: 16px; /* Readable text size for the description */
 }
 
 .video-container {
