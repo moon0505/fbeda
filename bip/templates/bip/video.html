@@ -4,42 +4,55 @@
 
 <div class="card">
     <div class="card-header">
-        Video Title
+        Video Title 1
+    </div>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/jT0cDjcXTO4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="card-body">
+        <p class="card-text">How to create a form. <b>ENABLE CLOSE CAPTIONING (CC) FOR SUBTITLE INSTRUCTIONS.</b> </p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Video Title 2
     </div>
     <div class="video-container">
         <iframe src="https://www.youtube.com/embed/QJNMNjDxpKA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     <div class="card-body">
-        <p class="card-text">Here's a brief description of the video content. You can add more details about the video or additional resources here.</p>
+        <p class="card-text">Adding someone else to take data for you on a case. <b>ENABLE CLOSE CAPTIONING (CC) FOR SUBTITLE INSTRUCTIONS.</b>.</p>
     </div>
 </div>
 
 <style>
 .card {
-    background-color: #fff; /* Card background color */
-    border: 1px solid #ddd; /* Card border */
-    border-radius: 4px; /* Card border radius for rounded corners */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Card shadow for depth */
-    margin: 20px auto; /* Center the card with some margin */
-    max-width: 640px; /* Maximum width of the card */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 20px auto;
+    max-width: 640px;
+    overflow: hidden; /* Added to ensure the border-radius applies to the iframe as well */
 }
 
 .card-header, .card-body {
-    padding: 20px; /* Padding inside the card sections */
+    padding: 20px;
 }
 
 .card-header {
-    border-bottom: 1px solid #ddd; /* Border to separate the header from the content */
-    font-size: 24px; /* Larger font size for the title */
+    border-bottom: 1px solid #ddd;
+    font-size: 24px;
 }
 
 .card-text {
-    font-size: 16px; /* Readable text size for the description */
+    font-size: 16px;
 }
 
 .video-container {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
 }
