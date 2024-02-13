@@ -77,6 +77,12 @@ import requests
 from django.shortcuts import render
 from urllib.parse import unquote
 
+from django.shortcuts import render
+
+
+
+def show_video(request):
+    return render(request, 'video.html')
 
 
 

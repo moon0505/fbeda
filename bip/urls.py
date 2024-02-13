@@ -205,5 +205,10 @@ urlpatterns = [
     # path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("logout/", views.user_logout, name="logout"),
 
+
+  
+    path('video/', views.show_video, name='show_video'),
+
+
 ]
 
