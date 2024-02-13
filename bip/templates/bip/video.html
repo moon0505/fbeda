@@ -1,12 +1,23 @@
-{% extends 'partials/base.html' %} 
+{% extends 'partials/base.html' %}
+
 {% block content %}
 
-<div class="video-container">
-    <iframe width="560" height="315" src="https://youtube.com/embed/QJNMNjDxpKA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="card video-card">
+    <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/QJNMNjDxpKA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
 </div>
 
 <style>
-
+.card {
+    background-color: #fff; /* Card background color */
+    border: 1px solid #ddd; /* Card border */
+    border-radius: 4px; /* Card border radius for rounded corners */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Card shadow for depth */
+    margin: 20px auto; /* Center the card with some margin */
+    max-width: 640px; /* Maximum width of the card */
+    padding: 20px; /* Padding inside the card */
+}
 
 .video-container {
     position: relative;
@@ -23,6 +34,5 @@
     height: 100%;
 }
 </style>
-
 
 {% endblock %}
