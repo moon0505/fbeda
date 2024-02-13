@@ -82,7 +82,7 @@ from django.shortcuts import render
 
 
 def show_video(request):
-    return render(request, 'video.html')
+    return render(request, 'bip/video.html')
 
 
 
