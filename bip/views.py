@@ -1860,16 +1860,17 @@ def chart_view(request, pk):
     
 
 # Define the function for formatting duration
-def format_duration(minutes):
-    if minutes < 60:
-        return f"{minutes} minute(s)"
+
+def format_duration(seconds):
+    """Converts seconds to a formatted string of minutes and seconds."""
+    minutes = seconds // 60
+    remaining_seconds = seconds % 60
+    if minutes > 0 and remaining_seconds > 0:
+        return f"{minutes}:{remaining_seconds:02d}"
+    elif minutes > 0:
+        return f"{minutes}"
     else:
-        hours = minutes // 60
-        mins = minutes % 60
-        if mins:
-            return f"{hours} hour(s) {mins} minute(s)"
-        else:
-            return f"{hours} hour(s)"
+        return f"{remaining_seconds}"
 
 
 def raw_data(request, pk):
