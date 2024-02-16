@@ -1859,6 +1859,19 @@ def chart_view(request, pk):
     return render(request, 'bip/chart.html', context)
     
 
+# Define the function for formatting duration
+def format_duration(minutes):
+    if minutes < 60:
+        return f"{minutes} minute(s)"
+    else:
+        hours = minutes // 60
+        mins = minutes % 60
+        if mins:
+            return f"{hours} hour(s) {mins} minute(s)"
+        else:
+            return f"{hours} hour(s)"
+
+
 def raw_data(request, pk):
     student = get_object_or_404(Student, pk=pk)
     student_cases = student.case_set.all() 
@@ -1936,21 +1949,21 @@ def raw_data(request, pk):
         data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'duration')
         cases_df_duration = pd.DataFrame(data_duration)
 
-# Rename columns
+    # Rename columns
         cases_df_duration = cases_df_duration.rename(columns={'behavior__behaviorincident': 'Behavior', 'duration': 'Duration'})
 
-# Group and calculate the mean duration
+    # Group and calculate the mean duration
         duration_behavior = cases_df_duration.groupby('Behavior')['Duration'].mean().round(0).astype(int).reset_index()
 
-# Extract the 'Behavior' column
-        df_duration = duration_behavior['Behavior']
+    # Apply the format_duration function to each duration
+        duration_behavior['Duration'] = duration_behavior['Duration'].apply(format_duration)
 
-# Convert the DataFrame to HTML
+    # Convert the DataFrame to HTML
         duration_html = duration_behavior.to_html(index=False)
         
-    except:
-        
-        pass
+    except Exception as e:
+        print(e)  # For debugging, consider logging this instead
+    # Handle the exception or pass if you just want to ignore the failure
 
     # intenity chart
 
