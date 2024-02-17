@@ -20,9 +20,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from bip import views
-
-
-
+from django.views.static import serve 
 
 
 
@@ -35,9 +33,6 @@ urlpatterns = [
 
   
 ]
-
-
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
