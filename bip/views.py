@@ -655,7 +655,7 @@ def create_behavior(request,pk):
                  return redirect("bip:dashboard", student.id)                
                       
             else:
-                 messages.error(request, "Please correct the errors below.")
+                 messages.error(request, "Please correct.")
     else:
         form = CreateBehaviorForm()
             
@@ -715,7 +715,9 @@ def create_anticedent(request,pk):
                  return redirect("bip:dashboard", student.id)                 
      
             else:
-                print("ERROR In Form") 
+                 messages.error(request, "Please fix error.")
+    else:
+        form = CreateAnticedentForm()
     return render(request, 'bip/create_anticedent.html', {'form': form})
       
 
