@@ -45,7 +45,7 @@ class DataEntry(models.Model):
     
   
 class Student(models.Model):
-        studentname= models.CharField(max_length=30,verbose_name= 'Name', null=True, blank=True)
+        studentname= models.CharField(max_length=30,verbose_name= 'Name')
         slug = models.SlugField(max_length=150,null=False,unique=False,blank=False,
         verbose_name=("Unique Identifier"),
         help_text=(
