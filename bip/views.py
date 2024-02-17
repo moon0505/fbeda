@@ -655,7 +655,9 @@ def create_behavior(request,pk):
                  return redirect("bip:dashboard", student.id)                
                       
             else:
-                print("ERROR In Form") 
+                 messages.error(request, "Please correct the errors below.")
+    else:
+        form = CreateBehaviorForm()
             
     return render(request, 'bip/create_behavior.html', {'form': form})
 
