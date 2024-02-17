@@ -18,6 +18,12 @@
             margin-top: 2rem;
             font-size: 1rem;
         }
+           /* Remove bullet points from the list */
+    ul.no-bullets {
+        list-style-type: none; /* No bullets */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margins */
+    }
     </style>
 </head>
 <br>
@@ -41,15 +47,16 @@
     <br>
     <div class="about-text">
 
-        
-        <p>
-          <i> *I developed both the front-end and the back-end of the website and there is no third party involvement. 
-            </i> </a>
-        </p>
-        <p> <i> This a personal project that is free to use. Only to be used by practitioners and educational purposes.</i></p>
-        <p> <i> No user data is stored, shared, or collected. User accounts and/or cases are permanently deleted by user.</i></p>
-        <p><i>Questions, suggestions, or inquiries: <a href="mailto:exploratoryfba@gmail.com"> Contact Email</i></p>
+        <ul class="no-bullets">
+            <li><i> I developed both the front-end and the back-end of the website and there is no third party involvement. </i></li>
+            <li> <i> This a personal project that is free to use. Only to be used by practitioners and for educational purposes.</i></li>
+            <li><i> No user data is stored, shared, or collected. User accounts and/or cases are permanently deleted by user.</i></li>
+            <li><i>Questions, suggestions, or inquiries: <a href="mailto:exploratoryfba@gmail.com"> Contact Email</i></li>
+        </ul>
+       
     </div>
 
 </div>
+
+
 {% endblock %}
