@@ -860,31 +860,55 @@ def deleteConsequence(request, pk):
     context = {'item':conqdelete}
     return render(request, "bip/delete_consequence.html", context)
 
-@login_required
-def create_setting_view(request,pk):
-    user = CustomUser.objects.get(pk=request.user.id) 
-    student = Student.objects.get(id=pk) 
+# @login_required
+# def create_setting_view(request,pk):
+#     user = CustomUser.objects.get(pk=request.user.id) 
+#     student = Student.objects.get(id=pk) 
 
-    form = CreateEnviromentForm()
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            form = CreateEnviromentForm(request.POST)
+#     form = CreateEnviromentForm()
+#     if request.method == 'POST':
+#         if request.user.is_authenticated:
+#             form = CreateEnviromentForm(request.POST)
         
-            for field in form:
-                print(field.value())
+#             for field in form:
+#                 print(field.value())
             
-            if form.is_valid():
-                 obj = form.save(commit=False)
-                 obj.user = CustomUser.objects.get(pk=request.user.id)
-                 obj.student = student
-                 obj.save()
-                 return redirect("bip:dashboard", student.id)                              
+#             if form.is_valid():
+#                  obj = form.save(commit=False)
+#                  obj.user = CustomUser.objects.get(pk=request.user.id)
+#                  obj.student = student
+#                  obj.save()
+#                  return redirect("bip:dashboard", student.id)                              
                 
-            else:
-                print("ERROR In Form") 
+#             else:
+#                 print("ERROR In Form") 
+
+#     return render(request, 'bip/create_setting.html', {'form': form})
+
+
+
+
+def create_setting_view(request, pk):
+    # It's more efficient to use 'get_object_or_404' for handling objects that might not exist
+    user = get_object_or_404(CustomUser, pk=request.user.id) 
+    student = get_object_or_404(Student, id=pk)
+
+    if request.method == 'POST':
+        form = CreateEnviromentForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = user  # Since 'user' is already fetched, directly assign it
+            obj.student = student
+            obj.save()
+            messages.success(request, "The setting has been successfully created.")  # Success message
+            return redirect("bip:dashboard", student.id)
+        else:
+            # If the form is invalid, render the same page with the form errors
+            messages.error(request, "Please correct the errors below.")  # Error message
+    else:
+        form = CreateEnviromentForm()  # Initialize an empty form for GET requests
 
     return render(request, 'bip/create_setting.html', {'form': form})
-
 
 def updateSetting(request, pk):       
     enviromentupdate = Enviroment.objects.get(id=pk)
