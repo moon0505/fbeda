@@ -45,7 +45,9 @@ class DataEntry(models.Model):
     
     def __str__(self):
         return str(self.user) + ' - ' + str(self.status)
-  
+
+
+
 class Student(models.Model):
         studentname= models.CharField(max_length=30,verbose_name= 'Name')
         slug = models.SlugField(max_length=150,null=False,unique=False,blank=False,
@@ -127,10 +129,12 @@ class Case(models.Model):
         class Meta:
             ordering = ['-date_created']
        
-
         
+        
+
         def __str__(self):
-          return str(self.student)
+            return str(self.user) + ' - ' + str(self.student)
+
 
         def time_change(self):    
           return (time.strftime("%M:%S", time.gmtime(self.duration)) )  
