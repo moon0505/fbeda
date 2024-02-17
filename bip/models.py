@@ -58,7 +58,7 @@ class Student(models.Model):
           return str(self.studentname)
 
 class Anticedent(models.Model):
-        anticedentincident = models.CharField(max_length=50,verbose_name= 'Antecedent', null=True, blank=True)
+        anticedentincident = models.CharField(max_length=50,verbose_name= 'Antecedent')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         anticedent_definition = models.CharField(null=True, blank=True, max_length=1000, verbose_name= 'Antecedent Definition')
         user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
@@ -76,7 +76,7 @@ class Behavior(models.Model):
           return self.behaviorincident
           
 class Function(models.Model):
-        behaviorfunction = models.CharField(max_length=30, null=True, blank=True,verbose_name= 'Function')
+        behaviorfunction = models.CharField(max_length=30, verbose_name= 'Function')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
         def __str__(self):
@@ -84,7 +84,7 @@ class Function(models.Model):
       
     
 class Consequence(models.Model):
-        behaviorconsequence = models.CharField(max_length=30, null=True, blank=True,verbose_name= 'Consequence')
+        behaviorconsequence = models.CharField(max_length=30, verbose_name= 'Consequence')
         student= models.ForeignKey(Student,on_delete=models.CASCADE)
         user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None)
         def __str__(self):
