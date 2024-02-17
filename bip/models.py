@@ -43,6 +43,8 @@ class DataEntry(models.Model):
     def get_id(self):
         return self.user.id
     
+    def __str__(self):
+        return str(self.user) + ' - ' + str(self.status)
   
 class Student(models.Model):
         studentname= models.CharField(max_length=30,verbose_name= 'Name')
