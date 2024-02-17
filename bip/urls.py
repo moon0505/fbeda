@@ -16,6 +16,10 @@ urlpatterns = [
 
     # case manager and data entry urls for login and access-----------------
     
+
+
+
+    
     path('afterlogin', views.afterlogin_view,name='afterlogin'),
 
     path('case_manager_signup/', views.case_manager_signup_view,name='case_manager_signup'),
