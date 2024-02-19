@@ -88,6 +88,8 @@ urlpatterns = [
 
 
     path('luna/', views.luna, name="luna"),
+    path('additional_notes/', views.additional_notes_view, name="additional_notes"),
+
     
     path('statistics/<pk>/', views.statistics, name="statistics"),
 

@@ -91,6 +91,13 @@ def luna(request):
     return render(request,'bip/luna.html')
 
 
+
+def additional_notes_view(request):
+    
+    return render(request,'bip/additional_notes.html')
+
+
+
 def statistics(request,pk):
     student = get_object_or_404(Student, pk=pk)
     student_behaviors = student.case_set.all()
