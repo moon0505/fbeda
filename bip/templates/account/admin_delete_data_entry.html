@@ -37,6 +37,23 @@
     </table>
   </div>
 </div>
+
+
+<div class="container">
+  <div class ="row">
+        <div class="card card-body">
+  
+  <h2>
+      <p> Deleting {{specific_data_entry.get_name}} will also delete the entries made by {{specific_data_entry.get_name}} <b>{{item}}</b>  </p>
+  
+  </h2>
+  <p>
+    <strong>Consider downloading Spreadsheet before deleting:</strong>
+    <a href="{% url 'bip:export' student.id %}" class="card-link">Download Spreadsheet</a>
+</p>
+      </div>
+  
+  </div>
 <style media="screen">
   a:link {
     text-decoration: none;
