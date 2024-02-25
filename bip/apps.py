@@ -6,6 +6,6 @@ class BipConfig(AppConfig):
     name = 'bip'
 
 
-    # def ready(self):
+    def ready(self):
        
-    #     import bip.signals
+        import bip.signals
