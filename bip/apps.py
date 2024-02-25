@@ -6,7 +6,6 @@ class BipConfig(AppConfig):
     name = 'bip'
 
 
-    def ready(self):
-        # Make sure to replace 'bip.signals' with the correct path to your signals module.
-        # This import statement ensures your signals are connected at startup.
-        import bip.signals
+    # def ready(self):
+       
+    #     import bip.signals
