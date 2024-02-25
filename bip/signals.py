@@ -30,8 +30,8 @@ def send_status_active_email(sender, instance, **kwargs):
         if old_instance and not old_instance.status and instance.status:
             # The status changed from False to True
             send_mail(
-                'Your Account is Active',
-                f'Hello, your account is active',
+                'Your EFBA Account is Active',
+                f'Hello, you can now login to your account. \nThank you for using EFBA!',
                 'exploratoryfba.com',
                 [instance.user.email],
                 fail_silently=False,
