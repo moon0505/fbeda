@@ -2,8 +2,9 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import send_mail
-from django.contrib.auth.models import CustomUser
-from bip.models import CustomUser
+
+from .models import CustomUser
+
 
 @receiver(post_save, sender=CustomUser)
 def notify_superusers_on_new_user(sender, instance, created, **kwargs):
