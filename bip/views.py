@@ -2709,6 +2709,7 @@ def case_upload_csv_multiple(request):
     return render(request, "bip/welcome_user.html", {})
 
 
+from sklearn.tree import DecisionTreeClassifier
 
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
