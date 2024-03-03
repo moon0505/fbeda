@@ -171,6 +171,9 @@ urlpatterns = [
     path('consequence/<pk>/', views.consequence_view, name='consequence'),
 
 
+    path('machine_learning/<pk>/', views.train_naive_bayes, name='machine_learning'),
+
+
 
     path('anticedent/<pk>/', views.anticedent_view, name='anticedent'),
 
