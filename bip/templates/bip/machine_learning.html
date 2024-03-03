@@ -76,7 +76,7 @@ OLD FBA -->
 
 
 
-    .nav-button {
+.nav-button {
     margin-bottom: 20px;
   }
   .btn-outline-info {
@@ -154,15 +154,15 @@ OLD FBA -->
     margin: 0 10px; /* Adjust as needed for spacing */
 }
 
-    @media (max-width: 768px) {
-      .container, .filter-form .row, .form-group {
-        padding: 0;
-        margin: 0;
-      }
-      .btn-filter {
-        width: 100%;
-      }
+@media (max-width: 768px) {
+    .chart-row {
+      flex-direction: column;
     }
+    .chart-item {
+      flex-basis: 100%;
+    }
+  }
+
   </style>
   {% endblock %}
   
