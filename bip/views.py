@@ -69,7 +69,7 @@ from .utils import  (
 
 
     get_count_beh_plot_pdf,
-    get_multiple_scatter_plot_three_pdf,
+    
     get_duration_bar_chart_pdf,
     get_intensity_bar_chart_pdf,
     get_box_plot_pdf,
