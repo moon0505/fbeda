@@ -173,7 +173,15 @@ urlpatterns = [
 
     path('machine_learning/<pk>/', views.train_naive_bayes, name='machine_learning'),
 
+    path('download_chart_pdf/<pk>/', views.download_chart_pdf, name='download_chart_pdf'),
 
+    path('download_antecedent_chart_pdf/<pk>/', views.download_antecedent_chart_pdf, name='download_antecedent_chart_pdf'),
+
+    path('download_consequence_chart_pdf/<pk>/', views.download_consequence_chart_pdf, name='download_consequence_chart_pdf'),
+    
+    
+    
+    path('download_function_chart_pdf/<pk>/', views.download_function_chart_pdf, name='download_function_chart_pdf'),
 
     path('anticedent/<pk>/', views.anticedent_view, name='anticedent'),
 

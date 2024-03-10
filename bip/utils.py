@@ -88,6 +88,9 @@ def get_heatmap( *args, **kwargs):
 
     return iheat_graph
 
+
+
+
 # antecedent correlation
 def get_heatmap_antecedent( *args, **kwargs):
     plt.switch_backend('AGG')
@@ -109,6 +112,29 @@ def get_heatmap_antecedent( *args, **kwargs):
 
     return iheat_graph_antecedent
 
+
+def get_heatmap_antecedent_pdf( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Correlation Heatmap (Behavior and Antecedent)"
+    plt.title(title)
+       
+    sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+
+    
+    buffer = BytesIO()  # Create a BytesIO buffer
+    plt.savefig(buffer, format='png')  # Save the plot to the buffer
+    buffer.seek(0)  # Seek to the start of the buffer
+    plt.close(fig)  # Close the plot to free memory
+    
+    return buffer
 
 # clustermap
 
@@ -181,6 +207,32 @@ def get_box_plot_function( *args, **kwargs):
 
     return box_graph_function
 
+def get_box_plot_function_pdf( *args, **kwargs):
+    plt.switch_backend('AGG')    
+    # fig = plt.figure()
+    fig = plt.figure(figsize=(10,6))
+
+    
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+    title = "Function and Behavior"
+    plt.title(title)
+
+    sns.countplot(x=x, hue='Behavior', data=data)
+
+    plt.xticks(rotation=45)
+    plt.xlabel('Function')
+    plt.ylabel('Frequency')
+    plt.tight_layout()
+    plt.legend(title='Behavior')
+    
+    buffer = BytesIO()  # Create a BytesIO buffer
+    plt.savefig(buffer, format='png')  # Save the plot to the buffer
+    buffer.seek(0)  # Seek to the start of the buffer
+    plt.close(fig)  # Close the plot to free memory
+    
+    return buffer
 
 # function correlation
 def get_heatmap_function( *args, **kwargs):
@@ -203,7 +255,28 @@ def get_heatmap_function( *args, **kwargs):
 
     return iheat_graph_function
 
+def get_heatmap_function_pdf( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
 
+    title = "Correlation Heatmap (Behavior and Function)"
+    plt.title(title)
+       
+    sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+
+    
+    buffer = BytesIO()  # Create a BytesIO buffer
+    plt.savefig(buffer, format='png')  # Save the plot to the buffer
+    buffer.seek(0)  # Seek to the start of the buffer
+    plt.close(fig)  # Close the plot to free memory
+    
+    return buffer
 def get_clustermap_function( *args, **kwargs):
     plt.switch_backend('AGG')
     fig = plt.figure(figsize=(10,5))
@@ -247,6 +320,30 @@ def get_box_plot_consequence( *args, **kwargs):
     return box_graph_consequence
 
 
+def get_box_plot_consequence_pdf( *args, **kwargs):
+    plt.switch_backend('AGG')    
+    fig = plt.figure(figsize=(10,6))
+    
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+    title = "Consequence and Behavior"
+    plt.title(title)
+
+    sns.countplot(x=x, hue='Behavior', data=data)
+
+    plt.xticks(rotation=45)
+    plt.xlabel('Consequence')
+    plt.ylabel('Frequency')
+    plt.tight_layout()
+    plt.legend(title='Behavior')
+    
+    buffer = BytesIO()  # Create a BytesIO buffer
+    plt.savefig(buffer, format='png')  # Save the plot to the buffer
+    buffer.seek(0)  # Seek to the start of the buffer
+    plt.close(fig)  # Close the plot to free memory
+    
+    return buffer
 # consequence correlation
 def get_heatmap_consequence( *args, **kwargs):
     plt.switch_backend('AGG')
@@ -268,6 +365,28 @@ def get_heatmap_consequence( *args, **kwargs):
 
     return iheat_graph_consequence
 
+def get_heatmap_consequence_pdf( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure(figsize=(10,5))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+
+    title = "Correlation Heatmap (Behavior and Consequence)"
+    plt.title(title)
+       
+    sns.heatmap(data,annot=True, cmap='rocket_r', vmin=0, vmax=1, linewidths=.5, linecolor='black')
+    sns.despine(top=True,right=False)
+
+    plt.tight_layout()
+
+    
+    buffer = BytesIO()  # Create a BytesIO buffer
+    plt.savefig(buffer, format='png')  # Save the plot to the buffer
+    buffer.seek(0)  # Seek to the start of the buffer
+    plt.close(fig)  # Close the plot to free memory
+    
+    return bufferd
 
 def get_clustermap_consequence( *args, **kwargs):
     plt.switch_backend('AGG')
@@ -717,6 +836,34 @@ def get_count_beh_plot( *args, **kwargs):
 
     return beh_count_graph
 
+
+
+def get_count_beh_plot_pdf( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig = plt.figure()
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+    
+    sns.countplot(x=x, data=data)
+    plt.xticks(rotation=45)
+    plt.xlabel('')
+    plt.ylabel('Frequency')
+
+    title = "Behavior Frequency"
+    plt.title(title)
+
+    plt.tight_layout()
+  
+    
+    buffer = BytesIO()  # Create a BytesIO buffer
+    plt.savefig(buffer, format='png')  # Save the plot to the buffer
+    buffer.seek(0)  # Seek to the start of the buffer
+    plt.close(fig)  # Close the plot to free memory
+    return buffer
+
+
+
 def get_count_time_plot( *args, **kwargs):
     plt.switch_backend('AGG')
     
@@ -1052,6 +1199,32 @@ def get_duration_bar_chart( *args, **kwargs):
     return box_duration_graph
 
 
+    
+def get_duration_bar_chart_pdf(*args, **kwargs):
+   
+    plt.switch_backend('AGG')
+    fig, ax = plt.subplots()
+
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+   
+    plt.bar(x, y) 
+      
+    title = "Average Duration of Behavior"
+    plt.title(title)
+    
+    # plt.yticks(np.arange(min(y), max(y)+10, 30.0))
+  
+    plt.ylabel('Seconds')
+ 
+    # Create a BytesIO buffer and save the figure into it
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)  # Move to the start of the buffer
+    plt.close(fig)  # Close the figure to free memory
+
+    return buffer
 def get_intensity_bar_chart( *args, **kwargs):
     
     plt.switch_backend('AGG')
@@ -1077,6 +1250,37 @@ def get_intensity_bar_chart( *args, **kwargs):
     box_intensity_graph = get_image()
 
     return box_intensity_graph
+
+
+
+def get_intensity_bar_chart_pdf( *args, **kwargs):
+    
+    plt.switch_backend('AGG')
+    fig = plt.figure()
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+   
+        
+
+    plt.tight_layout()
+
+     
+    plt.bar(x, y) 
+      
+    title = "Average Intensity of Behavior"
+    plt.title(title)
+    
+  
+   
+    plt.ylabel('Intensity')
+ 
+    buffer = BytesIO()  # Create a BytesIO buffer
+    plt.savefig(buffer, format='png')  # Save the plot to the buffer
+    buffer.seek(0)  # Seek to the start of the buffer
+    plt.close(fig)  # Close the plot to free memory
+    return buffer
+
 
 def get_box_plot_time( *args, **kwargs):
     plt.switch_backend('AGG')    

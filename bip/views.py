@@ -64,7 +64,20 @@ from .utils import  (
     get_heatmap_consequence,
     get_clustermap_consequence,
     get_heatmap_setting,
-    get_clustermap_setting
+    get_clustermap_setting,
+
+
+
+    get_count_beh_plot_pdf,
+    get_multiple_scatter_plot_three_pdf,
+    get_duration_bar_chart_pdf,
+    get_intensity_bar_chart_pdf,
+    get_box_plot_pdf,
+    get_heatmap_antecedent_pdf,
+    get_box_plot_consequence_pdf,
+    get_heatmap_consequence_pdf,
+    get_heatmap_function_pdf,
+    get_box_plot_function_pdf,
 
     )
 
@@ -2778,3 +2791,1005 @@ def train_naive_bayes(request, pk):
     }
 
     return render(request, 'bip/machine_learning.html', context)
+
+
+
+
+
+
+
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import A4
+
+
+
+
+
+
+def download_chart_pdf(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    cases_df = Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'duration')
+    cases_df = pd.DataFrame(cases_df)
+
+    # Assuming get_count_beh_plot_pdf returns a BytesIO buffer for the count behavior plot
+    buffer_count_beh = get_count_beh_plot_pdf(x=cases_df['behavior__behaviorincident'], data=cases_df)
+  
+  
+  
+    # box_durationxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
+    cases_df_duration = pd.DataFrame(data_duration)
+
+    buffer_box_duration = None
+
+    try:
+
+        duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
+        duration_behavior = duration_behavior.to_frame().reset_index()      
+        df_duration = duration_behavior['behavior__behaviorincident']
+        dfy_duration = duration_behavior['duration']
+
+   
+
+        buffer_box_duration = get_duration_bar_chart_pdf(x=df_duration, y=dfy_duration, data=duration_behavior)
+
+    except:
+        
+        pass
+
+# box_durationxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ENd
+
+
+# intensity chart pdfxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+
+
+
+     # intensity charts
+    
+    data_intensity = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','intensity')
+    cases_df_intensity= pd.DataFrame(data_intensity)
+
+    # intensitiy formula:
+    box_intensity_graph = None
+    
+    try:
+        intensity_behavior = cases_df_intensity.groupby('behavior__behaviorincident')['intensity'].mean().round(1) 
+        intensity_behavior = intensity_behavior.to_frame().reset_index()        
+        df_intensity = intensity_behavior['behavior__behaviorincident']
+        dfy_intensity = intensity_behavior['intensity']
+      
+        buffer_box_intensity = get_intensity_bar_chart_pdf ( x= df_intensity, y= dfy_intensity, data=intensity_behavior)  
+                
+    except:
+        
+        pass
+
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{student.studentname} Behavior Analysis.pdf"'
+
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Title
+    p.setFont("Helvetica-Bold", 18)
+    p.drawCentredString(width / 2.0, height - 50, "Behavior Analysis")
+
+    # Draw the count behavior plot
+
+
+
+
+
+
+
+
+    if buffer_count_beh and buffer_box_duration and buffer_box_intensity:
+
+
+
+
+        if buffer_count_beh:
+            image_count_beh = ImageReader(buffer_count_beh)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_count_beh, image_x, image_y, image_width, image_height)
+
+            buffer_count_beh.close()
+
+        # Draw the box duration plot
+        if buffer_box_duration and buffer_box_duration.getbuffer().nbytes > 0:
+            image_box_duration = ImageReader(buffer_box_duration)
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_box_duration, image_x, image_y, image_width, image_height)
+
+            buffer_box_duration.close()
+            p.showPage()
+
+
+            
+            # Title for the second page
+            p.setFont("Helvetica-Bold", 18)
+            p.drawCentredString(width / 2.0, height - 50, "Behavior Analysis")
+            
+        if buffer_box_intensity:
+            image_box_intensity = ImageReader(buffer_box_intensity)
+
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+        
+            p.drawImage(image_box_intensity,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_intensity.close()
+
+            p.showPage()
+            p.save()
+
+
+        return response
+    elif buffer_count_beh and buffer_box_duration:
+        if buffer_count_beh:
+            image_count_beh = ImageReader(buffer_count_beh)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_count_beh, image_x, image_y, image_width, image_height)
+
+            buffer_count_beh.close()
+
+        # Draw the box duration plot
+        if buffer_box_duration and buffer_box_duration.getbuffer().nbytes > 0:
+            image_box_duration = ImageReader(buffer_box_duration)
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_box_duration, image_x, image_y, image_width, image_height)
+
+            buffer_box_duration.close()
+            p.showPage()
+
+
+            
+            # Title for the second page
+            p.setFont("Helvetica-Bold", 18)
+            p.drawCentredString(width / 2.0, height - 50, "Behavior Analysis")
+
+
+
+            p.showPage()
+            p.save()
+
+        return response
+
+    elif buffer_count_beh and buffer_box_intensity:
+
+        if buffer_count_beh:
+            image_count_beh = ImageReader(buffer_count_beh)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_count_beh, image_x, image_y, image_width, image_height)
+
+            buffer_count_beh.close()
+
+        if buffer_box_intensity:
+            image_box_intensity = ImageReader(buffer_box_intensity)
+
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_intensity,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_intensity.close()
+
+            p.showPage()
+            p.save()
+
+
+
+
+
+        return response
+    
+
+
+def download_antecedent_chart_pdf(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    cases_df = Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'anticedent__anticedentincident')
+    cases_df = pd.DataFrame(cases_df)
+
+    # Assuming get_count_beh_plot_pdf returns a BytesIO buffer for the count behavior plot
+    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Antecedent')
+
+  
+    df_anticedent = cases_df['Antecedent']
+   
+
+    buffer_box_antecedent = get_box_plot_pdf ( x= df_anticedent, data=cases_df)  
+
+  
+    # box_bar antecedent Endxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+    behavior = pd.get_dummies(cases_df['Behavior'])
+    anticedent = pd.get_dummies(cases_df['Antecedent'])
+    df_matrix = pd.concat([cases_df,behavior,anticedent], axis=1)
+
+    df_matrix.drop(['Behavior','Antecedent'],axis=1,inplace=True)
+
+
+        
+    matrix = df_matrix.corr().round(2) 
+  
+    
+    filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    
+    buffer_correlation_antecedent = get_heatmap_antecedent_pdf(data=filterDX)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{student.studentname} Antecedent Analysis.pdf"'
+
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Title
+    p.setFont("Helvetica-Bold", 18)
+    p.drawCentredString(width / 2.0, height - 50, "Antecedent Analysis")
+
+    # Draw the count behavior plot
+
+
+    if buffer_box_antecedent:
+            image_box_antecedent = ImageReader(buffer_box_antecedent)
+
+            image_count_beh = ImageReader(buffer_box_antecedent)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_count_beh,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_antecedent.close()
+
+
+    if buffer_correlation_antecedent:
+            image_box_correlation = ImageReader(buffer_correlation_antecedent)
+
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_correlation,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_correlation_antecedent.close()
+
+            p.showPage()
+            p.save()
+            
+
+    return response
+    
+
+
+def download_consequence_chart_pdf(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    cases_df = Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'consequence__behaviorconsequence')
+    cases_df = pd.DataFrame(cases_df)
+
+    # Assuming get_count_beh_plot_pdf returns a BytesIO buffer for the count behavior plot
+    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+
+  
+    df_consequence = cases_df['Consequence']
+   
+
+    buffer_box_consequence = get_box_plot_consequence_pdf( x= df_consequence, data=cases_df)  
+
+  
+    # box_bar antecedent Endxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+    behavior = pd.get_dummies(cases_df['Behavior'])
+    anticedent = pd.get_dummies(cases_df['Consequence'])
+    df_matrix = pd.concat([cases_df,behavior,anticedent], axis=1)
+
+    df_matrix.drop(['Behavior','Consequence'],axis=1,inplace=True)
+
+
+        
+    matrix = df_matrix.corr().round(2) 
+  
+    
+    filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    
+    buffer_correlation_consequence = get_heatmap_consequence_pdf(data=filterDX)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{student.studentname} Consequence Analysis.pdf"'
+
+
+
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Title
+    p.setFont("Helvetica-Bold", 18)
+    p.drawCentredString(width / 2.0, height - 50, "Consequence Analysis")
+
+    # Draw the count behavior plot
+
+
+    if buffer_box_consequence:
+            image_box_consequence = ImageReader(buffer_box_consequence)
+
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_consequence,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_consequence.close()
+
+
+    if buffer_correlation_consequence:
+            image_box_correlation = ImageReader(buffer_correlation_consequence)
+
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_correlation,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_correlation_consequence.close()
+
+            p.showPage()
+            p.save()
+            
+
+    return response
+    
+
+
+
+         
+
+
+def download_function_chart_pdf(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    cases_df = Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'function__behaviorfunction')
+    cases_df = pd.DataFrame(cases_df)
+
+    # Assuming get_count_beh_plot_pdf returns a BytesIO buffer for the count behavior plot
+    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+
+  
+    df_function = cases_df['Function']
+   
+
+    buffer_box_function = get_box_plot_function_pdf( x= df_function, data=cases_df)  
+
+  
+    # box_bar antecedent Endxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+    behavior = pd.get_dummies(cases_df['Behavior'])
+    function = pd.get_dummies(cases_df['Function'])
+    df_matrix = pd.concat([cases_df,behavior,function], axis=1)
+
+    df_matrix.drop(['Behavior','Function'],axis=1,inplace=True)
+
+
+        
+    matrix = df_matrix.corr().round(2) 
+  
+    
+    filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    
+    buffer_correlation_function = get_heatmap_function_pdf(data=filterDX)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{student.studentname} Function Analysis.pdf"'
+
+
+
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Title
+    p.setFont("Helvetica-Bold", 18)
+    p.drawCentredString(width / 2.0, height - 50, "Function Analysis")
+
+    # Draw the count behavior plot
+
+
+    if buffer_box_function:
+
+            image_function = ImageReader(buffer_box_function)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_function,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_function.close()
+
+
+    if buffer_correlation_function:
+            image_box_function = ImageReader(buffer_correlation_function)
+
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_function,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_correlation_function.close()
+
+            p.showPage()
+            p.save()
+            
+
+    return response
+    
+
+
+
+
+
+def download_chart_pdf(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    cases_df = Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'duration')
+    cases_df = pd.DataFrame(cases_df)
+
+    # Assuming get_count_beh_plot_pdf returns a BytesIO buffer for the count behavior plot
+    buffer_count_beh = get_count_beh_plot_pdf(x=cases_df['behavior__behaviorincident'], data=cases_df)
+  
+  
+  
+    # box_durationxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
+    cases_df_duration = pd.DataFrame(data_duration)
+
+    buffer_box_duration = None
+
+    try:
+
+        duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
+        duration_behavior = duration_behavior.to_frame().reset_index()      
+        df_duration = duration_behavior['behavior__behaviorincident']
+        dfy_duration = duration_behavior['duration']
+
+   
+
+        buffer_box_duration = get_duration_bar_chart_pdf(x=df_duration, y=dfy_duration, data=duration_behavior)
+
+    except:
+        
+        pass
+
+# box_durationxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ENd
+
+
+# intensity chart pdfxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+
+
+
+     # intensity charts
+    
+    data_intensity = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','intensity')
+    cases_df_intensity= pd.DataFrame(data_intensity)
+
+    # intensitiy formula:
+    box_intensity_graph = None
+    
+    try:
+        intensity_behavior = cases_df_intensity.groupby('behavior__behaviorincident')['intensity'].mean().round(1) 
+        intensity_behavior = intensity_behavior.to_frame().reset_index()        
+        df_intensity = intensity_behavior['behavior__behaviorincident']
+        dfy_intensity = intensity_behavior['intensity']
+      
+        buffer_box_intensity = get_intensity_bar_chart_pdf ( x= df_intensity, y= dfy_intensity, data=intensity_behavior)  
+                
+    except:
+        
+        pass
+
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{student.studentname} Behavior Analysis.pdf"'
+
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Title
+    p.setFont("Helvetica-Bold", 18)
+    p.drawCentredString(width / 2.0, height - 50, "Behavior Analysis")
+
+    # Draw the count behavior plot
+
+
+
+
+
+
+
+
+    if buffer_count_beh and buffer_box_duration and buffer_box_intensity:
+
+
+
+
+        if buffer_count_beh:
+            image_count_beh = ImageReader(buffer_count_beh)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_count_beh, image_x, image_y, image_width, image_height)
+
+            buffer_count_beh.close()
+
+        # Draw the box duration plot
+        if buffer_box_duration and buffer_box_duration.getbuffer().nbytes > 0:
+            image_box_duration = ImageReader(buffer_box_duration)
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_box_duration, image_x, image_y, image_width, image_height)
+
+            buffer_box_duration.close()
+            p.showPage()
+
+
+            
+            # Title for the second page
+            p.setFont("Helvetica-Bold", 18)
+            p.drawCentredString(width / 2.0, height - 50, "Behavior Analysis")
+            
+        if buffer_box_intensity:
+            image_box_intensity = ImageReader(buffer_box_intensity)
+
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+        
+            p.drawImage(image_box_intensity,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_intensity.close()
+
+            p.showPage()
+            p.save()
+
+
+        return response
+    elif buffer_count_beh and buffer_box_duration:
+        if buffer_count_beh:
+            image_count_beh = ImageReader(buffer_count_beh)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_count_beh, image_x, image_y, image_width, image_height)
+
+            buffer_count_beh.close()
+
+        # Draw the box duration plot
+        if buffer_box_duration and buffer_box_duration.getbuffer().nbytes > 0:
+            image_box_duration = ImageReader(buffer_box_duration)
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_box_duration, image_x, image_y, image_width, image_height)
+
+            buffer_box_duration.close()
+            p.showPage()
+
+
+            
+            # Title for the second page
+            p.setFont("Helvetica-Bold", 18)
+            p.drawCentredString(width / 2.0, height - 50, "Behavior Analysis")
+
+
+
+            p.showPage()
+            p.save()
+
+        return response
+
+    elif buffer_count_beh and buffer_box_intensity:
+
+        if buffer_count_beh:
+            image_count_beh = ImageReader(buffer_count_beh)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+
+            p.drawImage(image_count_beh, image_x, image_y, image_width, image_height)
+
+            buffer_count_beh.close()
+
+        if buffer_box_intensity:
+            image_box_intensity = ImageReader(buffer_box_intensity)
+
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_intensity,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_intensity.close()
+
+            p.showPage()
+            p.save()
+
+
+
+
+
+        return response
+    
+
+
+def download_antecedent_chart_pdf(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    cases_df = Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'anticedent__anticedentincident')
+    cases_df = pd.DataFrame(cases_df)
+
+    # Assuming get_count_beh_plot_pdf returns a BytesIO buffer for the count behavior plot
+    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Antecedent')
+
+  
+    df_anticedent = cases_df['Antecedent']
+   
+
+    buffer_box_antecedent = get_box_plot_pdf ( x= df_anticedent, data=cases_df)  
+
+  
+    # box_bar antecedent Endxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+    behavior = pd.get_dummies(cases_df['Behavior'])
+    anticedent = pd.get_dummies(cases_df['Antecedent'])
+    df_matrix = pd.concat([cases_df,behavior,anticedent], axis=1)
+
+    df_matrix.drop(['Behavior','Antecedent'],axis=1,inplace=True)
+
+
+        
+    matrix = df_matrix.corr().round(2) 
+  
+    
+    filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    
+    buffer_correlation_antecedent = get_heatmap_antecedent_pdf(data=filterDX)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{student.studentname} Antecedent Analysis.pdf"'
+
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Title
+    p.setFont("Helvetica-Bold", 18)
+    p.drawCentredString(width / 2.0, height - 50, "Antecedent Analysis")
+
+    # Draw the count behavior plot
+
+
+    if buffer_box_antecedent:
+            image_box_antecedent = ImageReader(buffer_box_antecedent)
+
+            image_count_beh = ImageReader(buffer_box_antecedent)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_count_beh,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_antecedent.close()
+
+
+    if buffer_correlation_antecedent:
+            image_box_correlation = ImageReader(buffer_correlation_antecedent)
+
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_correlation,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_correlation_antecedent.close()
+
+            p.showPage()
+            p.save()
+            
+
+    return response
+    
+
+
+def download_consequence_chart_pdf(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    cases_df = Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'consequence__behaviorconsequence')
+    cases_df = pd.DataFrame(cases_df)
+
+    # Assuming get_count_beh_plot_pdf returns a BytesIO buffer for the count behavior plot
+    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df.columns = cases_df.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+
+  
+    df_consequence = cases_df['Consequence']
+   
+
+    buffer_box_consequence = get_box_plot_consequence_pdf( x= df_consequence, data=cases_df)  
+
+  
+    # box_bar antecedent Endxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+    behavior = pd.get_dummies(cases_df['Behavior'])
+    anticedent = pd.get_dummies(cases_df['Consequence'])
+    df_matrix = pd.concat([cases_df,behavior,anticedent], axis=1)
+
+    df_matrix.drop(['Behavior','Consequence'],axis=1,inplace=True)
+
+
+        
+    matrix = df_matrix.corr().round(2) 
+  
+    
+    filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    
+    buffer_correlation_consequence = get_heatmap_consequence_pdf(data=filterDX)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{student.studentname} Consequence Analysis.pdf"'
+
+
+
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Title
+    p.setFont("Helvetica-Bold", 18)
+    p.drawCentredString(width / 2.0, height - 50, "Consequence Analysis")
+
+    # Draw the count behavior plot
+
+
+    if buffer_box_consequence:
+            image_box_consequence = ImageReader(buffer_box_consequence)
+
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_consequence,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_consequence.close()
+
+
+    if buffer_correlation_consequence:
+            image_box_correlation = ImageReader(buffer_correlation_consequence)
+
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_correlation,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_correlation_consequence.close()
+
+            p.showPage()
+            p.save()
+            
+
+    return response
+    
+
+
+
+         
+
+
+def download_function_chart_pdf(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    cases_df = Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'function__behaviorfunction')
+    cases_df = pd.DataFrame(cases_df)
+
+    # Assuming get_count_beh_plot_pdf returns a BytesIO buffer for the count behavior plot
+    cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+
+  
+    df_function = cases_df['Function']
+   
+
+    buffer_box_function = get_box_plot_function_pdf( x= df_function, data=cases_df)  
+
+  
+    # box_bar antecedent Endxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+    behavior = pd.get_dummies(cases_df['Behavior'])
+    function = pd.get_dummies(cases_df['Function'])
+    df_matrix = pd.concat([cases_df,behavior,function], axis=1)
+
+    df_matrix.drop(['Behavior','Function'],axis=1,inplace=True)
+
+
+        
+    matrix = df_matrix.corr().round(2) 
+  
+    
+    filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    
+    buffer_correlation_function = get_heatmap_function_pdf(data=filterDX)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{student.studentname} Function Analysis.pdf"'
+
+
+
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Title
+    p.setFont("Helvetica-Bold", 18)
+    p.drawCentredString(width / 2.0, height - 50, "Function Analysis")
+
+    # Draw the count behavior plot
+
+
+    if buffer_box_function:
+
+            image_function = ImageReader(buffer_box_function)
+            image_x = 50  # X position
+            image_y = height - 365 # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_function,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_box_function.close()
+
+
+    if buffer_correlation_function:
+            image_box_function = ImageReader(buffer_correlation_function)
+
+            image_x = 50  # X position
+            image_y = height - 700  # Y position from the top of the page
+            image_width = width - 100  # Image width
+            image_height = 300  # Increase this value to make the chart image longer
+            p.drawImage(image_box_function,image_x, image_y, image_width, image_height)  # Adjust as needed
+            buffer_correlation_function.close()
+
+            p.showPage()
+            p.save()
+            
+
+    return response
+    
+
+
+
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
