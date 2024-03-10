@@ -8,6 +8,22 @@
       <div class="container">
         <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"> <b>Dashboard ({{student.studentname}})</b> </a>
         <br/>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              
+            </li>
+            <li class="page-item"><a class="page-link"  href="{% url 'bip:download_consequence_chart_pdf' student.pk %}" class="card-link">PDF Download</a></li>
+      
+      
+      
+            
+            <li class="page-item">
+              </a>
+            </li>
+          </ul>
+        </nav>
+      
         <div class="title-container">
           <h2 class="page-title">Consequence Analysis</h2>
         </div>
