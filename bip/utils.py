@@ -207,6 +207,31 @@ def get_box_plot_function( *args, **kwargs):
 
     return box_graph_function
 
+def get_box_plot_pdf( *args, **kwargs):
+    plt.switch_backend('AGG')    
+    fig = plt.figure(figsize=(10,6))
+    
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    data = kwargs.get('data')
+    title = "Antecedent and Behavior"
+    plt.title(title)
+
+    sns.countplot(x=x, hue='Behavior', data=data)
+
+    plt.xticks(rotation=45)
+    plt.xlabel('')
+    plt.ylabel('Frequency')
+    plt.tight_layout()
+    plt.legend(title='Behavior')
+    
+    buffer = BytesIO()  # Create a BytesIO buffer
+    plt.savefig(buffer, format='png')  # Save the plot to the buffer
+    buffer.seek(0)  # Seek to the start of the buffer
+    plt.close(fig)  # Close the plot to free memory
+    
+    return buffer
+
 def get_box_plot_function_pdf( *args, **kwargs):
     plt.switch_backend('AGG')    
     # fig = plt.figure()
