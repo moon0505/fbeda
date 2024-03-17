@@ -220,6 +220,10 @@ urlpatterns = [
   
     path('video/', views.show_video, name='show_video'),
 
+    # artificial inttelligence urls--------------------------------
+    path('function_ai_abc/<pk>/', views.function_ai_abc, name='function_ai_abc'),
+
+
 
 ]
 
