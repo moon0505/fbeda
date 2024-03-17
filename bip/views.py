@@ -3704,8 +3704,6 @@ api_key = os.getenv("OPENAI_KEY")
 # Set the API key for the OpenAI Python client
 openai.api_key = api_key
 
-if not openai.api_key:
-    raise ValueError("No OpenAI API key provided.")
 
 def function_ai_abc(request, pk):
     # Retrieve student data
