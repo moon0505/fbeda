@@ -3695,6 +3695,13 @@ import openai
 from dotenv import load_dotenv
 import os
 
+
+# Get API key from environment variable
+api_key = os.getenv("OPENAI_KEY")
+
+# Set the API key for the OpenAI Python client
+openai.api_key = api_key
+
 def function_ai_abc(request, pk):
     # Retrieve student data
     student = get_object_or_404(Student, pk=pk)
