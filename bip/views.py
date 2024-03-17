@@ -3698,7 +3698,7 @@ import os
 load_dotenv()
 
 # Get API key from environment variable
-api_key = os.getenv("OPENAI_KEY")
+api_key = os.getenv("OPENAI_API_KEY")
 
 
 # Set the API key for the OpenAI Python client
