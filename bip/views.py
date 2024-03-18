@@ -3730,20 +3730,23 @@ def function_ai_abc(request, pk):
 
 
     student_name = student.studentname
-    
-    # system_role_content = f"Child Psychologist: For {student_name},\
-    #     analyze the functional behavior analysis involving antecedents\
-    #     behaviors, and consequences. Highlight behaviors with frequencies over 1,\
-    #     identifying their functions. For instance, a refusal behavior\
-    #     following a transition to gain an item, or when refusal after task demand\
-    #     leads to gaining staff attention, indicating a potential aim for escape or\
-    #     avoidance. Conclude with a summary of identified behavior functions.\
-    #     Suggested functionally equivalent replacement behavior:"
 
-    system_role_content = f"I want you to as a school psychologist: For {student_name},\
-        analyze the functional behavior analysis and\
-            identify  their functions. Conclude with a summary of identified behavior functions.\
-            Suggested functionally equivalent replacement behavior:"
+
+
+    # system_role_content = f"I want you to act as a school psychologist: For {student_name},\
+    #     analyze the functional behavior analysis and\
+    #         identify  their functions. Conclude with a summary of identified behavior functions.\
+    #         Suggested functionally equivalent replacement behavior:"
+
+    
+    system_role_content = f"I want you to act as a school psychologist: For {student_name},\
+        analyze the functional behavior analysis involving antecedents\
+        behaviors, and consequences. Highlight behaviors with frequencies over 1,\
+        identifying their functions. For instance, a refusal behavior\
+        following a transition to gain an item, or when refusal after task demand\
+        leads to gaining staff attention, indicating a potential aim for escape or\
+        avoidance. Conclude with a summary of identified behavior functions.\
+        Suggested functionally equivalent replacement behavior:"
 
 
     response = openai.ChatCompletion.create(
