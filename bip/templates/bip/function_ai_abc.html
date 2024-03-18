@@ -7,9 +7,8 @@
 <div class="container my-4">
     <!-- Navigation Button -->
     <div class="nav-button">
-        <a class="btn btn-outline-info" href="{% url 'bip:create_incident' student.id %}">
-            <b>Log Behavior for {{ student.studentname }}</b>
-        </a>
+        <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard ({{student.studentname}})</a>
+
     </div>
 <!-- 
     <div class="stats-row">
