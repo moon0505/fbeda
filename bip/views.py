@@ -3883,12 +3883,10 @@ def intervention_ai_abc(request, pk):
     student_name = student.studentname
 
     system_role_content = f"I want you to as a school psychologist: For {student_name},\
-        analyze the functional behavior analysis\
-            and list teaching Strategies/Necessary Curriculum/Materials that are needed\
+        list teaching Strategies/Necessary Curriculum/Materials that are needed\
               (List successive teaching steps for student to learn\
     replacement behavior/s)"
 
-    
 
     response = openai.ChatCompletion.create(
         model="gpt-4-0125-preview",
@@ -3905,10 +3903,6 @@ def intervention_ai_abc(request, pk):
         presence_penalty=0.0,
     )
 
-
-
-    # print(response)
-    # Extract completion text
     completion_text = response.choices[0].message['content']
 
 
