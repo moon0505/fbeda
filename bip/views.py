@@ -3739,7 +3739,7 @@ def function_ai_abc(request, pk):
         following a transition to gain an item, or when refusal after task demand\
         leads to gaining staff attention, indicating a potential aim for escape or\
         avoidance. Conclude with a summary of identified behavior functions.\
-        Suggested functionally equivalent replacement behavior. Zero empty lines and comments in the code"
+        Suggested functionally equivalent replacement behavior. Write your response with less than 2364 charactersZero empty lines and comments in the code"
 
 
     response = openai.ChatCompletion.create(
