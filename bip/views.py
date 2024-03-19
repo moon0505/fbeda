@@ -3886,7 +3886,7 @@ def intervention_ai_abc(request, pk):
         analyze the functional behavior analysis\
             and list teaching Strategies/Necessary Curriculum/Materials that are needed\
               (List successive teaching steps for student to learn\
-    replacement behavior/s)"
+    replacement behavior/s).Zero empty lines and comments in the code."
 
 
     response = openai.ChatCompletion.create(
