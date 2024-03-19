@@ -3739,7 +3739,7 @@ def function_ai_abc(request, pk):
         following a transition to gain an item, or when refusal after task demand\
         leads to gaining staff attention, indicating a potential aim for escape or\
         avoidance. Conclude with a summary of identified behavior functions.\
-        Suggested functionally equivalent replacement behavior."
+        Suggested functionally equivalent replacement behavior. Zero empty lines and comments in the code"
 
 
     response = openai.ChatCompletion.create(
@@ -3883,7 +3883,8 @@ def intervention_ai_abc(request, pk):
     student_name = student.studentname
 
     system_role_content = f"I want you to as a school psychologist: For {student_name},\
-        list teaching Strategies/Necessary Curriculum/Materials that are needed\
+        analyze the functional behavior analysis\
+            and list teaching Strategies/Necessary Curriculum/Materials that are needed\
               (List successive teaching steps for student to learn\
     replacement behavior/s)"
 
