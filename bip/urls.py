@@ -224,7 +224,7 @@ urlpatterns = [
     path('function_ai_abc/<pk>/', views.function_ai_abc, name='function_ai_abc'),
     path('antecedent_ai/<pk>/', views.antecedent_ai, name='antecedent_ai'),
     path('intervention_ai_abc/<pk>/', views.intervention_ai_abc, name='intervention_ai_abc'),
-,
+
 
 
 
