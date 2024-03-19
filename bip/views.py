@@ -3882,9 +3882,8 @@ def intervention_ai_abc(request, pk):
 
     student_name = student.studentname
 
-    system_role_content = f"I want you to as a school psychologist: For {student_name},\
-        analyze the functional behavior analysis\
-            and list teaching Strategies/Necessary Curriculum/Materials that are needed\
+    system_role_content = f"I want you to as a school psychologist: For {student_name}\
+        and list teaching Strategies/Necessary Curriculum/Materials that are needed\
               (List successive teaching steps for student to learn\
     replacement behavior/s).Zero empty lines and comments in the code. Suggested functionally equivalent replacement behavior. Write your response with less than 2364 charactersZero empty lines and comments in the code"
 
