@@ -3887,7 +3887,7 @@ def intervention_ai_abc(request, pk):
               (List successive teaching steps for student to learn\
     replacement behavior/s).Zero empty lines and comments in the code.\
           Suggested functionally equivalent replacement behavior.\
-              Write your response with less than 2300 charactersZero empty lines and comments in the code"
+              Write your response with less than 2200 charactersZero empty lines and comments in the code"
 
 
     response = openai.ChatCompletion.create(
