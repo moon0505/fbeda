@@ -3885,9 +3885,9 @@ def intervention_ai_abc(request, pk):
     system_role_content = f"I want you to as a school psychologist: For {student_name}\
          list teaching Strategies/Necessary Curriculum/Materials that are needed\
         (List successive teaching steps for student to learn\
-        replacement behavior/s).Zero empty lines and comments in the code.\
+        replacement behavior/s).\
         Write your response with less than 2200 charactersZero empty\
-        lines and comments in the code"
+        lines and comments in the code."
 
 
     response = openai.ChatCompletion.create(
