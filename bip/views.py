@@ -3889,11 +3889,18 @@ def intervention_ai_abc(request, pk):
     #     Write your response with less than 2200 characters. Zero empty\
     #     lines and comments in the code."
 
+
+    # this worked
+    # system_role_content = f"I want you to as a school psychologist: For {student_name}\
+    #      list teaching Strategies/Necessary Curriculum/Materials that are needed\
+    #     (List successive teaching steps for student to learn\
+    #     replacement behavior/s).\
+    #     Be concise with less than 2200 characters."
+
     system_role_content = f"I want you to as a school psychologist: For {student_name}\
-         list teaching Strategies/Necessary Curriculum/Materials that are needed\
+         list teaching Strategies that are needed\
         (List successive teaching steps for student to learn\
-        replacement behavior/s).\
-        Be concise with less than 2200 characters"
+        replacement behavior/s)."
 
     response = openai.ChatCompletion.create(
         model="gpt-4-0125-preview",
