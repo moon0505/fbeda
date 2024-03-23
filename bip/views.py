@@ -3965,7 +3965,8 @@ def goals_ai(request, pk):
     student_name = student.studentname
 
     system_role_content = f"I want you to as a school psychologist: For {student_name}, based on the data \
-         write Individual Educational Program goals"
+         write Individual Educational Program goals with less than 2200 characters. Zero empty\
+        lines."
 
     
 
