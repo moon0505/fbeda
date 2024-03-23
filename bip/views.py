@@ -3893,7 +3893,7 @@ def intervention_ai_abc(request, pk):
          list teaching Strategies/Necessary Curriculum/Materials that are needed\
         (List successive teaching steps for student to learn\
         replacement behavior/s).\
-        Be concise"
+        Be concise with less than 2200 characters"
 
     response = openai.ChatCompletion.create(
         model="gpt-4-0125-preview",
