@@ -3893,11 +3893,11 @@ def intervention_ai_abc(request, pk):
     retries = 3    
     while retries > 0:    
         try:
-    # this worked
             system_role_content = f"I want you to as a school psychologist: For {student_name}\
+             behavior interventon plan based on the data\
                 list teaching Strategies/Necessary Curriculum/Materials that are needed\
                 (List successive teaching steps for student to learn\
-                replacement behaviors) for a behavior interventon plan based on the data.\
+                replacement behaviors)\
                 Use less than 2000 characters."
 
             # system_role_content = f"I want you to as a school psychologist: For {student_name}\
@@ -3935,8 +3935,8 @@ def intervention_ai_abc(request, pk):
              raise e 
 
 
-             
-                
+
+
     # Prepare context for rendering
     context = {
         'student': student,
