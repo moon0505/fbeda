@@ -3854,7 +3854,6 @@ def antecedent_ai(request, pk):
 
 
 
-import time
 
 
 def intervention_ai_abc(request, pk):
@@ -3890,52 +3889,39 @@ def intervention_ai_abc(request, pk):
     #     Write your response with less than 2200 characters. Zero empty\
     #     lines and comments in the code."
 
-    retries = 3    
-    while retries > 0:    
-        try:
-            system_role_content = f"I want you to as a school psychologist: For {student_name}\
-             behavior interventon plan based on the data\
-                list teaching Strategies/Necessary Curriculum/Materials that are needed\
-                (List successive teaching steps for student to learn\
-                replacement behaviors)\
-                bullet point responses."
 
-            # system_role_content = f"I want you to as a school psychologist: For {student_name}\
-            #      list teaching Strategies that are needed\
-            #     (List successive teaching steps for student to learn\
-            #     replacement behavior/s)."
+    # this worked
+    system_role_content = f"I want you to as a school psychologist: For {student_name}\
+        behavior intervention plan bullet point:
+            list teaching Strategies/Necessary Curriculum/Materials that are needed\
+            (List successive teaching steps for student to learn\
+            replacement behaviors)."
 
-            response = openai.ChatCompletion.create(
-                model="gpt-4-0125-preview",
-                messages=[
-                    {"role": "system", "content": system_role_content},
-                    {"role": "user", "content": unique_abc_count_string}
+        # system_role_content = f"I want you to as a school psychologist: For {student_name}\
+        #      list teaching Strategies that are needed\
+        #     (List successive teaching steps for student to learn\
+        #     replacement behavior/s)."
 
-                ],
-                max_tokens=2000,
-                temperature=1.2,
-                # seed=1234,
-                # top_p=1.0,
-                frequency_penalty=0.0,
-                presence_penalty=0.0,
-            )
+    response = openai.ChatCompletion.create(
+            model="gpt-4-0125-preview",
+            messages=[
+                {"role": "system", "content": system_role_content},
+                {"role": "user", "content": unique_abc_count_string}
 
-            completion_text = response.choices[0].message['content']
+            ],
+            max_tokens=2000,
+            temperature=1.2,
+            # seed=1234,
+            # top_p=1.0,
+            frequency_penalty=0.0,
+            presence_penalty=0.0,
+        )
+
+    completion_text = response.choices[0].message['content']
 
 
-        # Split the response text into lines
-            completion_lines = completion_text.split('\n')
-        except Exception as e:    
-         if e: 
-             print(e)   
-             print('Timeout error, retrying...')    
-             retries -= 1    
-             time.sleep(5)    
-         else:    
-             raise e 
-
-
-
+    # Split the response text into lines
+    completion_lines = completion_text.split('\n')
 
     # Prepare context for rendering
     context = {
