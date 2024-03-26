@@ -3898,7 +3898,7 @@ def intervention_ai_abc(request, pk):
                 list teaching Strategies/Necessary Curriculum/Materials that are needed\
                 (List successive teaching steps for student to learn\
                 replacement behaviors)\
-                Use less than 2000 characters."
+                bullet point responses."
 
             # system_role_content = f"I want you to as a school psychologist: For {student_name}\
             #      list teaching Strategies that are needed\
