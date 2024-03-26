@@ -3854,6 +3854,7 @@ def antecedent_ai(request, pk):
 
 
 
+import time
 
 
 def intervention_ai_abc(request, pk):
@@ -3889,40 +3890,53 @@ def intervention_ai_abc(request, pk):
     #     Write your response with less than 2200 characters. Zero empty\
     #     lines and comments in the code."
 
-
+    retries = 3    
+    while retries > 0:    
+        try:
     # this worked
-    system_role_content = f"I want you to as a school psychologist: For {student_name}\
-         list teaching Strategies/Necessary Curriculum/Materials that are needed\
-        (List successive teaching steps for student to learn\
-        replacement behaviors) for a behavior interventon plan based on the data.\
-        Use less than 2000 characters."
+            system_role_content = f"I want you to as a school psychologist: For {student_name}\
+                list teaching Strategies/Necessary Curriculum/Materials that are needed\
+                (List successive teaching steps for student to learn\
+                replacement behaviors) for a behavior interventon plan based on the data.\
+                Use less than 2000 characters."
 
-    # system_role_content = f"I want you to as a school psychologist: For {student_name}\
-    #      list teaching Strategies that are needed\
-    #     (List successive teaching steps for student to learn\
-    #     replacement behavior/s)."
+            # system_role_content = f"I want you to as a school psychologist: For {student_name}\
+            #      list teaching Strategies that are needed\
+            #     (List successive teaching steps for student to learn\
+            #     replacement behavior/s)."
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4-0125-preview",
-        messages=[
-            {"role": "system", "content": system_role_content},
-            {"role": "user", "content": unique_abc_count_string}
+            response = openai.ChatCompletion.create(
+                model="gpt-4-0125-preview",
+                messages=[
+                    {"role": "system", "content": system_role_content},
+                    {"role": "user", "content": unique_abc_count_string}
 
-        ],
-        max_tokens=2000,
-        temperature=1.2,
-        # seed=1234,
-        # top_p=1.0,
-        frequency_penalty=0.0,
-        presence_penalty=0.0,
-    )
+                ],
+                max_tokens=2000,
+                temperature=1.2,
+                # seed=1234,
+                # top_p=1.0,
+                frequency_penalty=0.0,
+                presence_penalty=0.0,
+            )
 
-    completion_text = response.choices[0].message['content']
+            completion_text = response.choices[0].message['content']
 
 
-# Split the response text into lines
-    completion_lines = completion_text.split('\n')
+        # Split the response text into lines
+            completion_lines = completion_text.split('\n')
+        except Exception as e:    
+         if e: 
+             print(e)   
+             print('Timeout error, retrying...')    
+             retries -= 1    
+             time.sleep(5)    
+         else:    
+             raise e 
 
+
+             
+                
     # Prepare context for rendering
     context = {
         'student': student,
