@@ -8,12 +8,7 @@ django-import-export==3.3.1
 django-multiselectfield==0.1.12
 django-widget-tweaks==1.5.0
 gunicorn==21.2.0
-langchain==0.1.13
-langchain-community==0.0.29
-langchain-core==0.1.33
-langchain-openai==0.1.1
-langchain-text-splitters==0.0.1
-langsmith==0.1.31
+
 openai==0.28.0
 Pillow==10.0.1
 python-dotenv==1.0.1
