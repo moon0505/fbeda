@@ -4012,17 +4012,17 @@ import os
 load_dotenv()
 
 # Get API key from environment variable
-api_key = os.getenv("OPENAI_KEY")
+# api_key = os.getenv("OPENAI_KEY")
 
-openai.api_key = api_key
+# openai.api_key = api_key
 
-from langchain_openai import ChatOpenAI
-from langchain.schema import SystemMessage, HumanMessage
+# from langchain_openai import ChatOpenAI
+# from langchain.schema import SystemMessage, HumanMessage
 
-from langchain_openai import ChatOpenAI
-from langchain.schema import SystemMessage, HumanMessage
+# from langchain_openai import ChatOpenAI
+# from langchain.schema import SystemMessage, HumanMessage
 
-chat_model = ChatOpenAI(openai_api_key=api_key)
+# chat_model = ChatOpenAI(openai_api_key=api_key)
 
 
 
