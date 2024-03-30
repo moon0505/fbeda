@@ -3892,7 +3892,7 @@ def intervention_ai_abc(request, pk):
 
     # this worked
     system_role_content = f"I want you to as a school psychologist: For {student_name}\
-        behavior intervention plan bullet point:\
+        behavior intervention\
             list teaching Strategies/Necessary Curriculum/Materials that are needed\
             (List successive teaching steps for student to learn\
             replacement behaviors)."
