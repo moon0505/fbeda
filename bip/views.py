@@ -3748,7 +3748,7 @@ def function_ai_abc(request, pk):
         following a transition to gain an item, or when refusal after task demand\
         leads to gaining staff attention, indicating a potential aim for escape or\
         avoidance. Conclude with a summary of identified behavior functions.\
-        Suggested functionally equivalent replacement behavior. Write your response with less than 2364 charactersZero empty lines and comments in the code"
+        Suggested functionally equivalent replacement behavior. Write your response with less than 2364 characters Zero empty lines and comments in the code"
 
 
     response = openai.ChatCompletion.create(
@@ -4176,7 +4176,8 @@ def enviromental_bsp_ai(request, pk):
 
 
     user_content =f"use {student_name}'s  data:\n\n{unique_abc_count_string}\n\n and \
-         write What environmental structure and supports are needed to reduce the problem behavior? "
+         write What environmental structure and supports are needed to reduce the problem behavior?\
+             Write with less than 2364 characters. Zero empty lines and comments in the code "
 
 
 
