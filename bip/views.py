@@ -3821,14 +3821,24 @@ def antecedent_ai(request, pk):
 
     student_name = student.studentname
    
-    system_role_content= "Child Psychologist: Based on the functional behavior analysis that includes antecident, behavior and consequence\
-        1. Identify the antecedent events that trigger the problem behavior identified (behavior_column_names})"
+    # system_role_content= "Child Psychologist: Based on the functional behavior analysis that includes antecident, behavior and consequence\
+    #     1. Identify the antecedent events that trigger the problem behavior identified (behavior_column_names})"
     
+
+    system_role_content= f"I want you to be a school psychologist."
+    
+
+    
+
+    user_content= f"Use {student_name}'s data:\n\n{unique_abc_count_string}\n\n\ Identify the antecedent events that trigger\
+          the problem behavior identified?"
+
+
     response = openai.ChatCompletion.create(
         model="gpt-4-0125-preview",
         messages=[
             {"role": "system", "content": system_role_content},
-            {"role": "user", "content": unique_abc_count_string}
+            {"role": "user", "content": user_content}
 
         ],
         max_tokens=2000,
