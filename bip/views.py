@@ -3689,6 +3689,8 @@ def download_function_chart_pdf(request, pk):
     return response
     
 
+# Artificial IntelligenceXXXXXXXXXXXXXXXXXXXXXXXXXXXXArtificial IntelligenceXXXXXXXXXXXXXXXXXXXXXXXXXXXXArtificial IntelligenceXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 
 
 import openai
@@ -3703,6 +3705,13 @@ api_key = os.getenv("OPENAI_API_KEY")
 
 # Set the API key for the OpenAI Python client
 openai.api_key = api_key
+
+
+
+
+
+
+
 
 
 def function_ai_abc(request, pk):
@@ -3851,6 +3860,115 @@ def antecedent_ai(request, pk):
 
     # Render the template
     return render(request, 'bip/antecedent_ai.html', context)
+
+
+
+
+
+    
+
+def bsp(request,pk):
+    student = get_object_or_404(Student, pk=pk)
+    student_cases = student.case_set.all()
+
+    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident')
+
+    cases_df_duplicate = pd.DataFrame(list(data1))
+
+
+    try:
+    
+        cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('behavior__behaviorincident', 'Behavior')
+       
+    except:
+        return redirect("bip:error_page", student.id)
+
+    unique_b_count = cases_df_duplicate.groupby(['Behavior']).size().reset_index(name='Frequency')
+    unique_b_count = unique_b_count.sort_values(by=['Frequency'], ascending=False)
+
+    behavior_frequency_list = unique_b_count.to_dict(orient='records')
+
+
+
+
+    try:
+        data_intensity = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'intensity')
+        cases_df_intensity = pd.DataFrame(list(data_intensity))
+
+        cases_df_intensity = cases_df_intensity.rename(columns={
+            'behavior__behaviorincident': 'Behavior', 
+            'intensity': 'Intensity'
+        })
+
+        # Group by 'Behavior' and calculate the mean 'Intensity'
+        intensity_behavior = cases_df_intensity.groupby('Behavior')['Intensity'].mean().round(2).reset_index()
+
+        # Convert the DataFrame to a list of dictionaries
+        intensity_list = intensity_behavior.to_dict(orient='records')
+
+    except Exception as e:
+        print(e)  # Log or handle the exception as needed
+        intensity_list = []
+
+
+
+
+    try:
+        data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'duration')
+        cases_df_duration = pd.DataFrame(list(data_duration))
+
+
+        cases_df_duration = cases_df_duration.rename(columns={
+            'behavior__behaviorincident': 'Behavior', 
+            'duration': 'Duration'
+        })
+
+
+
+
+        # Group by 'Behavior' and calculate the mean 'Duration'
+        duration_behavior = cases_df_duration.groupby('Behavior')['Duration'].mean().round(0).astype(int).reset_index()
+
+        # Convert the DataFrame to a list of dictionaries
+        duration_list = duration_behavior.to_dict(orient='records')
+
+    except Exception as e:
+        print(e)  # Log or handle the exception as needed
+        duration_list = []
+
+
+
+
+
+
+    behaviors = student_cases.values(
+        'behavior__behaviorincident', 
+        'behavior__behavior_definition'
+
+    )
+
+
+    unique_behaviors = []
+    seen = set()
+    for behavior in behaviors:
+        incident = behavior['behavior__behaviorincident']
+        definition = behavior['behavior__behavior_definition']
+        if (incident, definition) not in seen:
+            seen.add((incident, definition))
+            unique_behaviors.append(behavior)
+
+    context = {    "student":student,
+                    "unique_behaviors":unique_behaviors,
+                    "behavior_frequency": behavior_frequency_list,
+        "intensity_list": intensity_list,
+                "duration_list": duration_list,
+
+
+
+               
+               }
+    
+    return render(request,'bip/bsp.html',context)
 
 
 

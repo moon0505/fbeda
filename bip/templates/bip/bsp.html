@@ -1,0 +1,238 @@
+{% extends 'partials/base.html' %} 
+{% block content %}
+
+
+<!-- old website -->
+
+<div class="container my-4">
+    <!-- Navigation Button -->
+    <div class="nav-button">
+        <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"> <b>Dashboard ({{student.studentname}})</b> </a>
+       
+    </div>
+
+
+
+
+
+
+
+    <div class="steps-card card mb-4">
+        <div class="card-body">
+            <h3>Behavior(s):</h3>
+    
+            {% if unique_behaviors %}
+                <ol>
+                    {% for behavior in unique_behaviors %}
+                        <li>
+                            {{ behavior.behavior__behaviorincident }}-{{ behavior.behavior__behavior_definition }}
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p>No unique behaviors found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>Behavior Frequencies:</h3>
+            {% if behavior_frequency %}
+                <ol>
+                    {% for item in behavior_frequency %}
+                        <li>{{ item.Behavior }}: {{ item.Frequency }} times</li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p>No behavior frequencies found.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+<div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>Behavior Intensity:</h3>
+            {% if intensity_list %}
+                <ol>
+                    {% for item in intensity_list %}
+                        <li>{{ item.Behavior }}: Average Intensity = {{ item.Intensity }}</li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p>No intensity data found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+<div class="card mb-4">
+    <div class="card-body">
+        <h3>Behavior Duration:</h3>
+        {% if duration_list %}
+            <ol>
+                {% for item in duration_list %}
+                    <li>{{ item.Behavior }}: Average Duration = {{ item.Duration }} seconds</li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <p>No duration data found.</p>
+        {% endif %}
+    </div>
+</div>
+
+    
+    <div class="analysis-container">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a  href="{% url 'bip:antecedent_ai' student.id %}" class="card-link">What are the antecedents for the problem
+                behavior?
+            </a></li>
+    </ul>
+    </div>
+<!-- 
+    <div class="analysis-container">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a  href="{% url 'bip:enviromental_bsp_ai' student.id %}" class="card-link">What environmental
+                structure and supports are needed to reduce the problem behavior?</a></li>
+
+    </ul>
+    </div> -->
+
+    <div class="analysis-container">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a  href="{% url 'bip:function_ai_abc' student.id %}" class="card-link">
+                What is the function of the problem behavior? (What is the student trying to achieve by engaging in the problem behavior?)</a></li>
+            </a></li>
+
+    </ul>
+    </div>
+
+    <!-- <div class="analysis-container">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a  href="{% url 'bip:replacement_bsp_ai' student.id %}" class="card-link">
+                
+                What team believes the student should do INSTEAD of the problem\
+                behavior? (Replacement behavior that meets the same identified\
+          function of problem behavior)?</a></li>
+            </a></li>
+
+    </ul>
+    </div> -->
+
+    <div class="analysis-container">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a  href="{% url 'bip:intervention_ai_abc' student.id %}" class="card-link">
+                
+                List teaching Strategies/Necessary Curriculum/Materials that are needed\
+                (List successive teaching steps for student to learn replacement behavior/s)</a></li>
+            </a></li>
+
+    </ul>
+    </div>
+
+
+
+<!-- 
+    <div class="analysis-container">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a  href="{% url 'bip:reinforcement_ai_abc' student.id %}" class="card-link">What reinforcement procedures/system will 
+                be used for establishing, maintaining, and generalizing the replacement behavior(s)?
+            </a></li>
+    </ul>
+    </div> -->
+    <div class="analysis-container">
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a  href="{% url 'bip:goals_ai' student.id %}" class="card-link">Behavioral Goal(s)
+            </a></li>
+    </ul>
+    </div>
+   
+    <br>
+    <br>
+</div>
+
+
+
+
+<style>
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #eef2f4; 
+    color: #505050;
+    line-height: 1.6;
+}
+.analysis-container {
+    background-color: white;
+    padding: 15px; /* Adds some spacing inside the container */
+    margin-bottom: 20px; /* Adds space below the container */
+    border-radius: 5px; /* Optional: rounds the corners of the container */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow for depth */
+}
+.analysis-container {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-title {
+    text-align: center; /* Centers the title text */
+    margin-bottom: 20px; /* Adds some space below the title */
+}
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+.nav-button {
+    margin-bottom: 20px;
+}
+
+.btn-outline-info {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.stats-row {
+    margin-bottom: 20px;
+}
+
+.stats-row .stat-item {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.completion-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.completion-list li {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+}
+</style>
+{% endblock %}

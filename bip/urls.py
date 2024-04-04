@@ -225,6 +225,8 @@ urlpatterns = [
     path('antecedent_ai/<pk>/', views.antecedent_ai, name='antecedent_ai'),
     path('intervention_ai_abc/<pk>/', views.intervention_ai_abc, name='intervention_ai_abc'),
     path('goals_ai/<pk>/', views.goals_ai, name='goals_ai'),
+    path('bsp/<pk>/', views.bsp, name='bsp'),
+
 
 
 
