@@ -4023,14 +4023,10 @@ def intervention_ai_abc(request, pk):
         
 
     user_content =f"This is a dataset \n\n{unique_abc_count_string}\n\n  of {student.studentname} behaviors\
-              
-              List teaching Strategies/Necessary Curriculum/Materials that are needed\
-                  (List successive teaching steps for student to learn replacement behavior/s)."
+        List teaching Strategies/Necessary Curriculum/Materials that are needed\
+        (List successive teaching steps for student to learn replacement behaviors)."
 
-        # system_role_content = f"I want you to as a school psychologist: For {student_name}\
-        #      list teaching Strategies that are needed\
-        #     (List successive teaching steps for student to learn\
-        #     replacement behavior/s)."
+    
 
     response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-0125",
