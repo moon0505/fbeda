@@ -4019,17 +4019,13 @@ def intervention_ai_abc(request, pk):
 
 
     # this worked
-    system_role_content = f"I want you to as a school psychologist: For {student_name}, based on the data \
-         write Individual Educational Program behavior goals based on what the student should demonstrate within a year time frame \
-         Rember replacement behavior must  be a behavior that we want to increase. Example: Will request break when frustrated,\
-              upset, etc. on _____% of opportunities for _____ consecutive days as measured by teacher or staff or Will request item from\
-                  others by using a verbal and/or picture request without prompting across a minimum of ____ items _____% of the time as\
-                      measured by _________.Zero empty with less than 2200 characters.\
-        lines."
+    system_role_content = f"I want you to be a school psychologist."
+        
 
-    user_content =f"analyze the following data:\n\n{unique_abc_count_string}\n\n and write Individual Educational Program behavior\
-          goals based on what we want the student to demonstrate  within a year time frame with less than 2200 characters. Zero empty\
-        lines"
+    user_content =f"This is a dataset \n\n{unique_abc_count_string}\n\n  of {student.studentname} behaviors\
+              
+              List teaching Strategies/Necessary Curriculum/Materials that are needed\
+                  (List successive teaching steps for student to learn replacement behavior/s)."
 
         # system_role_content = f"I want you to as a school psychologist: For {student_name}\
         #      list teaching Strategies that are needed\
@@ -4098,8 +4094,21 @@ def goals_ai(request, pk):
 
     student_name = student.studentname
 
+    # system_role_content = f"I want you to as a school psychologist: For {student_name}, based on the data \
+    #      write Individual Educational Program behavior goals based on what the student should demonstrate within a year time frame \
+    #      Rember replacement behavior must  be a behavior that we want to increase. Example: Will request break when frustrated,\
+    #           upset, etc. on _____% of opportunities for _____ consecutive days as measured by teacher or staff or Will request item from\
+    #               others by using a verbal and/or picture request without prompting across a minimum of ____ items _____% of the time as\
+    #                   measured by _________.Zero empty with less than 2200 characters.\
+    #     lines."
+
+    # user_content =f"analyze the following data:\n\n{unique_abc_count_string}\n\n and write Individual Educational Program behavior\
+    #       goals based on what we want the student to demonstrate  within a year time frame with less than 2200 characters. Zero empty\
+    #     lines"
+
+
     system_role_content = f"I want you to as a school psychologist: For {student_name}, based on the data \
-         write Individual Educational Program goals with less than 2200 characters. Zero empty\
+         write Individual Educational Program goals. Zero empty\
         lines."
 
     
