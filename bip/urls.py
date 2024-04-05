@@ -227,6 +227,8 @@ urlpatterns = [
     path('goals_ai/<pk>/', views.goals_ai, name='goals_ai'),
     path('bsp/<pk>/', views.bsp, name='bsp'),
     path('enviromental_bsp_ai/<pk>/', views.enviromental_bsp_ai, name='enviromental_bsp_ai'),
+    path('replacement_bsp_ai/<pk>/', views.replacement_bsp_ai, name='replacement_bsp_ai'),
+
 
 
 
