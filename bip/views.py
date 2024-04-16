@@ -4029,7 +4029,7 @@ def intervention_ai_abc(request, pk):
     
 
     response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0125",
+            model="gpt-4-0125-preview",
             messages=[
                 {"role": "system", "content": system_role_content},
                 {"role": "user", "content": user_content}
