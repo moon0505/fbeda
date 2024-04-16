@@ -2929,7 +2929,7 @@ def download_chart_pdf(request, pk):
             image_x = 50  # X position
             image_y = height - 365 # Y position from the top of the page
             image_width = width - 100  # Image width
-            image_height = 300  # Increase this value to make the chart image longer
+            image_height = 350  # Increase this value to make the chart image longer
         
             p.drawImage(image_box_intensity,image_x, image_y, image_width, image_height)  # Adjust as needed
             buffer_box_intensity.close()
