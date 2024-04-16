@@ -1250,30 +1250,23 @@ def get_duration_bar_chart_pdf(*args, **kwargs):
     plt.close(fig)  # Close the figure to free memory
 
     return buffer
-def get_intensity_bar_chart( *args, **kwargs):
-    
+def get_intensity_bar_chart(*args, **kwargs):
     plt.switch_backend('AGG')
-    fig = plt.figure()
+    fig = plt.figure(figsize=(6, 6))  # Adjust figure size as needed
     x = kwargs.get('x')
     y = kwargs.get('y')
     data = kwargs.get('data')
-   
-        
-
-    plt.tight_layout()
-
-     
+    plt.xticks(rotation=60)
+    
     plt.bar(x, y) 
-      
     title = "Average Intensity of Behavior"
     plt.title(title)
-    
-  
-   
     plt.ylabel('Intensity')
- 
+    plt.tight_layout()  # Adjust layout
+    
+    # Get the image and return
     box_intensity_graph = get_image()
-
+    
     return box_intensity_graph
 
 
