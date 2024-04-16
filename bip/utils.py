@@ -1274,11 +1274,12 @@ def get_intensity_bar_chart(*args, **kwargs):
 def get_intensity_bar_chart_pdf( *args, **kwargs):
     
     plt.switch_backend('AGG')
-    fig = plt.figure()
+    fig = plt.figure(figsize=(6, 6))  # Adjust figure size as needed
     x = kwargs.get('x')
     y = kwargs.get('y')
     data = kwargs.get('data')
-   
+    plt.xticks(rotation=60)
+
         
 
     plt.tight_layout()
