@@ -1553,56 +1553,73 @@ def consequence_view(request,pk):
     return render(request, 'bip/consequence.html', context)
 
 
-def anticedent_view(request,pk):
-     
+def anticedent_view(request, pk):
+    # Fetch the student or return a 404 error if not found
     student = get_object_or_404(Student, pk=pk)
-    student_cases = student.case_set.all() 
-    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
-    cases_df = pd.DataFrame(data)
-      
-    try:
-        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
-    except:
-        return redirect("bip:error_page", student.id)
-
-
-    df_anticedent = cases_df['Anticedent']
-    box_graph = get_box_plot( x= df_anticedent, data=cases_df) 
     
-    # correationxxxxxxxxxxxxxx
-    behavior = pd.get_dummies(cases_df['Behavior'])
-    anticedent = pd.get_dummies(cases_df['Anticedent'])
-    function = pd.get_dummies(cases_df['Function'])
-    df_matrix = pd.concat([cases_df,behavior,anticedent], axis=1)
-    df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
-        
-    matrix = df_matrix.corr().round(2) 
-  
-    try:
-        filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    # Retrieve data related to the student's cases
+    cases_data = models.Case.objects.filter(student__id=pk).values(
+        'behavior__behaviorincident',
+        'anticedent__anticedentincident',
+        'function__behaviorfunction',
+        'date_created',
+        'time',
+        'id'
+    )
     
+    # Create a DataFrame from the cases data
+    cases_df = pd.DataFrame(cases_data)
+    
+    # Renaming columns for readability
+    rename_mapping = {
+        'behavior__behaviorincident': 'Behavior',
+        'anticedent__anticedentincident': 'Anticedent',
+        'function__behaviorfunction': 'Function',
+        'date_created': 'Date',
+        'time': 'Time',
+        'id': 'ID'
+    }
+    cases_df.rename(columns=rename_mapping, inplace=True)
+    
+    # Generate box plot data for Anticedents
+    box_graph = get_box_plot(x='Anticedent', data=cases_df)
+
+    # Prepare the DataFrame for correlation analysis by encoding categorical data
+    behavior_encoded = pd.get_dummies(cases_df['Behavior'])
+    anticedent_encoded = pd.get_dummies(cases_df['Anticedent'])
+    function_encoded = pd.get_dummies(cases_df['Function'])
+    
+
+    # Concatenate the encoded columns with the original DataFrame
+    df_matrix = pd.concat([cases_df, behavior_encoded, anticedent_encoded, function_encoded], axis=1)
+    df_matrix.drop(['Behavior', 'Anticedent', 'Function', 'Date', 'Time', 'ID'], axis=1, inplace=True)
+    
+    # Compute the correlation matrix
+    matrix = df_matrix.corr().round(2)
+    
+    # Create a filtered matrix for the heatmap
+    filterDX = matrix[(matrix > 0) & (matrix != 1.0)]
+    
+    # Generate visualizations for the antecedent data
+    try:
         iheat_graph_antecedent = get_heatmap_antecedent(data=filterDX)
-    except:
-        pass
-    iclustermap_graph_antecedent = None
-    
+    except Exception as e:
+        print(f"Failed to create heatmap: {e}")
+        iheat_graph_antecedent = None
+
     try:
         iclustermap_graph_antecedent = get_clustermap_antecedent(data=matrix)
-
-    except:
-        pass
-  
-  
-    context= {'student':student,
-              'iclustermap_graph_antecedent':iclustermap_graph_antecedent, 
-    'iheat_graph_antecedent':iheat_graph_antecedent, 
-    'box_graph':box_graph,}
+    except Exception as e:
+        print(f"Failed to create clustermap: {e}")
+        iclustermap_graph_antecedent = None
     
+    # Prepare the context for rendering
+    context = {
+        'student': student,
+        'iclustermap_graph_antecedent': iclustermap_graph_antecedent,
+        'iheat_graph_antecedent': iheat_graph_antecedent,
+        'box_graph': box_graph,
+    }
     
     return render(request, 'bip/anticedent.html', context)
 
