@@ -2806,9 +2806,6 @@ from reportlab.lib.pagesizes import A4
 
 
 
-
-
-
 def download_chart_pdf(request, pk):
     student = get_object_or_404(Student, pk=pk)
     cases_df = Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'duration')
@@ -2816,8 +2813,6 @@ def download_chart_pdf(request, pk):
 
     # Assuming get_count_beh_plot_pdf returns a BytesIO buffer for the count behavior plot
     buffer_count_beh = get_count_beh_plot_pdf(x=cases_df['behavior__behaviorincident'], data=cases_df)
-  
-  
   
     # box_durationxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -2832,8 +2827,6 @@ def download_chart_pdf(request, pk):
         duration_behavior = duration_behavior.to_frame().reset_index()      
         df_duration = duration_behavior['behavior__behaviorincident']
         dfy_duration = duration_behavior['duration']
-
-   
 
         buffer_box_duration = get_duration_bar_chart_pdf(x=df_duration, y=dfy_duration, data=duration_behavior)
 
@@ -2881,12 +2874,7 @@ def download_chart_pdf(request, pk):
 
     # Draw the count behavior plot
 
-
-
     if buffer_count_beh and buffer_box_duration and buffer_box_intensity:
-
-
-
 
         if buffer_count_beh:
             image_count_beh = ImageReader(buffer_count_beh)
@@ -2912,8 +2900,6 @@ def download_chart_pdf(request, pk):
             buffer_box_duration.close()
             p.showPage()
 
-
-            
             # Title for the second page
             p.setFont("Helvetica-Bold", 18)
             p.drawCentredString(width / 2.0, height - 50, "Behavior Analysis")
@@ -2959,13 +2945,9 @@ def download_chart_pdf(request, pk):
             buffer_box_duration.close()
             p.showPage()
 
-
-            
-            # Title for the second page
+     # Title for the second page
             p.setFont("Helvetica-Bold", 18)
             p.drawCentredString(width / 2.0, height - 50, "Behavior Analysis")
-
-
 
             p.showPage()
             p.save()
@@ -2997,10 +2979,6 @@ def download_chart_pdf(request, pk):
 
             p.showPage()
             p.save()
-
-
-
-
 
         return response
     
