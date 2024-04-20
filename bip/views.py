@@ -1561,7 +1561,6 @@ def anticedent_view(request, pk):
     cases_data = models.Case.objects.filter(student__id=pk).values(
         'behavior__behaviorincident',
         'anticedent__anticedentincident',
-        'function__behaviorfunction',
         'date_created',
         'time',
         'id'
@@ -1574,28 +1573,20 @@ def anticedent_view(request, pk):
     rename_mapping = {
         'behavior__behaviorincident': 'Behavior',
         'anticedent__anticedentincident': 'Anticedent',
-        'function__behaviorfunction': 'Function',
         'date_created': 'Date',
         'time': 'Time',
         'id': 'ID'
     }
     cases_df.rename(columns=rename_mapping, inplace=True)
     
-    # Generate box plot data for Anticedents
+    # Generate box plot data for Antecedents
     box_graph = get_box_plot(x='Anticedent', data=cases_df)
 
     # Prepare the DataFrame for correlation analysis by encoding categorical data
-    behavior_encoded = pd.get_dummies(cases_df['Behavior'])
-    anticedent_encoded = pd.get_dummies(cases_df['Anticedent'])
-    function_encoded = pd.get_dummies(cases_df['Function'])
-    
-
-    # Concatenate the encoded columns with the original DataFrame
-    df_matrix = pd.concat([cases_df, behavior_encoded, anticedent_encoded, function_encoded], axis=1)
-    df_matrix.drop(['Behavior', 'Anticedent', 'Function', 'Date', 'Time', 'ID'], axis=1, inplace=True)
+    encoded_data = pd.get_dummies(cases_df[['Behavior', 'Anticedent']])
     
     # Compute the correlation matrix
-    matrix = df_matrix.corr().round(2)
+    matrix = encoded_data.corr().round(2)
     
     # Create a filtered matrix for the heatmap
     filterDX = matrix[(matrix > 0) & (matrix != 1.0)]
@@ -1603,16 +1594,12 @@ def anticedent_view(request, pk):
     # Generate visualizations for the antecedent data
     try:
         iheat_graph_antecedent = get_heatmap_antecedent(data=filterDX)
-    except Exception as e:
-        print(f"Failed to create heatmap: {e}")
-        iheat_graph_antecedent = None
-
-    try:
         iclustermap_graph_antecedent = get_clustermap_antecedent(data=matrix)
     except Exception as e:
-        print(f"Failed to create clustermap: {e}")
-        iclustermap_graph_antecedent = None
-    
+        # Log error and redirect or inform the user
+        print(f"Error in generatinsg visualizations: {e}")
+        return redirect("bip:error_page", student.id)
+
     # Prepare the context for rendering
     context = {
         'student': student,
