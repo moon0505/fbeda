@@ -1442,41 +1442,60 @@ def snapshot_data_entry_view(request, pk):
     return render(request, 'bip/data_entry_chart_view.html', context)
 
 # xxxxxxxx
-def function_view(request, pk):
+
+def function_view(request,pk):
+     
     student = get_object_or_404(Student, pk=pk)
-    cases_data = models.Case.objects.filter(student__id=pk).values(
-        'behavior__behaviorincident', 'anticedent__anticedentincident', 'function__behaviorfunction',
-        'date_created', 'time', 'id'
-    )
-    cases_df = pd.DataFrame(cases_data)
-    columns = {
-        'behavior__behaviorincident': 'Behavior',
-        'anticedent__anticedentincident': 'Anticedent',
-        'function__behaviorfunction': 'Function',
-        'date_created': 'Date',
-        'time': 'Time',
-        'id': 'ID'
-    }
-    cases_df.rename(columns=columns, inplace=True)
-
-    box_graph_function = get_box_plot_function(x='Function', data=cases_df)
-    df_encoded = pd.get_dummies(cases_df.drop(['Date', 'Time', 'ID'], axis=1))
-    matrix = df_encoded.corr().round(2)
-
+    student_cases = student.case_set.all() 
+    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
+    
+    cases_df = pd.DataFrame(data)
+    
     try:
-        filterDX = matrix[(matrix > 0.0) & (matrix != 1.0)]
-        iheat_graph_function = get_heatmap_function(data=filterDX)
-        iclustermap_graph_function = get_clustermap_function(data=matrix)
-    except Exception as e:
+
+        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
+        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
+        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
+        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
+        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
+        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
+        
+    except:
         return redirect("bip:error_page", student.id)
 
-    context = {
-        'student': student,
-        'iclustermap_graph_function': iclustermap_graph_function,
-        'iheat_graph_function': iheat_graph_function,
-        'box_graph_function': box_graph_function,
-    }
 
+    df_function = cases_df['Function']
+    box_graph_function = get_box_plot_function( x= df_function, data=cases_df) 
+    
+        # correationxxxxxxxxxxxxxx
+    behavior = pd.get_dummies(cases_df['Behavior'])
+    anticedent = pd.get_dummies(cases_df['Anticedent'])
+    function = pd.get_dummies(cases_df['Function'])
+    df_matrix = pd.concat([cases_df,behavior,function], axis=1)
+    df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
+    matrix = df_matrix.corr().round(2) 
+  
+    try:
+        filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    
+        iheat_graph_function = get_heatmap_function(data=filterDX)
+    except:
+        pass
+    
+
+    iclustermap_graph_function = None
+    
+    try:
+        iclustermap_graph_function = get_clustermap_function(data=matrix)
+
+    except:
+        pass
+  
+    context= {'student':student,
+              'iclustermap_graph_function':iclustermap_graph_function, 
+    'iheat_graph_function':iheat_graph_function, 
+    'box_graph_function':box_graph_function,}
+    
     return render(request, 'bip/function.html', context)
 
 
