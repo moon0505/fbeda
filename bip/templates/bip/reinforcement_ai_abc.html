@@ -1,0 +1,104 @@
+{% extends 'partials/base.html' %} 
+{% block content %}
+
+
+<!-- old website -->
+
+<div class="container my-4">
+    <!-- Navigation Button -->
+    <div class="nav-button">
+        <a class="btn btn-outline-info" href="{% url 'bip:bsp' student.id %}">
+            <b>BSP: {{ student.studentname }}</b>
+        </a>
+    </div>
+
+    <div class="analysis-container">
+        <h3 class="analysis-title"> List reinforcement procedures needed for 1) 
+            establishing, 2) maintaining, and 3) generalizing the replacement behavior(s)?</h3>
+        <h5 class="analysis-title"> <i>See Data Tabe for Details</i></h5>
+        {% for line in completion_lines %}
+            {% if line %}
+                <p>{{ line }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <br>
+    <br>
+</div>
+
+
+
+
+<style>
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #eef2f4; 
+    color: #505050;
+    line-height: 1.6;
+}
+.analysis-container {
+    background-color: white;
+    padding: 15px; /* Adds some spacing inside the container */
+    margin-bottom: 20px; /* Adds space below the container */
+    border-radius: 5px; /* Optional: rounds the corners of the container */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow for depth */
+}
+.analysis-container {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-title {
+    text-align: center; /* Centers the title text */
+    margin-bottom: 20px; /* Adds some space below the title */
+}
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 15px;
+}
+
+.nav-button {
+    margin-bottom: 20px;
+}
+
+.btn-outline-info {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.stats-row {
+    margin-bottom: 20px;
+}
+
+.stats-row .stat-item {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.completion-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.completion-list li {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+}
+</style>
+{% endblock %}

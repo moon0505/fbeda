@@ -4668,6 +4668,85 @@ def replacement_bsp_ai(request, pk):
 
 
 
+
+
+
+
+def reinforcement_ai_abc(request, pk):
+    # Retrieve student data
+    student = get_object_or_404(Student, pk=pk)
+    student_cases = student.case_set.all()
+    
+    # Query case data
+    
+    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence')
+
+    cases_df_duplicate = pd.DataFrame(list(data1))
+
+# Reset the index of the DataFrame
+    cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('behavior__behaviorincident', 'Behavior')
+    cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('anticedent__anticedentincident', 'Antecedent')
+    cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+    
+    unique_abc_count = cases_df_duplicate.groupby(['Behavior','Antecedent','Consequence']).size().reset_index(name='Frequency')
+    unique_abc_count = unique_abc_count.sort_values(by=['Frequency'], ascending=False)
+    unique_abc_count_string = unique_abc_count.to_string(index=False)
+
+    student_name = student.studentname
+
+    system_role_content = f"I want you to be a school psychologist."
+
+
+    user_content =f"use {student_name}'s  data:\n\n{unique_abc_count_string}\n\n\
+        and List reinforcement procedures needed for\
+         1) establishing, 2) maintaining, and 3)\
+            generalizing the replacement behavior(s)?"
+    
+
+    from openai import OpenAI
+    client = OpenAI(
+    # This is the default and can be omitted
+    api_key=os.environ.get("OPENAI_KEY"),
+    )
+    response = client.chat.completions.create(
+        model="gpt-4-0125-preview",
+        messages=[
+            {"role": "system", "content": system_role_content},
+            {"role": "user", "content": user_content}
+
+        ],
+        max_tokens=2000,
+        temperature=1.2,
+        # seed=1234,
+        # top_p=1.0,
+        frequency_penalty=0.0,
+        presence_penalty=0.0,
+    )
+
+    completion_text = response.choices[0].message.content
+    completion_lines = completion_text.split('\n')
+
+    # Prepare context for rendering
+    context = {
+        'student': student,
+        'unique_abc_count':unique_abc_count.to_html(index=False),
+         'completion_lines': completion_lines,
+
+    }
+
+    # Render the template
+    return render(request, 'bip/reinforcement_ai_abc.html', context)
+
+
+
+
+
+
+
+
+
+
+
 import openai
 from dotenv import load_dotenv
 import os
