@@ -4044,7 +4044,7 @@ def intervention_ai_abc(request, pk):
     
     # Query case data
     
-    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence')
+    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction')
 
     cases_df_duplicate = pd.DataFrame(list(data1))
 
@@ -4362,7 +4362,7 @@ def enviromental_bsp_ai(request, pk):
     
     # Query case data
     
-    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence')
+    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction')
 
     cases_df_duplicate = pd.DataFrame(list(data1))
 
@@ -4519,7 +4519,7 @@ def replacement_bsp_ai(request, pk):
     
     # Query case data
     
-    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence')
+    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence','function__behaviorfunction')
 
     cases_df_duplicate = pd.DataFrame(list(data1))
 
