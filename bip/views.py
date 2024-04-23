@@ -3698,7 +3698,7 @@ def function_ai_abc(request, pk):
     
     # Query case data
     
-    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence')
+    data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction','consequence__behaviorconsequence')
 
     cases_df_duplicate = pd.DataFrame(list(data1))
 
@@ -3708,8 +3708,10 @@ def function_ai_abc(request, pk):
     cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('behavior__behaviorincident', 'Behavior')
     cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('anticedent__anticedentincident', 'Antecedent')
     cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
-    
-    unique_abc_count = cases_df_duplicate.groupby(['Behavior','Antecedent','Consequence']).size().reset_index(name='Frequency')
+    cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('function__behaviorfunction', 'Function')
+
+
+    unique_abc_count = cases_df_duplicate.groupby(['Behavior','Antecedent','Consequence','Function']).size().reset_index(name='Frequency')
     unique_abc_count = unique_abc_count.sort_values(by=['Frequency'], ascending=False)
 
     unique_abc_count_string = unique_abc_count.to_string(index=False)
@@ -3766,6 +3768,82 @@ def function_ai_abc(request, pk):
     return render(request, 'bip/function_ai_abc.html', context)
 
 
+
+
+
+# def function_ai_abc(request, pk):
+#     # Retrieve student data
+#     student = get_object_or_404(Student, pk=pk)
+#     student_cases = student.case_set.all()
+    
+#     # Query case data
+    
+#     data1 = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','consequence__behaviorconsequence')
+
+#     cases_df_duplicate = pd.DataFrame(list(data1))
+
+# # Reset the index of the DataFrame
+
+    
+#     cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('behavior__behaviorincident', 'Behavior')
+#     cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('anticedent__anticedentincident', 'Antecedent')
+#     cases_df_duplicate.columns = cases_df_duplicate.columns.str.replace('consequence__behaviorconsequence', 'Consequence')
+    
+#     unique_abc_count = cases_df_duplicate.groupby(['Behavior','Antecedent','Consequence']).size().reset_index(name='Frequency')
+#     unique_abc_count = unique_abc_count.sort_values(by=['Frequency'], ascending=False)
+
+#     unique_abc_count_string = unique_abc_count.to_string(index=False)
+
+
+#     student_name = student.studentname
+
+    
+#     system_role_content = f"I want you to act as a school psychologist: For {student_name},\
+#         analyze the functional behavior analysis involving antecedents\
+#         behaviors, and consequences. Highlight behaviors with frequencies over 1,\
+#         identifying their functions. For instance, a refusal behavior\
+#         following a transition to gain an item, or when refusal after task demand\
+#         leads to gaining staff attention, indicating a potential aim for escape or\
+#         avoidance. Conclude with a summary of identified behavior functions.\
+#         Suggested functionally equivalent replacement behavior. Write your response with less than 2364 characters Zero empty lines and comments in the code"
+
+
+#     response = openai.ChatCompletion.create(
+#         model="gpt-4-0125-preview",
+#         messages=[
+#             {"role": "system", "content": system_role_content},
+#             {"role": "user", "content": unique_abc_count_string}
+
+#         ],
+#         max_tokens=2000,
+#         temperature=1.2,
+#         # seed=1234,
+#         # top_p=1.0,
+#         frequency_penalty=0.0,
+#         presence_penalty=0.0,
+#     )
+
+
+
+#     # print(response)
+#     # Extract completion text
+#     completion_text = response.choices[0].message['content']
+
+
+# # Split the response text into lines
+#     completion_lines = completion_text.split('\n')
+
+#     # Prepare context for rendering
+#     context = {
+#         'student': student,
+#         'unique_abc_count':unique_abc_count.to_html(index=False),
+#          'completion_lines': completion_lines,
+
+
+#     }
+
+#     # Render the template
+#     return render(request, 'bip/function_ai_abc.html', context)
 
 
 
