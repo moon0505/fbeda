@@ -4703,28 +4703,27 @@ def reinforcement_ai_abc(request, pk):
             generalizing the replacement behavior(s)?"
     
 
-    from openai import OpenAI
-    client = OpenAI(
-    # This is the default and can be omitted
-    api_key=os.environ.get("OPENAI_KEY"),
-    )
-    response = client.chat.completions.create(
-        model="gpt-4-0125-preview",
-        messages=[
-            {"role": "system", "content": system_role_content},
-            {"role": "user", "content": user_content}
+    response = openai.ChatCompletion.create(
+            model="gpt-4-0125-preview",
+            messages=[
+                {"role": "system", "content": system_role_content},
+                {"role": "user", "content": user_content}
 
-        ],
-        max_tokens=2000,
-        temperature=1.2,
-        # seed=1234,
-        # top_p=1.0,
-        frequency_penalty=0.0,
-        presence_penalty=0.0,
-    )
+            ],
+            max_tokens=2000,
+            temperature=1.2,
+            # seed=1234,
+            # top_p=1.0,
+            frequency_penalty=0.0,
+            presence_penalty=0.0,
+        )
 
-    completion_text = response.choices[0].message.content
+    completion_text = response.choices[0].message['content']
+
+
+    # Split the response text into lines
     completion_lines = completion_text.split('\n')
+
 
     # Prepare context for rendering
     context = {
