@@ -1211,7 +1211,7 @@ def get_duration_bar_chart( *args, **kwargs):
      
     plt.bar(x, y) 
       
-    title = "Average Duration of Behavior (1-Mild, 2-Moderate, 3-Severe)"
+    title = "Average Duration of Behavior"
     plt.title(title)
     
     # plt.yticks(np.arange(min(y), max(y)+10, 30.0))
@@ -1259,7 +1259,7 @@ def get_intensity_bar_chart(*args, **kwargs):
     plt.xticks(rotation=60)
     
     plt.bar(x, y) 
-    title = "Average Intensity of Behavior"
+    title = "Average Intensity of Behavior (1-Mild, 2-Moderate, 3-Severe)"
     plt.title(title)
     plt.ylabel('Intensity')
     plt.tight_layout()  # Adjust layout
