@@ -4068,6 +4068,9 @@ def intervention_ai_abc(request, pk):
 
 
     student_name = student.studentname
+    age = student.age
+    grade = student.grade
+    nonverbal = student.nonverbal 
 
     # system_role_content = f"I want you to as a school psychologist: For {student_name}\
     #      list teaching Strategies/Necessary Curriculum/Materials that are needed\
@@ -4081,14 +4084,14 @@ def intervention_ai_abc(request, pk):
     system_role_content = f"I want you to be a school psychologist."
         
 
-    user_content =f"This is a dataset \n\n{unique_abc_count_string}\n\n  of {student.studentname} behaviors\
+    user_content =f"This is a dataset \n\n{unique_abc_count_string}\n\n  of {student.studentname} age:{age}, grade:{grade},nonverbal:{nonverbal}) behaviors\
         List teaching Strategies/Necessary Curriculum/Materials that are needed\
         (List successive teaching steps for student to learn replacement behaviors)."
 
     
 
     response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0125",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": system_role_content},
                 {"role": "user", "content": user_content}
