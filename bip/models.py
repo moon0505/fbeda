@@ -49,6 +49,26 @@ class DataEntry(models.Model):
 
 
 class Student(models.Model):
+        GRADE_CHOICES = [
+        ('TK', 'Transitional-Kindergarten'),
+        ('K', 'Kindergarten'),
+        ('1', '1st Grade'),
+        ('2', '2nd Grade'),
+        ('3', '3rd Grade'),
+        ('4', '4th Grade'),
+        ('5', '5th Grade'),
+        ('6', '6th Grade'),
+        ('7', '7th Grade'),
+        ('8', '8th Grade'),
+        ('9', '9th Grade'),
+        ('10', '10th Grade'),
+        ('11', '11th Grade'),
+        ('12', '12th Grade'),
+        ('AT', 'Adult Transition'),
+        ('NA', 'Not Applicable'),
+
+
+]
         studentname= models.CharField(max_length=30,verbose_name= 'Name')
         slug = models.SlugField(max_length=150,null=False,unique=False,blank=False,
         verbose_name=("Unique Identifier"),
@@ -57,6 +77,10 @@ class Student(models.Model):
         ),
     )
         user_student = models.ForeignKey(CustomUser, on_delete=models.CASCADE,  default=None,related_name="postts")     
+        age = models.PositiveIntegerField(null=True, blank=True, verbose_name='Age')
+
+        nonverbal=models.BooleanField(default=False,verbose_name='Nonverbal')
+        grade = models.CharField(max_length=2, choices=GRADE_CHOICES, verbose_name='Grade', null=True, blank=True)
 
         def __str__(self):
           return str(self.studentname)

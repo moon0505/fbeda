@@ -108,13 +108,13 @@ class BehaviorForm(forms.ModelForm):
 class StudentForm(ModelForm):
     class Meta():
         model = Student
-        fields = ('studentname',) 
+        fields = ('studentname','age','grade','nonverbal') 
         
         
 class StudentUpdateForm(ModelForm):
     class Meta():
         model = Student
-        fields = ('studentname','slug') 
+        fields = ('studentname','slug','age','grade','nonverbal') 
  
 class StudentFormSlug(ModelForm):
     class Meta():
