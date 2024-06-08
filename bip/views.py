@@ -4248,7 +4248,7 @@ def goals_ai(request, pk):
 
 
     system_role_content = f"I want you to as a school psychologist: For {student_name} (age:{age}, grade:{grade},nonverbal:{nonverbal}), based on the data \
-         write Individual Educational Program goals. Zero empty\
+         write Individual Educational Program goals to be accomplished in 1 year. Zero empty\
         lines."
 
     
