@@ -4230,6 +4230,9 @@ def goals_ai(request, pk):
 
 
     student_name = student.studentname
+    age = student.age
+    grade = student.grade
+    nonverbal = student.nonverbal 
 
     # system_role_content = f"I want you to as a school psychologist: For {student_name}, based on the data \
     #      write Individual Educational Program behavior goals based on what the student should demonstrate within a year time frame \
@@ -4244,14 +4247,14 @@ def goals_ai(request, pk):
     #     lines"
 
 
-    system_role_content = f"I want you to as a school psychologist: For {student_name}, based on the data \
+    system_role_content = f"I want you to as a school psychologist: For {student_name} (age:{age}, grade:{grade},nonverbal:{nonverbal}), based on the data \
          write Individual Educational Program goals. Zero empty\
         lines."
 
     
 
     response = openai.ChatCompletion.create(
-        model="gpt-4-0125-preview",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": system_role_content},
             {"role": "user", "content": unique_abc_count_string}
