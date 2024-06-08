@@ -3718,9 +3718,12 @@ def function_ai_abc(request, pk):
 
 
     student_name = student.studentname
+    age = student.age
+    grade = student.grade
+    nonverbal = student.nonverbal 
 
     
-    system_role_content = f"I want you to act as a school psychologist: For {student_name},\
+    system_role_content = f"I want you to act as a school psychologist: For {student_name}'s (age:{age}, grade:{grade},nonverbal:{nonverbal}),\
         analyze the functional behavior analysis involving antecedents\
         behaviors, and consequences. Highlight behaviors with frequencies over 1,\
         identifying their functions. For instance, a refusal behavior\
@@ -3731,7 +3734,7 @@ def function_ai_abc(request, pk):
 
 
     response = openai.ChatCompletion.create(
-        model="gpt-4-0125-preview",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": system_role_content},
             {"role": "user", "content": unique_abc_count_string}
