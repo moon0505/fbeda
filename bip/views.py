@@ -4385,6 +4385,9 @@ def enviromental_bsp_ai(request, pk):
 
 
     student_name = student.studentname
+    age = student.age
+    grade = student.grade
+    nonverbal = student.nonverbal 
 
     system_role_content = f"I want you to be a school psychologist."
 
@@ -4395,13 +4398,13 @@ def enviromental_bsp_ai(request, pk):
 
 
 
-    user_content =f"use {student_name}'s  data:\n\n{unique_abc_count_string}\n\n and \
+    user_content =f"use {student_name}'s (age:{age}, grade:{grade},nonverbal:{nonverbal}) data:\n\n{unique_abc_count_string}\n\n and \
          write What environmental structure and supports are needed to reduce the problem behavior?"
 
 
     response = openai.ChatCompletion.create(
         # model="gpt-4-0125-preview",
-        model="gpt-3.5-turbo-0125",
+        model="gpt-4o",
 
         messages=[
             {"role": "system", "content": system_role_content},
