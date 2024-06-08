@@ -4545,11 +4545,14 @@ def replacement_bsp_ai(request, pk):
 
 
     student_name = student.studentname
+    age = student.age
+    grade = student.grade
+    nonverbal = student.nonverbal 
 
     system_role_content = f"I want you to be a school psychologist."
 
 
-    user_content =f"use {student_name}'s  data:\n\n{unique_abc_count_string}\n\n and \
+    user_content =f"use {student_name}'s (age:{age}, grade:{grade},nonverbal:{nonverbal}) data:\n\n{unique_abc_count_string}\n\n and \
          write What team believes the student should do INSTEAD of the problem\
               behavior? (Replacement behavior that meets the same identified\
         function of problem behavior)?\
@@ -4563,7 +4566,7 @@ def replacement_bsp_ai(request, pk):
 
 
     response = openai.ChatCompletion.create(
-        model="gpt-4-0125-preview",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": system_role_content},
             {"role": "user", "content": user_content}
