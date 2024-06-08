@@ -2726,75 +2726,75 @@ def case_upload_csv_multiple(request):
     return render(request, "bip/welcome_user.html", {})
 
 
-from sklearn.tree import DecisionTreeClassifier
+# from sklearn.tree import DecisionTreeClassifier
 
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
+# from sklearn.preprocessing import OneHotEncoder
+# from sklearn.compose import ColumnTransformer
+# from sklearn.pipeline import Pipeline
 
 
-from sklearn.naive_bayes import CategoricalNB
+# from sklearn.naive_bayes import CategoricalNB
 
-def train_naive_bayes(request, pk):
-    student = get_object_or_404(Student, pk=pk)
+# def train_naive_bayes(request, pk):
+#     student = get_object_or_404(Student, pk=pk)
     
-    behavior_query = request.GET.get('behavior')
-    anticedent_query = request.GET.get('anticedent')
-    consequence_query = request.GET.get('consequence')
+#     behavior_query = request.GET.get('behavior')
+#     anticedent_query = request.GET.get('anticedent')
+#     consequence_query = request.GET.get('consequence')
 
-    qs = student.case_set.all()
+#     qs = student.case_set.all()
 
-    if is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior':
-        qs = qs.filter(behavior__behaviorincident=behavior_query)
-    if is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Antecedent':
-        qs = qs.filter(anticedent__anticedentincident=anticedent_query)
-    if is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence':
-        qs = qs.filter(consequence__behaviorconsequence=consequence_query)
+#     if is_valid_queryparam(behavior_query) and behavior_query != 'Choose Behavior':
+#         qs = qs.filter(behavior__behaviorincident=behavior_query)
+#     if is_valid_queryparam(anticedent_query) and anticedent_query != 'Choose Antecedent':
+#         qs = qs.filter(anticedent__anticedentincident=anticedent_query)
+#     if is_valid_queryparam(consequence_query) and consequence_query != 'Choose Consequence':
+#         qs = qs.filter(consequence__behaviorconsequence=consequence_query)
 
-    data = list(qs.values('behavior__behaviorincident', 'anticedent__anticedentincident', 'consequence__behaviorconsequence','function__behaviorfunction'))
-    cases_df = pd.DataFrame(data)
+#     data = list(qs.values('behavior__behaviorincident', 'anticedent__anticedentincident', 'consequence__behaviorconsequence','function__behaviorfunction'))
+#     cases_df = pd.DataFrame(data)
 
-    try:
-        if not cases_df.empty:
-            cases_df.columns = ['Behavior', 'Anticedent', 'Consequence', 'Function']
-            X = cases_df[['Behavior', 'Anticedent', 'Consequence']]
-            y = cases_df['Function']
+#     try:
+#         if not cases_df.empty:
+#             cases_df.columns = ['Behavior', 'Anticedent', 'Consequence', 'Function']
+#             X = cases_df[['Behavior', 'Anticedent', 'Consequence']]
+#             y = cases_df['Function']
 
-            categorical_features = ['Behavior', 'Anticedent', 'Consequence']
-            one_hot_encoder = OneHotEncoder()
-            preprocessor = ColumnTransformer(transformers=[('cat', one_hot_encoder, categorical_features)], remainder='passthrough')
+#             categorical_features = ['Behavior', 'Anticedent', 'Consequence']
+#             one_hot_encoder = OneHotEncoder()
+#             preprocessor = ColumnTransformer(transformers=[('cat', one_hot_encoder, categorical_features)], remainder='passthrough')
             
-            naive_bayes_classifier = CategoricalNB()
+#             naive_bayes_classifier = CategoricalNB()
 
-            pipeline = Pipeline(steps=[('preprocessor', preprocessor), ('classifier', naive_bayes_classifier)])
-            pipeline.fit(X, y)
+#             pipeline = Pipeline(steps=[('preprocessor', preprocessor), ('classifier', naive_bayes_classifier)])
+#             pipeline.fit(X, y)
 
-            if behavior_query and anticedent_query and consequence_query:
-                new_observation = pd.DataFrame([[behavior_query, anticedent_query, consequence_query]], columns=['Behavior', 'Anticedent', 'Consequence'])
-                prediction = pipeline.predict(new_observation)
-            else:
-                prediction = ["Select behavior, antecedent, and consequence for prediction"]
-        else:
-            prediction = ["No data available for prediction"]
+#             if behavior_query and anticedent_query and consequence_query:
+#                 new_observation = pd.DataFrame([[behavior_query, anticedent_query, consequence_query]], columns=['Behavior', 'Anticedent', 'Consequence'])
+#                 prediction = pipeline.predict(new_observation)
+#             else:
+#                 prediction = ["Select behavior, antecedent, and consequence for prediction"]
+#         else:
+#             prediction = ["No data available for prediction"]
 
-        qs_count = qs.count()
+#         qs_count = qs.count()
 
-    except Exception as e:
-        # Log the error or send it back as a context variable to inform the user
-        print(e)  # Placeholder for actual error handling
-        return redirect("bip:machine_learning", student.id)
+#     except Exception as e:
+#         # Log the error or send it back as a context variable to inform the user
+#         print(e)  # Placeholder for actual error handling
+#         return redirect("bip:machine_learning", student.id)
 
-    context = {
-        'student': student,
-        'prediction': prediction[0] if prediction else "No prediction",
-        'queryset': qs,
-        'qs_count': qs_count,
-        'behaviorset': student.behavior_set.all(),
-        'anticedentset': student.anticedent_set.all(),
-        'consequenceset': student.consequence_set.all(),
-    }
+#     context = {
+#         'student': student,
+#         'prediction': prediction[0] if prediction else "No prediction",
+#         'queryset': qs,
+#         'qs_count': qs_count,
+#         'behaviorset': student.behavior_set.all(),
+#         'anticedentset': student.anticedent_set.all(),
+#         'consequenceset': student.consequence_set.all(),
+#     }
 
-    return render(request, 'bip/machine_learning.html', context)
+#     return render(request, 'bip/machine_learning.html', context)
 
 
 
