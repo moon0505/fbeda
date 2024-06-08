@@ -1,0 +1,15 @@
+[setup]
+packages = ["python3", "postgresql", "gcc"]
+
+[install]
+commands = [
+    "python -m venv --copies /opt/venv",
+    ". /opt/venv/bin/activate",
+    "pip install --no-cache-dir -r requirements.txt"
+]
+
+[start]
+commands = [
+    "python manage.py migrate",
+    "gunicorn functional_behavior_analysis.wsgi"
+]
