@@ -3890,7 +3890,7 @@ def antecedent_ai(request, pk):
 
 
     response = openai.ChatCompletion.create(
-        model="gpt-4-0125-preview",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": system_role_content},
             {"role": "user", "content": user_content}
