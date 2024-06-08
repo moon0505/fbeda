@@ -4707,18 +4707,21 @@ def reinforcement_ai_abc(request, pk):
     unique_abc_count_string = unique_abc_count.to_string(index=False)
 
     student_name = student.studentname
+    age = student.age
+    grade = student.grade
+    nonverbal = student.nonverbal 
 
     system_role_content = f"I want you to be a school psychologist."
 
 
-    user_content =f"use {student_name}'s  data:\n\n{unique_abc_count_string}\n\n\
+    user_content =f"use {student_name}'s (age:{age}, grade:{grade},nonverbal:{nonverbal})   data:\n\n{unique_abc_count_string}\n\n\
         and List reinforcement procedures needed for\
          1) establishing, 2) maintaining, and 3)\
             generalizing the replacement behavior(s)?"
     
 
     response = openai.ChatCompletion.create(
-            model="gpt-4-0125-preview",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": system_role_content},
                 {"role": "user", "content": user_content}
