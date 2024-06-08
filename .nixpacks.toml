@@ -5,7 +5,7 @@ packages = ["python3", "postgresql", "gcc"]
 commands = [
     "python -m venv --copies /opt/venv",
     ". /opt/venv/bin/activate",
-    "pip install --no-cache-dir -r requirements.txt"
+    "pip3 install --no-cache-dir -r requirements.txt"
 ]
 
 [start]
