@@ -3875,7 +3875,9 @@ def antecedent_ai(request, pk):
 
 
     student_name = student.studentname
-   
+    age = student.age
+    grade = student.grade
+    nonverbal = student.nonverbal   
     # system_role_content= "Child Psychologist: Based on the functional behavior analysis that includes antecident, behavior and consequence\
     #     1. Identify the antecedent events that trigger the problem behavior identified (behavior_column_names})"
     
@@ -3885,7 +3887,7 @@ def antecedent_ai(request, pk):
 
     
 
-    user_content= f"Use {student_name}'s data:\n\n{unique_abc_count_string}\n\n\ Identify the antecedent events that trigger\
+    user_content= f"Use {student_name}'s (age:{age}, grade:{grade},nonverbal:{nonverbal}) data:\n\n{unique_abc_count_string}\n\n\ Identify the antecedent events that trigger\
           the problem behavior identified?"
 
 
