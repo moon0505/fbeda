@@ -171,7 +171,7 @@ urlpatterns = [
     path('consequence/<pk>/', views.consequence_view, name='consequence'),
 
 
-    path('machine_learning/<pk>/', views.train_naive_bayes, name='machine_learning'),
+    # path('machine_learning/<pk>/', views.train_naive_bayes, name='machine_learning'),
 
     path('download_chart_pdf/<pk>/', views.download_chart_pdf, name='download_chart_pdf'),
 
