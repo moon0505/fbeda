@@ -8,13 +8,13 @@
     <div class="nav-button">
         <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"> <b>Dashboard ({{student.studentname}})</b> </a>
     </div>
-ss
+
 
 
     <div class="steps-card card mb-4">
         <div class="card-body">
             <h1 class="text-center">Behavior Support Plan</h1>  
-            <h3 class="text-center"> <a  href="{% url 'bip:raw_data' student.id %}"> <i>See Data Tables for details</i>  </a>  </h3>         
+            <h1 class="text-center">  <i>See <a  href="{% url 'bip:raw_data' student.id %}">Data Tables</a>   for details</i>  </h1>         
        
         </div>
     </div>
