@@ -45,7 +45,6 @@
         <li class="list-group-item"><a href="{% url 'bip:consequence' student.pk %}" class="card-link">Consequence</a></li>
         <li class="list-group-item"><a href="{% url 'bip:function' student.pk %}" class="card-link">Function</a> </li>
         <li class="list-group-item"><a href="{% url 'bip:setting' student.pk %}" class="card-link">Setting</a></li>
-        <li class="list-group-item"><a a href="{% url 'bip:correlation' student.id %}" class="card-link">Statistics</a></li>  
        <li class="list-group-item"><a a href="{% url 'bip:filter_data' student.id %}" class="card-link">Filter Data</a></li>  
        <li class="list-group-item"><a a href="{% url 'bip:bsp' student.id %}" class="card-link">Behavior Support Plan</a></li>  
 
@@ -62,6 +61,7 @@
       </div>
       {% comment %} <ul class="list-group list-group-flush">
         <li class="list-group-item"><a href="#" class="card-link">Visual Spreadsheet</a></li> {% endcomment %}
+        <li class="list-group-item"><a a href="{% url 'bip:correlation' student.id %}" class="card-link">Data Tables</a></li>  
         <li class="list-group-item"><a href="{% url 'bip:export' student.id %}" class="card-link">Download Spreadsheet</a></li>
         <!-- <li class="list-group-item"><a href="{% url 'bip:upload_options' student.id %}" class="card-link">Upload CSV file</a></li> -->
 
