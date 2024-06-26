@@ -1443,61 +1443,83 @@ def snapshot_data_entry_view(request, pk):
 
 # xxxxxxxx
 
-def function_view(request,pk):
-     
-    student = get_object_or_404(Student, pk=pk)
-    student_cases = student.case_set.all() 
-    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'date_created','time','id')
-    
-    cases_df = pd.DataFrame(data)
-    
-    try:
 
-        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
-        
+# function:
+import pandas as pd
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+from django.shortcuts import render, get_object_or_404, redirect
+
+# Calculate function proportions
+def calculate_function_proportions(cases_df):
+    contingency_table = pd.crosstab(cases_df['Behavior'], cases_df['Function'])
+    contingency_table_normalized = contingency_table.div(contingency_table.sum(axis=1), axis=0)
+    proportions = {}
+    for behavior, functions in contingency_table_normalized.iterrows():
+        proportions[behavior] = {function: f"{value * 100:.2f}%" for function, value in functions.items() if value > 0}
+    return proportions, contingency_table_normalized
+
+# Generate a pie chart
+def generate_pie_chart(data, title):
+    numeric_data = {k: float(v.strip('%')) for k, v in data.items()}
+    fig, ax = plt.subplots()
+    ax.pie(numeric_data.values(), labels=numeric_data.keys(), autopct='%1.1f%%', startangle=90)
+    ax.axis('equal')
+    plt.title(title)
+    buf = BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+    image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+    return image_base64
+
+# Function view
+def function_view(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    data = models.Case.objects.filter(student__id=pk).values(
+        'behavior__behaviorincident',
+        'function__behaviorfunction',
+        'date_created',
+        'time',
+        'id'
+    )
+
+    cases_df = pd.DataFrame(data)
+
+    try:
+        rename_mapping = {
+            'behavior__behaviorincident': 'Behavior',
+            'function__behaviorfunction': 'Function',
+            'date_created': 'Date',
+            'time': 'Time',
+            'id': 'ID'
+        }
+        cases_df.rename(columns=rename_mapping, inplace=True)
     except:
         return redirect("bip:error_page", student.id)
 
+    # Generate box plot data for Functions
+    box_graph_function = get_box_plot_function(x='Function', data=cases_df)
 
-    df_function = cases_df['Function']
-    box_graph_function = get_box_plot_function( x= df_function, data=cases_df) 
-    
-        # correationxxxxxxxxxxxxxx
-    behavior = pd.get_dummies(cases_df['Behavior'])
-    anticedent = pd.get_dummies(cases_df['Anticedent'])
-    function = pd.get_dummies(cases_df['Function'])
-    df_matrix = pd.concat([cases_df,behavior,function], axis=1)
-    df_matrix.drop(['Behavior','Anticedent','Function', 'Date','Time','ID'],axis=1,inplace=True)
-    matrix = df_matrix.corr().round(2) 
-  
-    try:
-        filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
-    
-        iheat_graph_function = get_heatmap_function(data=filterDX)
-    except:
-        pass
-    
+    # Calculate function proportions
+    function_proportions, contingency_table_normalized = calculate_function_proportions(cases_df)
 
-    iclustermap_graph_function = None
-    
-    try:
-        iclustermap_graph_function = get_clustermap_function(data=matrix)
+    # Generate pie charts
+    pie_charts = {}
+    for behavior, functions in function_proportions.items():
+        filtered_functions = {k: v for k, v in functions.items() if v != '0.00%'}
+        if filtered_functions:
+            pie_charts[behavior] = generate_pie_chart(filtered_functions, f'Proportion of Functions for {behavior}')
 
-    except:
-        pass
-  
-    context= {'student':student,
-              'iclustermap_graph_function':iclustermap_graph_function, 
-    'iheat_graph_function':iheat_graph_function, 
-    'box_graph_function':box_graph_function,}
-    
+    context = {
+        'student': student,
+        'box_graph_function': box_graph_function,
+        'function_proportions': function_proportions,
+        'pie_charts': pie_charts,
+    }
+
     return render(request, 'bip/function.html', context)
-
 
 def consequence_view(request,pk):
      

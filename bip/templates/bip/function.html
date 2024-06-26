@@ -1,54 +1,52 @@
-{% extends 'partials/base.html' %} 
+{% extends 'partials/base.html' %}
 {% block content %}
-<br>
+
 <body>
-  <title>Function (EFBA)</title>
-
+  <title>Function Analysis (FBA/EDA)</title>
   <div class="container text-center">
-    <!-- Title -->
-    
 
-    <div class="container">
-      <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard ({{student.studentname}})</a>
-      <br/>
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item">
-            
-          </li>
-          <li class="page-item"><a class="page-link"  href="{% url 'bip:download_function_chart_pdf' student.pk %}" class="card-link">PDF Download</a></li>
-    
-    
-    
-          
-          <li class="page-item">
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="title-container">
-        <h2 class="page-title">Function Analysis</h2>
-      </div>
-      <div class='container'>
-        <img src="data:image/png;base64, {{ box_graph_function | safe}}">
-      </div>
-      <br><br>
+  <br>
+  <div class="container">
+    <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard ({{student.studentname}})</a>
+    <br/>
+    <div class="title-container">
+      <h2 class="page-title">Function Analysis</h2>
     </div>
-    
-    <div class='container'>
-      {% if iheat_graph_function %}
-      <img src="data:image/png;base64, {{ iheat_graph_function | safe}} ">
-      {% endif %}
-    </div>
-    <br><br>
-    
-    <div class="container">
-      {% if iclustermap_graph_function %}
-        <img src="data:image/png;base64, {{ iclustermap_graph_function | safe }}">
-      {% endif %}
-    </div>
-    <br><br>
   </div>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+      </li>
+      <li class="page-item"><a class="page-link" href="" class="card-link">Data Table</a></li>
+      <li class="page-item">
+      </li>
+    </ul>
+  </nav>
+  <br>
+
+  <div id="box-plot" class="graph-container">
+    <img src="data:image/png;base64,{{ box_graph_function }}" alt="Box Plot">
+  </div>
+
+  <h2>Pie Charts of Function Proportions</h2>
+  <div class="pie-charts">
+    {% for behavior, pie_chart in pie_charts.items %}
+      {% if forloop.counter0|divisibleby:2 %}
+      <div class="chart-row">
+      {% endif %}
+      <div class="chart-item">
+        <h3>{{ behavior }}</h3>
+        <img src="data:image/png;base64,{{ pie_chart }}" alt="Pie Chart for {{ behavior }}">
+      </div>
+      {% if forloop.counter|divisibleby:2 or forloop.last %}
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <br><br>
+
 </body>
 
 <style>
@@ -90,15 +88,39 @@
     }
   }
   .title-container {
-      margin-bottom: 20px;
-    }
-    .page-title {
-      font-size: 28px;
-      color: #333;
-      font-weight: bold;
-      border-bottom: 2px solid #555;
-      display: inline-block;
-      padding-bottom: 5px;
-    }
+    margin-bottom: 20px;
+  }
+  .page-title {
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+    border-bottom: 2px solid #555;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+  .table-container {
+    display: flex;
+    justify-content: center;
+  }
+  table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+  }
+  table, th, td {
+    border: 1px solid #dddddd;
+  }
+  th, td {
+    padding: 12px;
+    background-color: #f2f2f2;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
 </style>
 {% endblock %}
