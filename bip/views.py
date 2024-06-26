@@ -1521,6 +1521,72 @@ def function_view(request, pk):
 
     return render(request, 'bip/function.html', context)
 
+
+
+
+
+
+def calculate_behavior_proportions_table_function(cases_df):
+    # Create a contingency table
+    contingency_table = pd.crosstab(cases_df['Behavior'], cases_df['Function'])
+
+    # Normalize the contingency table to get the proportions
+    proportions_function_given_behavior = contingency_table.div(contingency_table.sum(axis=1), axis=0)
+
+    # Normalize and format the contingency table to get the proportions with percentages
+    contingency_table_normalized = contingency_table.div(contingency_table.sum(axis=1), axis=0)
+
+    proportions = {}
+    for behavior, functions in contingency_table_normalized.iterrows():
+        proportions[behavior] = {function: f"{value * 100:.0f}%" for function, value in functions.items() if value > 0}
+
+    return proportions, contingency_table, proportions_function_given_behavior
+
+
+def contingency_view_function(request, pk):
+    # Fetch the student or return a 404 error if not found
+    student = get_object_or_404(models.Student, pk=pk)
+    
+    # Retrieve data related to the student's cases
+    cases_data = models.Case.objects.filter(student__id=pk).values(
+        'behavior__behaviorincident',
+        'function__behaviorfunction',
+        'date_created',
+        'time',
+        'id'
+    )
+    
+    # Create a DataFrame from the cases data
+    cases_df = pd.DataFrame(cases_data)
+    
+    # Renaming columns for readability
+    rename_mapping = {
+        'behavior__behaviorincident': 'Behavior',
+        'function__behaviorfunction': 'Function',
+        'date_created': 'Date',
+        'time': 'Time',
+        'id': 'ID'
+    }
+    cases_df.rename(columns=rename_mapping, inplace=True)
+    
+    # Calculate the contingency table and proportions
+    proportions, contingency_table, proportions_function_given_behavior = calculate_behavior_proportions_table_function(cases_df)
+
+    proportions_function_given_behavior = proportions_function_given_behavior.applymap(lambda x: f"{x * 100:.0f}%")
+
+
+
+    # Prepare the context for rendering
+    context = {
+        'student': student,
+        'contingency_table': contingency_table.to_html(),  # Converting the contingency table to HTML
+        'proportions_function_given_behavior': proportions_function_given_behavior.to_html(),
+        'proportions': proportions  # Include this if needed in the template
+    }
+    
+    return render(request, 'bip/contingency_view_function.html', context)
+
+
 def consequence_view(request,pk):
      
     student = get_object_or_404(Student, pk=pk)

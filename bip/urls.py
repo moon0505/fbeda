@@ -221,6 +221,7 @@ urlpatterns = [
     path('video/', views.show_video, name='show_video'),
 
     path('contingency_view/<pk>/', views.contingency_view, name='contingency_view'),
+    path('contingency_view_function/<pk>/', views.contingency_view_function, name='contingency_view_function'),
 
 
     # artificial inttelligence urls--------------------------------
