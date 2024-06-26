@@ -1552,10 +1552,54 @@ def consequence_view(request,pk):
     
     return render(request, 'bip/consequence.html', context)
 
+antecident:
+
+# Setting enviroment
+
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+
+# antecdent
+def calculate_behavior_proportions(cases_df):
+    # Create a contingency table
+    contingency_table = pd.crosstab(cases_df['Behavior'], cases_df['Antecedent'])
+
+    # Normalize the contingency table to get the proportions
+    contingency_table_normalized = contingency_table.div(contingency_table.sum(axis=1), axis=0)
+
+    # Format the proportions into percentage strings
+    proportions = {}
+    for behavior, antecedents in contingency_table_normalized.iterrows():
+        proportions[behavior] = {antecedent: f"{value * 100:.2f}%" for antecedent, value in antecedents.items()}
+    
+    return proportions, contingency_table_normalized
+
+def generate_pie_chart(data, title):
+    # Convert percentages to floats and format as integers
+    numeric_data = {k: int(float(v.strip('%'))) for k, v in data.items()}
+    
+    # Create a pie chart
+    fig, ax = plt.subplots()
+    ax.pie(numeric_data.values(), labels=numeric_data.keys(), autopct='%d%%', startangle=90)
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.title(title)
+    
+    # Save the pie chart to a bytes buffer
+    buf = BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+    image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+    return image_base64
 
 def anticedent_view(request, pk):
     # Fetch the student or return a 404 error if not found
-    student = get_object_or_404(Student, pk=pk)
+    student = get_object_or_404(models.Student, pk=pk)
     
     # Retrieve data related to the student's cases
     cases_data = models.Case.objects.filter(student__id=pk).values(
@@ -1572,45 +1616,40 @@ def anticedent_view(request, pk):
     # Renaming columns for readability
     rename_mapping = {
         'behavior__behaviorincident': 'Behavior',
-        'anticedent__anticedentincident': 'Anticedent',
+        'anticedent__anticedentincident': 'Antecedent',
         'date_created': 'Date',
         'time': 'Time',
         'id': 'ID'
     }
     cases_df.rename(columns=rename_mapping, inplace=True)
-    
-    # Generate box plot data for Antecedents
-    box_graph = get_box_plot(x='Anticedent', data=cases_df)
 
-    # Prepare the DataFrame for correlation analysis by encoding categorical data
-    encoded_data = pd.get_dummies(cases_df[['Behavior', 'Anticedent']])
-    
-    # Compute the correlation matrix
-    matrix = encoded_data.corr().round(2)
-    
-    # Create a filtered matrix for the heatmap
-    filterDX = matrix[(matrix > 0) & (matrix != 1.0)]
-    
-    # Generate visualizations for the antecedent data
-    try:
-        iheat_graph_antecedent = get_heatmap_antecedent(data=filterDX)
-        iclustermap_graph_antecedent = get_clustermap_antecedent(data=matrix)
-    except Exception as e:
-        # Log error and redirect or inform the user
-        print(f"Error in generatinsg visualizations: {e}")
-        return redirect("bip:error_page", student.id)
+    # Generate box plot data for Anticedents
+    box_graph = get_box_plot(x='Antecedent', data=cases_df)
+
+    # Calculate behavior proportions
+    behavior_proportions, contingency_table_normalized = calculate_behavior_proportions(cases_df)
+
+    # Generate pie charts
+    pie_charts = {}
+    for behavior, antecedents in behavior_proportions.items():
+        # Exclude 0.00% values
+        filtered_antecedents = {k: v for k, v in antecedents.items() if v != '0.00%'}
+        if filtered_antecedents:
+            pie_charts[behavior] = generate_pie_chart(filtered_antecedents, f'Proportion of Antecedents for {behavior}')
 
     # Prepare the context for rendering
     context = {
         'student': student,
-        'iclustermap_graph_antecedent': iclustermap_graph_antecedent,
-        'iheat_graph_antecedent': iheat_graph_antecedent,
         'box_graph': box_graph,
+        'behavior_proportions': behavior_proportions,
+        'pie_charts': pie_charts,
     }
     
     return render(request, 'bip/anticedent.html', context)
 
-# Setting enviroment
+
+
+
 def enviroment_view(request,pk):
      
     student = get_object_or_404(Student, pk=pk)

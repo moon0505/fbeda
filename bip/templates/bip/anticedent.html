@@ -1,53 +1,57 @@
-{% extends 'partials/base.html' %} 
+{% extends 'partials/base.html' %}
 {% block content %}
-  <br>
-  <body>
-    <title>Antecedent (EFBA)</title>
 
-    <div class="container text-center">
-      <div class="container">
-        <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}"> <b>Dashboard ({{student.studentname}})</b> </a>
-        <br/>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item">
-              
-            </li>
-            <li class="page-item"><a class="page-link"  href="{% url 'bip:download_antecedent_chart_pdf' student.pk %}" class="card-link">PDF Download</a></li>
-      
-      
-      
-            
-            <li class="page-item">
-              </a>
-            </li>
-          </ul>
-        </nav>
-      
-        <div class="title-container">
-          <h2 class="page-title">Antecedent Analysis</h2>
-        </div>
-        <br>
-        <div class='container'>
-          <img src="data:image/png;base64, {{ box_graph | safe}}">
-        </div>
-        <br><br>
-        <div class='container'>
-          {% if iheat_graph_antecedent %}
-            <img src="data:image/png;base64, {{ iheat_graph_antecedent | safe}}">
-          {% endif %}
-        </div>
-        <br><br>
-        <div class="container">
-          {% if iclustermap_graph_antecedent %}
-            <img src="data:image/png;base64, {{ iclustermap_graph_antecedent | safe }}">
-          {% endif %}
-        </div>
-        <br>
-      </div>
+<body>
+  <title>Antecedent (FBA/EDA)</title>
+  <div class="container text-center">
+
+  <br>
+  <div class="container">
+    <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:dashboard' student.id %}">Dashboard ({{student.studentname}})</a>
+    <br/>
+    <div class="title-container">
+      <h2 class="page-title">Antecedent Analysis</h2>
     </div>
-  </body>
-  
+  </div>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        
+      </li>
+      <li class="page-item"><a class="page-link" href="" class="card-link">Data Table</a></li>
+
+      <li class="page-item">
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <br>
+
+  <div id="box-plot" class="graph-container">
+      <img src="data:image/png;base64,{{ box_graph }}" alt="Box Plot">
+  </div>
+
+  <h2>Pie Charts of Antecedent Proportions</h2>
+  <div class="pie-charts">
+      {% for behavior, pie_chart in pie_charts.items %}
+          {% if forloop.counter0|divisibleby:2 %}
+          <div class="chart-row">
+          {% endif %}
+          <div class="chart-item">
+              <h3>{{ behavior }}</h3>
+              <img src="data:image/png;base64,{{ pie_chart }}" alt="Pie Chart for {{ behavior }}">
+          </div>
+          {% if forloop.counter|divisibleby:2 or forloop.last %}
+          </div>
+          {% endif %}
+      {% endfor %}
+  </div>
+
+  <br><br>
+
+</body>
+
 <style>
   .main-container {
     background: white;
@@ -87,15 +91,39 @@
     }
   }
   .title-container {
-      margin-bottom: 20px;
-    }
-    .page-title {
-      font-size: 28px;
-      color: #333;
-      font-weight: bold;
-      border-bottom: 2px solid #555;
-      display: inline-block;
-      padding-bottom: 5px;
-    }
+    margin-bottom: 20px;
+  }
+  .page-title {
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+    border-bottom: 2px solid #555;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+  .table-container {
+    display: flex;
+    justify-content: center;
+  }
+  table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+  }
+  table, th, td {
+    border: 1px solid #dddddd;
+  }
+  th, td {
+    padding: 12px;
+    background-color: #f2f2f2;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
 </style>
 {% endblock %}
