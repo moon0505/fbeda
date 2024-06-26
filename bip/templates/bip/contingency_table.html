@@ -1,0 +1,120 @@
+{% extends 'partials/base.html' %}
+
+{% block content %}
+<title>Antecedent (FBA/EDA)</title>
+<div class="main-container">
+  <div class="container">
+    <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:anticedent' student.id %}">Antecedent Analysis ({{student.studentname}})</a>
+    <br/>
+  </div>
+  
+  <h1 class="text-center">Behavior and Antecedent Analysis </h1>
+
+  <div class="section">
+    <h2 class="text-center">Contingency Table</h2>
+    <div class="table-container text-center">
+      {{ contingency_table|safe }}
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="text-center">Proportions of Antecedent Given Behavior</h2>
+    <div class="table-container text-center">
+      {{ proportions_antecedent_given_behavior|safe }}
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="text-center">Summary of Antecedents for Each Behavior</h2>
+    <div class="table-container text-center">
+      <table class="center-table">
+        <thead>
+          <tr>
+            <th style="text-align: left;">Behavior</th>
+            <th style="text-align: left;">Antecedent</th>
+            <th style="text-align: left;">Proportion</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for behavior, antecedents in proportions.items %}
+            {% for antecedent, proportion in antecedents.items %}
+              {% if proportion != '0.00%' %}
+                <tr>
+                  <td>{{ behavior }}</td>
+                  <td>{{ antecedent }}</td>
+                  <td>{{ proportion }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    background-color: #f0f0f0; /* Light gray background */
+  }
+  .main-container {
+    background: #fff; /* White background for the main container */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners for better aesthetics */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-align: center; /* Center content in the main container */
+  }
+  .container {
+    margin-bottom: 20px;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .section {
+    margin-bottom: 20px;
+  }
+  .table-container {
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+  }
+  .center-table {
+    margin: 0 auto;
+    width: 80%; /* Adjusted for better centering */
+  }
+  table {
+    width: 70%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+    border: 1px solid #333; /* Darker border color */
+    background-color: #fff; /* White background for tables */
+  }
+  th, td {
+    padding: 12px;
+    background-color: #fff; /* White background for table cells */
+    border: 1px solid #333; /* Darker border color */
+    text-align: left;
+  }
+  th {
+    background-color: #fff; /* Ensure table headers are also white */
+    font-weight: bold;
+  }
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  @media (max-width: 768px) {
+    .chart-row {
+      flex-direction: column;
+    }
+    .chart-item {
+      flex-basis: 100%;
+    }
+    .center-table {
+      width: 100%; /* Full width on smaller screens */
+    }
+  }
+</style>
+{% endblock %}
+
