@@ -1552,7 +1552,6 @@ def consequence_view(request,pk):
     
     return render(request, 'bip/consequence.html', context)
 
-antecident:
 
 # Setting enviroment
 
