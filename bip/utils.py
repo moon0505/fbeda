@@ -648,11 +648,10 @@ def get_multiple_line_plot_four(*args, **kwargs):
     multiple_line_plot_four = get_image()
 
     return multiple_line_plot_four
-
 def get_multiple_line_plot_three(*args, **kwargs):
     plt.switch_backend('AGG')
 
-    fig, (ax1, ax2, ax3) = plt.subplots(3, figsize=(10, 6))
+    fig, (ax1, ax2, ax3) = plt.subplots(3, figsize=(10, 8))
 
     date_form = DateFormatter("%m/%d")    
 
@@ -680,14 +679,14 @@ def get_multiple_line_plot_three(*args, **kwargs):
     data2 = kwargs.get('data2')
   
     title = "Line Graph"
-    plt.title(title)
+    plt.suptitle(title)
     
     plt.subplots_adjust(left=0.1,
                         bottom=0.20,
                         right=0.9,
                         top=0.9,
-                        wspace=0.9,
-                        hspace=0.9)
+                        wspace=0.4,
+                        hspace=0.4)
 
     ax1.bar(x, y)
     ax2.bar(z, k)
@@ -700,7 +699,6 @@ def get_multiple_line_plot_three(*args, **kwargs):
     multiple_line_plot_three = get_image()
 
     return multiple_line_plot_three
-
 
 
 def get_multiple_line_plot_two(*args, **kwargs):
