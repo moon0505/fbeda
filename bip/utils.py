@@ -519,31 +519,32 @@ def get_clustermap_setting( *args, **kwargs):
     return iclustermap_graph_setting
 
 
-
-def get_multiple_line_plot_five( *args, **kwargs):
+def get_multiple_line_plot_five(*args, **kwargs):
     plt.switch_backend('AGG')
-    fig,(ax1, ax2,ax3,ax4,ax5) = plt.subplots(4,figsize=(10, 6))
+    fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5, figsize=(10, 8))
 
     date_form = DateFormatter("%m/%d")
 
     ax1.xaxis.set_major_formatter(date_form)
     ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
+    plt.setp(ax1.get_xticklabels(), rotation=90)
+
     ax2.xaxis.set_major_formatter(date_form)
     ax2.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
+    plt.setp(ax2.get_xticklabels(), rotation=90)
+
     ax3.xaxis.set_major_formatter(date_form)
     ax3.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
+    plt.setp(ax3.get_xticklabels(), rotation=90)
+
     ax4.xaxis.set_major_formatter(date_form)
     ax4.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
-    
+    plt.setp(ax4.get_xticklabels(), rotation=90)
+
     ax5.xaxis.set_major_formatter(date_form)
     ax5.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
-    
-    
+    plt.setp(ax5.get_xticklabels(), rotation=90)
+
     x = kwargs.get('x')
     y = kwargs.get('y')
     z = kwargs.get('z')
@@ -554,36 +555,29 @@ def get_multiple_line_plot_five( *args, **kwargs):
     n = kwargs.get('n')
     b = kwargs.get('b')
     c = kwargs.get('c')
-    
-    
-    
-  
+
     data = kwargs.get('data')
     data1 = kwargs.get('data1')
     data2 = kwargs.get('data2')
     data3 = kwargs.get('data3')
     data4 = kwargs.get('data4')
 
-   
     title = "Line Graph"
-    plt.title(title)
+    plt.suptitle(title)
     
     plt.subplots_adjust(left=0.1,
-                    bottom=0.20,
-                    right=0.9,
-                    top=0.9,
-                    wspace=0.9,
-                    hspace=0.9)
-    
-    
-    # fig.tight_layout() 
-    
+                        bottom=0.20,
+                        right=0.9,
+                        top=0.9,
+                        wspace=0.4,
+                        hspace=0.4)
+
     ax1.bar(x, y)
     ax2.bar(z, k)
     ax3.bar(g, q)
-    ax4.bar(m,n)
-    ax5.bar(b,c)
-        
+    ax4.bar(m, n)
+    ax5.bar(b, c)
+    
     ax1.title.set_text(data.columns[1])
     ax2.title.set_text(data.columns[2])
     ax3.title.set_text(data.columns[3])
@@ -595,25 +589,28 @@ def get_multiple_line_plot_five( *args, **kwargs):
     return multiple_line_plot_five
 
 
-def get_multiple_line_plot_four( *args, **kwargs):
+def get_multiple_line_plot_four(*args, **kwargs):
     plt.switch_backend('AGG')
-    fig,(ax1, ax2,ax3,ax4) = plt.subplots(4,figsize=(10, 6))
+    fig, (ax1, ax2, ax3, ax4) = plt.subplots(4, figsize=(10, 8))
 
     date_form = DateFormatter("%m/%d")
 
     ax1.xaxis.set_major_formatter(date_form)
     ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
+    plt.setp(ax1.get_xticklabels(), rotation=90)
+
     ax2.xaxis.set_major_formatter(date_form)
     ax2.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
+    plt.setp(ax2.get_xticklabels(), rotation=90)
+
     ax3.xaxis.set_major_formatter(date_form)
     ax3.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
+    plt.setp(ax3.get_xticklabels(), rotation=90)
+
     ax4.xaxis.set_major_formatter(date_form)
     ax4.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
-    
+    plt.setp(ax4.get_xticklabels(), rotation=90)
+
     x = kwargs.get('x')
     y = kwargs.get('y')
     z = kwargs.get('z')
@@ -622,33 +619,27 @@ def get_multiple_line_plot_four( *args, **kwargs):
     q = kwargs.get('q')
     m = kwargs.get('m')
     n = kwargs.get('n')
-    
-    
-  
+
     data = kwargs.get('data')
     data1 = kwargs.get('data1')
     data2 = kwargs.get('data2')
     data3 = kwargs.get('data3')
 
-   
     title = "Line Graph"
-    plt.title(title)
+    plt.suptitle(title)
     
     plt.subplots_adjust(left=0.1,
-                    bottom=0.20,
-                    right=0.9,
-                    top=0.9,
-                    wspace=0.9,
-                    hspace=0.9)
-    
-    
-    # fig.tight_layout() 
-    
+                        bottom=0.20,
+                        right=0.9,
+                        top=0.9,
+                        wspace=0.4,
+                        hspace=0.4)
+
     ax1.bar(x, y)
     ax2.bar(z, k)
     ax3.bar(g, q)
-    ax4.bar(m,n)
-        
+    ax4.bar(m, n)
+    
     ax1.title.set_text(data.columns[1])
     ax2.title.set_text(data.columns[2])
     ax3.title.set_text(data.columns[3])
@@ -658,22 +649,24 @@ def get_multiple_line_plot_four( *args, **kwargs):
 
     return multiple_line_plot_four
 
-def get_multiple_line_plot_three( *args, **kwargs):
+def get_multiple_line_plot_three(*args, **kwargs):
     plt.switch_backend('AGG')
-    # fig, axs,ax = plt.subplots(2)
-    fig,(ax1, ax2,ax3) = plt.subplots(3,figsize=(10, 6))
 
+    fig, (ax1, ax2, ax3) = plt.subplots(3, figsize=(10, 6))
 
     date_form = DateFormatter("%m/%d")    
 
     ax1.xaxis.set_major_formatter(date_form)
     ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
+    plt.setp(ax1.get_xticklabels(), rotation=90)
+
     ax2.xaxis.set_major_formatter(date_form)
     ax2.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
+    plt.setp(ax2.get_xticklabels(), rotation=90)
+
     ax3.xaxis.set_major_formatter(date_form)
     ax3.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    plt.setp(ax3.get_xticklabels(), rotation=90)
    
     x = kwargs.get('x')
     y = kwargs.get('y')
@@ -690,19 +683,15 @@ def get_multiple_line_plot_three( *args, **kwargs):
     plt.title(title)
     
     plt.subplots_adjust(left=0.1,
-                    bottom=0.20,
-                    right=0.9,
-                    top=0.9,
-                    wspace=0.9,
-                    hspace=0.9)
-    
-    
-    # fig.tight_layout() 
+                        bottom=0.20,
+                        right=0.9,
+                        top=0.9,
+                        wspace=0.9,
+                        hspace=0.9)
 
     ax1.bar(x, y)
     ax2.bar(z, k)
     ax3.bar(g, q)
-    
     
     ax1.title.set_text(data.columns[1])
     ax2.title.set_text(data.columns[2])
@@ -714,44 +703,37 @@ def get_multiple_line_plot_three( *args, **kwargs):
 
 
 
-def get_multiple_line_plot_two( *args, **kwargs):
+def get_multiple_line_plot_two(*args, **kwargs):
     plt.switch_backend('AGG')
-    # fig, axs,ax = plt.subplots(2)
-    fig,(ax1, ax2) = plt.subplots(2,figsize=(10, 6))
-
+    fig, (ax1, ax2) = plt.subplots(2, figsize=(10, 6))
 
     date_form = DateFormatter("%m/%d")
 
     ax1.xaxis.set_major_formatter(date_form)
     ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
+    plt.setp(ax1.get_xticklabels(), rotation=90)
+
     ax2.xaxis.set_major_formatter(date_form)
     ax2.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
-    
+    plt.setp(ax2.get_xticklabels(), rotation=90)
+
     x = kwargs.get('x')
     y = kwargs.get('y')
     z = kwargs.get('z')
     k = kwargs.get('k')
-  
-  
+
     data = kwargs.get('data')
     data1 = kwargs.get('data1')
-  
 
     title = "Line Graph"
-    plt.title(title)
-      
+    plt.suptitle(title)
+    
     plt.subplots_adjust(left=0.1,
-                    bottom=0.20,
-                    right=0.9,
-                    top=0.9,
-                    wspace=0.9,
-                    hspace=0.9)
-    
-    
-    # fig.tight_layout() 
-
+                        bottom=0.20,
+                        right=0.9,
+                        top=0.9,
+                        wspace=0.4,
+                        hspace=0.4)
 
     ax1.bar(x, y)
     ax2.bar(z, k)
@@ -764,39 +746,30 @@ def get_multiple_line_plot_two( *args, **kwargs):
     return multiple_line_plot_two
 
 
-def get_multiple_line_plot_one( *args, **kwargs):
+def get_multiple_line_plot_one(*args, **kwargs):
     plt.switch_backend('AGG')
-    # fig, axs,ax = plt.subplots(2)
-    fig,(ax1) = plt.subplots(1,figsize=(10, 6))
-
+    fig, ax1 = plt.subplots(1, figsize=(10, 6))
 
     date_form = DateFormatter("%m/%d")
 
     ax1.xaxis.set_major_formatter(date_form)
     ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
-    
-    
+    plt.setp(ax1.get_xticklabels(), rotation=90)
+
     x = kwargs.get('x')
     y = kwargs.get('y')
 
-  
-  
     data = kwargs.get('data')
- 
 
     title = "Line Graph"
-    plt.title(title)
+    plt.suptitle(title)
       
     plt.subplots_adjust(left=0.1,
-                    bottom=0.20,
-                    right=0.9,
-                    top=0.9,
-                    wspace=0.9,
-                    hspace=0.9)
-    
-    
-    # fig.tight_layout() 
-
+                        bottom=0.20,
+                        right=0.9,
+                        top=0.9,
+                        wspace=0.4,
+                        hspace=0.4)
 
     ax1.plot(x, y, marker='o')
   
@@ -805,9 +778,6 @@ def get_multiple_line_plot_one( *args, **kwargs):
     multiple_line_plot_one = get_image()
 
     return multiple_line_plot_one
-
-
-
 
 
 
