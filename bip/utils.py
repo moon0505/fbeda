@@ -519,7 +519,7 @@ def get_clustermap_setting( *args, **kwargs):
     return iclustermap_graph_setting
 
 
-Copy code
+
 def get_multiple_line_plot_five(*args, **kwargs):
     plt.switch_backend('AGG')
     fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5, figsize=(10, 16))
