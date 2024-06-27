@@ -652,11 +652,10 @@ def get_multiple_line_plot_four(*args, **kwargs):
 
     return multiple_line_plot_four
 
-
 def get_multiple_line_plot_three(*args, **kwargs):
     plt.switch_backend('AGG')
 
-    fig, (ax1, ax2, ax3) = plt.subplots(3, figsize=(10, 8))
+    fig, (ax1, ax2, ax3) = plt.subplots(3, figsize=(10, 12))
 
     date_form = DateFormatter("%m/%d")    
 
@@ -691,7 +690,7 @@ def get_multiple_line_plot_three(*args, **kwargs):
                         right=0.9,
                         top=0.9,
                         wspace=0.4,
-                        hspace=0.4)
+                        hspace=0.6)
 
     ax1.bar(x, y)
     ax2.bar(z, k)
@@ -708,7 +707,7 @@ def get_multiple_line_plot_three(*args, **kwargs):
 
 def get_multiple_line_plot_two(*args, **kwargs):
     plt.switch_backend('AGG')
-    fig, (ax1, ax2) = plt.subplots(2, figsize=(10, 6))
+    fig, (ax1, ax2) = plt.subplots(2, figsize=(10, 8))
 
     date_form = DateFormatter("%m/%d")
 
@@ -736,7 +735,7 @@ def get_multiple_line_plot_two(*args, **kwargs):
                         right=0.9,
                         top=0.9,
                         wspace=0.4,
-                        hspace=0.4)
+                        hspace=0.6)
 
     ax1.bar(x, y)
     ax2.bar(z, k)
@@ -747,11 +746,9 @@ def get_multiple_line_plot_two(*args, **kwargs):
     multiple_line_plot_two = get_image()
 
     return multiple_line_plot_two
-
-
 def get_multiple_line_plot_one(*args, **kwargs):
     plt.switch_backend('AGG')
-    fig, ax1 = plt.subplots(1, figsize=(10, 6))
+    fig, ax1 = plt.subplots(1, figsize=(10, 8))
 
     date_form = DateFormatter("%m/%d")
 
@@ -768,7 +765,7 @@ def get_multiple_line_plot_one(*args, **kwargs):
     plt.suptitle(title)
       
     plt.subplots_adjust(left=0.1,
-                        bottom=0.20,
+                        bottom=0.30,  # Increased bottom to provide more space
                         right=0.9,
                         top=0.9,
                         wspace=0.4,
@@ -781,8 +778,6 @@ def get_multiple_line_plot_one(*args, **kwargs):
     multiple_line_plot_one = get_image()
 
     return multiple_line_plot_one
-
-
 
 
 
