@@ -590,6 +590,7 @@ def get_multiple_line_plot_five(*args, **kwargs):
 
 
 
+
 def get_multiple_line_plot_four(*args, **kwargs):
     plt.switch_backend('AGG')
     fig, (ax1, ax2, ax3, ax4) = plt.subplots(4, figsize=(10, 8))
@@ -649,6 +650,7 @@ def get_multiple_line_plot_four(*args, **kwargs):
     multiple_line_plot_four = get_image()
 
     return multiple_line_plot_four
+
 
 def get_multiple_line_plot_three(*args, **kwargs):
     plt.switch_backend('AGG')
