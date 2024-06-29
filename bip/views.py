@@ -1228,8 +1228,6 @@ def snapshot_view(request, pk):
         pass
 
 
-
-
      # intensity charts
     
     data_intensity = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','intensity')
