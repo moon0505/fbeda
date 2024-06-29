@@ -1712,7 +1712,7 @@ def anticedent_view(request, pk):
         }
         cases_df.rename(columns=rename_mapping, inplace=True)
 
-     except:
+    except:
         return redirect("bip:error_page", student.id)
 
     # Generate box plot data for Anticedents
