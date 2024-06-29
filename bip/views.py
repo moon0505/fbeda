@@ -1688,27 +1688,32 @@ def anticedent_view(request, pk):
     # Fetch the student or return a 404 error if not found
     student = get_object_or_404(models.Student, pk=pk)
     
-    # Retrieve data related to the student's cases
-    cases_data = models.Case.objects.filter(student__id=pk).values(
-        'behavior__behaviorincident',
-        'anticedent__anticedentincident',
-        'date_created',
-        'time',
-        'id'
-    )
-    
-    # Create a DataFrame from the cases data
-    cases_df = pd.DataFrame(cases_data)
-    
-    # Renaming columns for readability
-    rename_mapping = {
-        'behavior__behaviorincident': 'Behavior',
-        'anticedent__anticedentincident': 'Antecedent',
-        'date_created': 'Date',
-        'time': 'Time',
-        'id': 'ID'
-    }
-    cases_df.rename(columns=rename_mapping, inplace=True)
+
+    try: 
+        # Retrieve data related to the student's cases
+        cases_data = models.Case.objects.filter(student__id=pk).values(
+            'behavior__behaviorincident',
+            'anticedent__anticedentincident',
+            'date_created',
+            'time',
+            'id'
+        )
+        
+        # Create a DataFrame from the cases data
+        cases_df = pd.DataFrame(cases_data)
+        
+        # Renaming columns for readability
+        rename_mapping = {
+            'behavior__behaviorincident': 'Behavior',
+            'anticedent__anticedentincident': 'Antecedent',
+            'date_created': 'Date',
+            'time': 'Time',
+            'id': 'ID'
+        }
+        cases_df.rename(columns=rename_mapping, inplace=True)
+
+     except:
+        return redirect("bip:error_page", student.id)
 
     # Generate box plot data for Anticedents
     box_graph = get_box_plot(x='Antecedent', data=cases_df)
