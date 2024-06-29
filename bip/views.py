@@ -1208,6 +1208,9 @@ def snapshot_view(request, pk):
         pass
 # ending time
     
+
+    box_duration_graph = None
+    
     try:
     # duration begiing
         data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
