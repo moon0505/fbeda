@@ -1477,15 +1477,19 @@ def generate_pie_chart(data, title):
 # Function view
 def function_view(request, pk):
     student = get_object_or_404(Student, pk=pk)
-    data = models.Case.objects.filter(student__id=pk).values(
-        'behavior__behaviorincident',
-        'function__behaviorfunction',
-        'date_created',
-        'time',
-        'id'
-    )
 
-    cases_df = pd.DataFrame(data)
+    try:
+        data = models.Case.objects.filter(student__id=pk).values(
+            'behavior__behaviorincident',
+            'function__behaviorfunction',
+            'date_created',
+            'time',
+            'id'
+        )
+
+        cases_df = pd.DataFrame(data)
+    except:
+        return redirect("bip:error_page", student.id)
 
     try:
         rename_mapping = {
@@ -1500,7 +1504,13 @@ def function_view(request, pk):
         return redirect("bip:error_page", student.id)
 
     # Generate box plot data for Functions
-    box_graph_function = get_box_plot_function(x='Function', data=cases_df)
+
+    try:
+        box_graph_function = get_box_plot_function(x='Function', data=cases_df)
+
+
+    except:
+        return redirect("bip:error_page", student.id)
 
     # Calculate function proportions
     function_proportions, contingency_table_normalized = calculate_function_proportions(cases_df)
