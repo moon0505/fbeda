@@ -1208,14 +1208,14 @@ def snapshot_view(request, pk):
         pass
 # ending time
     
-
-    # duration begiing
-    data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
-    cases_df_duration = pd.DataFrame(data_duration)
-
-    box_duration_graph = None
-    
     try:
+    # duration begiing
+        data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
+        cases_df_duration = pd.DataFrame(data_duration)
+
+        box_duration_graph = None
+        
+    
         duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
         duration_behavior = duration_behavior.to_frame().reset_index()        
         df_duration = duration_behavior['behavior__behaviorincident']
