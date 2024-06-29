@@ -1712,11 +1712,13 @@ def anticedent_view(request, pk):
         }
         cases_df.rename(columns=rename_mapping, inplace=True)
 
-    except:
-        return redirect("bip:error_page", student.id)
+    
 
     # Generate box plot data for Anticedents
-    box_graph = get_box_plot(x='Antecedent', data=cases_df)
+        box_graph = get_box_plot(x='Antecedent', data=cases_df)
+
+    except:
+        return redirect("bip:error_page", student.id)
 
     # Calculate behavior proportions
     behavior_proportions, contingency_table_normalized = calculate_behavior_proportions(cases_df)
