@@ -1208,7 +1208,7 @@ def snapshot_view(request, pk):
         pass
 # ending time
     
-
+    data_duration = None
     box_duration_graph = None
     
     try:
