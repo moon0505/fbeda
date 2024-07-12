@@ -2275,6 +2275,37 @@ def raw_data(request, pk):
     unique_bs_count = unique_bs_count.sort_values(by=['Frequency'], ascending=False)
 
 
+
+    # frequenvy of each beh
+    
+
+
+    frequency_total_html = None
+    try: 
+        data_frequency_total = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'frequency')
+        cases_df_frequency_total = pd.DataFrame(data_frequency_total)
+
+
+# Rename columns
+        cases_df_frequency_total = cases_df_frequency_total.rename(columns={'behavior__behaviorincident': 'Behavior', 'frequency': 'Frequency'})
+
+# Group and calculate the mean duration
+        cases_df_frequency_total = cases_df_frequency_total.groupby('Behavior')['Frequency'].sum().astype(int).reset_index()
+
+
+
+# Extract the 'Behavior' column
+        df_frequency = cases_df_frequency_total['Behavior']
+
+# Convert the DataFrame to HTML
+        frequency_total_html = cases_df_frequency_total.to_html(index=False)
+
+        
+    except:
+        
+        pass
+
+
     # Duration of behavior
 
     
@@ -2397,6 +2428,7 @@ def raw_data(request, pk):
         'frequency_behavior':frequency_behavior.to_html(index=False),
         'matrix':matrix.to_html(),
         'intensity_html':intensity_html,
+        'frequency_total_html':frequency_total_html,
 
         }
 

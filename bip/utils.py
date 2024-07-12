@@ -959,6 +959,7 @@ def get_count_time_plot( *args, **kwargs):
 def get_multiple_scatter_plot_six( *args, **kwargs):
     plt.switch_backend('AGG')
     fig, ax = plt.subplots(figsize=(10,7))
+
     x = kwargs.get('x')
     y = kwargs.get('y')
     z = kwargs.get('z')
