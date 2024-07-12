@@ -2282,29 +2282,21 @@ def raw_data(request, pk):
 
     frequency_total_html = None
     try: 
+        # Filter and create DataFrame
         data_frequency_total = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'frequency')
         cases_df_frequency_total = pd.DataFrame(data_frequency_total)
 
-
-# Rename columns
+        # Rename columns
         cases_df_frequency_total = cases_df_frequency_total.rename(columns={'behavior__behaviorincident': 'Behavior', 'frequency': 'Frequency'})
 
-# Group and calculate the mean duration
+        # Group and calculate the total frequency
         cases_df_frequency_total = cases_df_frequency_total.groupby('Behavior')['Frequency'].sum().astype(int).reset_index()
 
-
-
-# Extract the 'Behavior' column
-        df_frequency = cases_df_frequency_total['Behavior']
-
-# Convert the DataFrame to HTML
+        # Convert the DataFrame to HTML
         frequency_total_html = cases_df_frequency_total.to_html(index=False)
 
-        
     except:
-        
         pass
-
 
     # Duration of behavior
 
