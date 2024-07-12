@@ -876,6 +876,62 @@ def get_count_time_plot( *args, **kwargs):
     return time_count_graph
 
 
+def get_multiple_scatter_plot_six( *args, **kwargs):
+    plt.switch_backend('AGG')
+    fig, ax = plt.subplots(figsize=(10,7))
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    z = kwargs.get('z')
+    k = kwargs.get('k')
+    g = kwargs.get('g')
+    q = kwargs.get('q')
+    m = kwargs.get('m')
+    n = kwargs.get('n')
+    a = kwargs.get('a')
+    b = kwargs.get('b')
+    r = kwargs.get('r')
+    s = kwargs.get('s')
+
+
+    data = kwargs.get('data')
+    data1 = kwargs.get('data1')
+    data2 = kwargs.get('data2')
+    data3 = kwargs.get('data3')
+    data4 = kwargs.get('data4')
+    data5 = kwargs.get('data5')
+
+
+    title = "Target Behavior Incidents by Day"
+    plt.title(title)
+    date_form = DateFormatter("%m/%d")
+    ax.xaxis.set_major_formatter(date_form)
+    ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    plt.grid(True)
+    plt.xlabel(' ')
+    plt.ylabel('Count')
+  
+    # plt.style.use('seaborn')
+    plt.xticks(rotation=90)
+
+    plt.scatter(x, y, marker = 6, s = 175, label=data.columns[1])
+    
+  
+    plt.scatter(z, k,  marker = 4,   s = 175,label=data.columns[2])
+    
+    plt.scatter(g, q,  marker = 7,  s = 175,label=data.columns[3])
+    plt.scatter(m, n,  marker = 5,  s = 175, label=data.columns[4])
+    
+    plt.scatter(a, b,  marker = 0,  s = 175, label=data.columns[5])
+
+    plt.scatter(r, s,  marker = 1,  s = 175, label=data.columns[6])
+
+
+    plt.legend()
+    
+    multiple_scater_plot_six = get_image()
+
+    return multiple_scater_plot_six
+
 
 def get_multiple_scatter_plot_five( *args, **kwargs):
     plt.switch_backend('AGG')
@@ -894,7 +950,7 @@ def get_multiple_scatter_plot_five( *args, **kwargs):
     data1 = kwargs.get('data1')
     data2 = kwargs.get('data2')
     data3 = kwargs.get('data3')
-    data3 = kwargs.get('data4')
+    data4 = kwargs.get('data4')
 
     title = "Target Behavior Incidents by Day"
     plt.title(title)

@@ -47,6 +47,7 @@ from .utils import  (
     get_multiple_scatter_plot_three,
     get_multiple_scatter_plot_four,
     get_multiple_scatter_plot_five,
+    get_multiple_scatter_plot_six,
     get_pie_chart,
     get_pie__chart_anticedent,
     get_pie__chart_function,
@@ -2033,6 +2034,25 @@ def chart_view(request, pk):
     
     trtis = pivot.replace(0, np.nan, inplace=True)
     trtis = pivot.reset_index()
+    
+    multiple_scater_plot_six = None
+    
+    try:
+        multiple_scater_plot_six= get_multiple_scatter_plot_five(
+            x =trtis['Date'], y=trtis.iloc[:,1],data=trtis,
+            z=trtis['Date'], k=trtis.iloc[:,2],data1=trtis,
+            g=trtis['Date'], q=trtis.iloc[:,3],data2=trtis,
+            m=trtis['Date'], n=trtis.iloc[:,4],data3=trtis,
+            a=trtis['Date'], b=trtis.ililoc[:,5],data4=trtis,
+            r=trtis['Date'], s=trtis.ililoc[:,5],data5=trtis
+
+
+        )
+           
+    except:
+        pass
+    
+
     multiple_scater_plot_five = None
     
     try:
