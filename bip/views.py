@@ -2292,11 +2292,15 @@ def raw_data(request, pk):
         # Group and calculate the total frequency
         cases_df_frequency_total = cases_df_frequency_total.groupby('Behavior')['Frequency'].sum().astype(int).reset_index()
 
+        # Sort the DataFrame from highest to lowest frequency
+        cases_df_frequency_total = cases_df_frequency_total.sort_values(by='Frequency', ascending=False)
+
         # Convert the DataFrame to HTML
         frequency_total_html = cases_df_frequency_total.to_html(index=False)
 
     except:
-        pass
+         pass
+    # End of frequency of each beh
 
     # Duration of behavior
 
