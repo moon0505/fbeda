@@ -890,7 +890,7 @@ def get_multiple_scatter_plot_six( *args, **kwargs):
     a = kwargs.get('a')
     b = kwargs.get('b')
     r = kwargs.get('r')
-    s = kwargs.get('s')
+    t = kwargs.get('s')
 
 
     data = kwargs.get('data')
@@ -923,7 +923,7 @@ def get_multiple_scatter_plot_six( *args, **kwargs):
     
     plt.scatter(a, b,  marker = 0,  s = 175, label=data.columns[5])
 
-    plt.scatter(r, s,  marker = 1,  s = 175, label=data.columns[6])
+    plt.scatter(r, t,  marker = 1,  s = 175, label=data.columns[6])
 
 
     plt.legend()

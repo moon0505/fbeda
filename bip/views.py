@@ -2044,7 +2044,7 @@ def chart_view(request, pk):
             g=trtis['Date'], q=trtis.iloc[:,3],data2=trtis,
             m=trtis['Date'], n=trtis.iloc[:,4],data3=trtis,
             a=trtis['Date'], b=trtis.ililoc[:,5],data4=trtis,
-            r=trtis['Date'], s=trtis.ililoc[:,6],data5=trtis
+            r=trtis['Date'], t=trtis.ililoc[:,6],data5=trtis
 
 
         )
