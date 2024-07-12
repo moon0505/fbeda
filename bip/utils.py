@@ -522,7 +522,7 @@ def get_clustermap_setting( *args, **kwargs):
 
 def get_multiple_line_plot_six(*args, **kwargs):
     plt.switch_backend('AGG')
-    fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, figsize=(10, 16))
+    fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, figsize=(10, 8))
 
     date_form = DateFormatter("%m/%d")
 
@@ -572,7 +572,7 @@ def get_multiple_line_plot_six(*args, **kwargs):
     data5 = kwargs.get('data5')
 
 
-    title = "Line Graph"
+    title = "Frequency of Behavior Incidents by Day"
     plt.suptitle(title)
     
     plt.subplots_adjust(left=0.1,
@@ -580,7 +580,7 @@ def get_multiple_line_plot_six(*args, **kwargs):
                         right=0.9,
                         top=0.9,
                         wspace=0.4,
-                        hspace=0.6)
+                        hspace=0.9)
 
     ax1.bar(x, y)
     ax2.bar(z, k)
@@ -708,7 +708,7 @@ def get_multiple_line_plot_four(*args, **kwargs):
     data2 = kwargs.get('data2')
     data3 = kwargs.get('data3')
 
-    title = "Line Graph"
+    title = "Frequency of Behavior Incidents by Day"
     plt.suptitle(title)
     
     plt.subplots_adjust(left=0.1,
@@ -762,7 +762,7 @@ def get_multiple_line_plot_three(*args, **kwargs):
     data1 = kwargs.get('data1')
     data2 = kwargs.get('data2')
   
-    title = "Line Graph"
+    title = "Frequency of Behavior Incidents by Day"
     plt.suptitle(title)
     
     plt.subplots_adjust(left=0.1,
@@ -807,7 +807,7 @@ def get_multiple_line_plot_two(*args, **kwargs):
     data = kwargs.get('data')
     data1 = kwargs.get('data1')
 
-    title = "Line Graph"
+    title = "Frequency of Behavior Incidents by Day"
     plt.suptitle(title)
     
     plt.subplots_adjust(left=0.1,
@@ -841,7 +841,7 @@ def get_multiple_line_plot_one(*args, **kwargs):
 
     data = kwargs.get('data')
 
-    title = "Line Graph"
+    title = "Frequency of Behavior Incidents by Day"
     plt.suptitle(title)
       
     plt.subplots_adjust(left=0.1,
