@@ -2155,6 +2155,7 @@ def chart_view(request, pk):
     context = {
         'student':student,
         'beh_count_graph':beh_count_graph,
+        'multiple_scater_plot_six':multiple_scater_plot_six,
         'multiple_scater_plot_five':multiple_scater_plot_five,
         'multiple_scater_plot_four':multiple_scater_plot_four,
         'multiple_scater_plot_three':multiple_scater_plot_three,
