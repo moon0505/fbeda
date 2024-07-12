@@ -522,7 +522,7 @@ def get_clustermap_setting( *args, **kwargs):
 
 def get_multiple_line_plot_six(*args, **kwargs):
     plt.switch_backend('AGG')
-    fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, figsize=(10, 8))
+    fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, figsize=(10, 16))
 
     date_form = DateFormatter("%m/%d")
 
