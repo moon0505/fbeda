@@ -807,29 +807,23 @@ def get_multiple_line_plot_chatgpt(*args, **kwargs):
 
 
 
-def get_count_beh_plot( *args, **kwargs):
+def get_count_beh_plot(*args, **kwargs):
     plt.switch_backend('AGG')
     fig = plt.figure()
     x = kwargs.get('x')
     y = kwargs.get('y')
     data = kwargs.get('data')
     
-    sns.countplot(x=x, data=data)
+    sns.barplot(x=x, y=y, data=data, palette='viridis')
     plt.xticks(rotation=45)
     plt.xlabel('Behavior')
-    plt.ylabel('Frequency')
-
-    title = "Behavior Frequency"
+    plt.ylabel('Total Frequency')
+    title = "Total Frequency of Behaviors"
     plt.title(title)
-
     plt.tight_layout()
-  
     
     beh_count_graph = get_image()
-
     return beh_count_graph
-
-
 
 def get_count_beh_plot_pdf( *args, **kwargs):
     plt.switch_backend('AGG')
