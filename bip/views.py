@@ -38,6 +38,7 @@ from .utils import  (
     get_multiple_line_plot_three,
     get_multiple_line_plot_four,
     get_multiple_line_plot_five,
+    get_multiple_line_plot_six,
     get_multiple_line_plot_chatgpt,
     get_heatmap,
     get_box_plot,
@@ -1319,6 +1320,25 @@ def snapshot_view(request, pk):
     
     
     dlpivot = pivot.reset_index()
+
+
+   
+    multiple_line_plot_six = None
+    
+    try:       
+    
+        multiple_line_plot_six = get_multiple_line_plot_six(
+            x=dlpivot['Date'],y=dlpivot.iloc[:,1],data=dlpivot,
+            z=dlpivot['Date'], k=dlpivot.iloc[:,2],data1=dlpivot,
+            g=dlpivot['Date'], q=dlpivot.iloc[:,3],data2=dlpivot,
+            m=dlpivot['Date'], n=dlpivot.iloc[:,4],data3=dlpivot,
+            b=dlpivot['Date'], c=dlpivot.iloc[:,5],data4=dlpivot,
+            r=dlpivot['Date'], t=dlpivot.iloc[:,6],data5=dlpivot,
+        )
+     
+    except:
+        pass
+
     
     multiple_line_plot_five = None
     
@@ -1413,6 +1433,7 @@ def snapshot_view(request, pk):
         'multiple_line_plot_three':multiple_line_plot_three,
         'multiple_line_plot_four':multiple_line_plot_four,
         'multiple_line_plot_five':multiple_line_plot_five, 
+        'multiple_line_plot_six':multiple_line_plot_six,
         'multiple_line_plot_chatgpt':multiple_line_plot_chatgpt,
         'box_graph_time':box_graph_time,
         'box_duration_graph':box_duration_graph,

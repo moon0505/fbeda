@@ -520,6 +520,86 @@ def get_clustermap_setting( *args, **kwargs):
 
 
 
+def get_multiple_line_plot_six(*args, **kwargs):
+    plt.switch_backend('AGG')
+    fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, figsize=(10, 16))
+
+    date_form = DateFormatter("%m/%d")
+
+    ax1.xaxis.set_major_formatter(date_form)
+    ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    plt.setp(ax1.get_xticklabels(), rotation=90)
+
+    ax2.xaxis.set_major_formatter(date_form)
+    ax2.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    plt.setp(ax2.get_xticklabels(), rotation=90)
+
+    ax3.xaxis.set_major_formatter(date_form)
+    ax3.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    plt.setp(ax3.get_xticklabels(), rotation=90)
+
+    ax4.xaxis.set_major_formatter(date_form)
+    ax4.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    plt.setp(ax4.get_xticklabels(), rotation=90)
+
+    ax5.xaxis.set_major_formatter(date_form)
+    ax5.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    plt.setp(ax5.get_xticklabels(), rotation=90)
+
+    ax6.xaxis.set_major_formatter(date_form)
+    ax6.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+    plt.setp(ax6.get_xticklabels(), rotation=90)
+
+    x = kwargs.get('x')
+    y = kwargs.get('y')
+    z = kwargs.get('z')
+    k = kwargs.get('k')
+    g = kwargs.get('g')
+    q = kwargs.get('q')
+    m = kwargs.get('m')
+    n = kwargs.get('n')
+    b = kwargs.get('b')
+    c = kwargs.get('c')
+    r = kwargs.get('r')
+    t = kwargs.get('t')
+
+
+    data = kwargs.get('data')
+    data1 = kwargs.get('data1')
+    data2 = kwargs.get('data2')
+    data3 = kwargs.get('data3')
+    data4 = kwargs.get('data4')
+    data5 = kwargs.get('data5')
+
+
+    title = "Line Graph"
+    plt.suptitle(title)
+    
+    plt.subplots_adjust(left=0.1,
+                        bottom=0.20,
+                        right=0.9,
+                        top=0.9,
+                        wspace=0.4,
+                        hspace=0.6)
+
+    ax1.bar(x, y)
+    ax2.bar(z, k)
+    ax3.bar(g, q)
+    ax4.bar(m, n)
+    ax5.bar(b, c)
+    ax6.bar(r, t)
+    
+    ax1.title.set_text(data.columns[1])
+    ax2.title.set_text(data.columns[2])
+    ax3.title.set_text(data.columns[3])
+    ax4.title.set_text(data.columns[4])
+    ax5.title.set_text(data.columns[5])
+    ax6.title.set_text(data.columns[6])
+    
+    multiple_line_plot_six = get_image()
+
+    return multiple_line_plot_six
+
 def get_multiple_line_plot_five(*args, **kwargs):
     plt.switch_backend('AGG')
     fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5, figsize=(10, 16))
