@@ -890,7 +890,7 @@ def get_multiple_scatter_plot_six( *args, **kwargs):
     a = kwargs.get('a')
     b = kwargs.get('b')
     r = kwargs.get('r')
-    t = kwargs.get('s')
+    t = kwargs.get('t')
 
 
     data = kwargs.get('data')
