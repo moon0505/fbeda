@@ -1274,7 +1274,37 @@ def snapshot_view(request, pk):
   
 
     df_beh_count = cases_df['Behavior']
-    beh_count_graph = get_count_beh_plot( x= df_beh_count, data=cases_df)  
+  # new one
+    frequency_total_html = None
+    beh_count_graph = None
+
+    try: 
+          # Step 1: Filter and process data
+        data_frequency_total = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'frequency')
+        cases_df_frequency_total = pd.DataFrame(data_frequency_total)
+
+        # Rename columns
+        cases_df_frequency_total = cases_df_frequency_total.rename(columns={'behavior__behaviorincident': 'Behavior', 'frequency': 'Frequency'})
+
+        # Group and calculate the total frequency
+        cases_df_frequency_total = cases_df_frequency_total.groupby('Behavior')['Frequency'].sum().astype(int).reset_index()
+
+        # Sort by total frequency in descending order
+        cases_df_frequency_total = cases_df_frequency_total.sort_values(by='Frequency', ascending=False)
+
+        # Step 2: Prepare data for plotting
+        df_frequency = cases_df_frequency_total['Behavior']
+        df_total_frequency = cases_df_frequency_total['Frequency']
+
+        # Step 3: Create the plot
+        beh_count_graph = get_count_beh_plot(x='Behavior', y='Frequency', data=cases_df_frequency_total)
+
+        # Convert the DataFrame to HTML
+        frequency_total_html = cases_df_frequency_total.to_html(index=False)
+
+    except Exception as e:
+        pass
+    # end of new one
 
 
     # multiple dddbar graph- line plot origniallyxxxxxxxxxxxxxxxxxxxxxxxxx
