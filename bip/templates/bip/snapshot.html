@@ -80,7 +80,7 @@
       {% endif %}
 
 
-      {% if box_duration_graph %}
+      {% if box_duration_graph > 0 %}
       <div class="container">
         <img src="data:image/png;base64, {{ box_duration_graph | safe }}">
       </div>
