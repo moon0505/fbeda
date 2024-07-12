@@ -2038,13 +2038,13 @@ def chart_view(request, pk):
     multiple_scater_plot_six = None
     
     try:
-        multiple_scater_plot_six= get_multiple_scatter_plot_five(
+        multiple_scater_plot_six= get_multiple_scatter_plot_six(
             x =trtis['Date'], y=trtis.iloc[:,1],data=trtis,
             z=trtis['Date'], k=trtis.iloc[:,2],data1=trtis,
             g=trtis['Date'], q=trtis.iloc[:,3],data2=trtis,
             m=trtis['Date'], n=trtis.iloc[:,4],data3=trtis,
             a=trtis['Date'], b=trtis.ililoc[:,5],data4=trtis,
-            r=trtis['Date'], s=trtis.ililoc[:,5],data5=trtis
+            r=trtis['Date'], s=trtis.ililoc[:,6],data5=trtis
 
 
         )
