@@ -4263,10 +4263,23 @@ def bsp(request,pk):
     except:
         return redirect("bip:error_page", student.id)
 
-    unique_b_count = cases_df_duplicate.groupby(['Behavior']).size().reset_index(name='Frequency')
-    unique_b_count = unique_b_count.sort_values(by=['Frequency'], ascending=False)
+    
+        # Assuming data_frequency_total contains the filtered data
+    data_frequency_total = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'frequency')
+    cases_df_frequency_total = pd.DataFrame(data_frequency_total)
 
-    behavior_frequency_list = unique_b_count.to_dict(orient='records')
+    # Rename columns
+    cases_df_frequency_total = cases_df_frequency_total.rename(columns={'behavior__behaviorincident': 'Behavior', 'frequency': 'Frequency'})
+
+    # Group by 'Behavior' and sum the frequencies
+    cases_df_frequency_total = cases_df_frequency_total.groupby('Behavior')['Frequency'].sum().reset_index()
+
+    # Sort by total frequency in descending order
+    cases_df_frequency_total = cases_df_frequency_total.sort_values(by='Frequency', ascending=False)
+
+    # Convert to a list of dictionaries
+    behavior_frequency_list = cases_df_frequency_total.to_dict(orient='records')
+
 
 
 
