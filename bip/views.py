@@ -4201,7 +4201,7 @@ def antecedent_ai(request, pk):
     
 
     user_content= f"Use {student_name}'s (age:{age}, grade:{grade},nonverbal:{nonverbal}) data:\n\n{unique_abc_count_string}\n\n\ Identify the antecedent events that trigger\
-          the problem behavior identified? And provide a summary of the identified antecedent events."
+          the problem behavior identified? And provide an overall conclusion."
 
 
     response = openai.ChatCompletion.create(
