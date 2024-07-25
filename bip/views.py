@@ -4264,7 +4264,7 @@ def bsp(request,pk):
         return redirect("bip:error_page", student.id)
 
     
-        # Assuming data_frequency_total contains the filtered data
+      # Assuming data_frequency_total contains the filtered data
     data_frequency_total = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'frequency')
     cases_df_frequency_total = pd.DataFrame(data_frequency_total)
 
@@ -4279,7 +4279,6 @@ def bsp(request,pk):
 
     # Convert to a list of dictionaries
     behavior_frequency_list = cases_df_frequency_total.to_dict(orient='records')
-
 
 
 
