@@ -43,9 +43,13 @@
         </div>
     </div>
 
-    <div class="container">
-        <p><i>Help maintain the website: <a href="{% url 'bip:donations' %}">Donations</a></i></p>
-    </div>
+   
 </div>
 
+<div class="container">
+    <p class="support-text">
+        <i>Support the website's upkeep and development: 
+        <a href="{% url 'bip:donations' %}" class="donation-link">Make a Donation</a></i>
+    </p>
+</div>
 {% endblock %}
