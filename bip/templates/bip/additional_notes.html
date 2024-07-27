@@ -1,61 +1,51 @@
-{% extends 'partials/base.html' %} 
+{% extends 'partials/base.html' %}
 {% block content %}
 <head>
     <title>EFBA - About Me</title>
     <style>
         .about-section {
-            margin-top: 4rem; /* Adjusted margin to push content down, accounting for a fixed navbar if present */
+            margin-top: 4rem; /* Margin to accommodate any fixed navbar */
         }
         .about-heading {
-            font-size: 2.5rem; /* Larger font size for main heading */
+            font-size: 2.5rem; /* Enhanced font size for emphasis */
             font-style: italic;
         }
         .about-text {
-            font-size: 1.25rem; /* More readable font size for content */
+            font-size: 1.25rem; /* Comfortable reading size */
             margin-top: 1rem;
         }
         .contact-info {
             margin-top: 2rem;
             font-size: 1rem;
         }
-           /* Remove bullet points from the list */
-    ul.no-bullets {
-        list-style-type: none; /* No bullets */
-        padding: 0; /* Remove padding */
-        margin: 0; /* Remove margins */
-    }
+        ul.no-bullets {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0; /* Eliminate padding */
+            margin: 0; /* Eliminate margin */
+        }
     </style>
 </head>
-<br>
+
 <div class="container">
     <div class="nav-button">
-
-    <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:description' %}">  <b> Home Page</b></a>
-  </div>
-<div class="container about-section">
-
-  
-    <br>
-    <div class="about-text">
-        <h3> <i>Additional Notes,</i> </h3>
-
-        <ul class="no-bullets">
-            <li><i> *I developed both the frontend and the backend of the website and there is no third party involvement. </i></li>
-            <li> <i> *This is a personal project that is free to use. Only to be used by practitioners and for educational purposes.</i></li>
-            <li><i> *No user data is stored, shared, or collected. User accounts and/or cases are permanently deleted by user.</i></li>
-            <li><i>*Questions, suggestions, or inquiries: <a href="mailto:exploratoryfba@gmail.com"> Contact Email</i></li>
-        </ul>
-       
+        <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'bip:description' %}"><b>Home Page</b></a>
+    </div>
+    
+    <div class="container about-section">
+        <h3 class="about-heading">Additional Notes</h3>
+        <div class="about-text">
+            <ul class="no-bullets">
+                <li><i>*I developed both the frontend and backend of this website, with no third-party involvement.</i></li>
+                <li><i>*This is a personal project offered for free, intended for educational use by practitioners.</i></li>
+                <li><i>*No user data is stored, shared, or collected. Users can permanently delete their accounts and/or cases.</i></li>
+                <li><i>*For questions, suggestions, or inquiries, please <a href="mailto:exploratoryfba@gmail.com">contact me via email</a>.</i></li>
+            </ul>
+        </div>
     </div>
 
-</div>
-
-
-
-<div class="class conatiner">
-
-
-<p> <i>  Help maintain the website: <a href="{% url 'bip:donations' %}" > Donations</a> </i></p>
+    <div class="container">
+        <p><i>Help maintain the website: <a href="{% url 'bip:donations' %}">Donations</a></i></p>
+    </div>
 </div>
 
 {% endblock %}
