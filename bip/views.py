@@ -5175,6 +5175,10 @@ load_dotenv()
 
 
 
+def donations(request):
+    
+
+    return render(request, 'bip/donations.html')
 
 
 

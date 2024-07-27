@@ -223,6 +223,7 @@ urlpatterns = [
     path('contingency_view/<pk>/', views.contingency_view, name='contingency_view'),
     path('contingency_view_function/<pk>/', views.contingency_view_function, name='contingency_view_function'),
 
+    path('donations/', views.donations, name="donations"),
 
     # artificial inttelligence urls--------------------------------
     path('function_ai_abc/<pk>/', views.function_ai_abc, name='function_ai_abc'),
