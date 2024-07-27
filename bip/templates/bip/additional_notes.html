@@ -10,18 +10,17 @@
             font-size: 2.5rem; /* Enhanced font size for emphasis */
             font-style: italic;
         }
-        .about-text {
-            font-size: 1.25rem; /* Comfortable reading size */
+        .about-text, .support-text {
+            font-size: 1.25rem; /* Consistent font size for readability */
             margin-top: 1rem;
-        }
-        .contact-info {
-            margin-top: 2rem;
-            font-size: 1rem;
         }
         ul.no-bullets {
             list-style-type: none; /* Remove bullet points */
             padding: 0; /* Eliminate padding */
             margin: 0; /* Eliminate margin */
+        }
+        .donation-link {
+            font-weight: bold; /* Bold font for emphasis */
         }
     </style>
 </head>
@@ -43,13 +42,12 @@
         </div>
     </div>
 
-   
+    <div class="container">
+        <p class="support-text">
+            <i>Support the website's upkeep and development: 
+            <a href="{% url 'bip:donations' %}" class="donation-link">Make a Donation</a></i>
+        </p>
+    </div>
 </div>
 
-<div class="container">
-    <p class="support-text">
-        <i>Support the website's upkeep and development: 
-        <a href="{% url 'bip:donations' %}" class="donation-link">Make a Donation</a></i>
-    </p>
-</div>
 {% endblock %}
