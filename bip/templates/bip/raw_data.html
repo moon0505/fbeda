@@ -13,32 +13,32 @@
     <!-- Content Sections -->
     <div class="content-section">
       <div class="stats-row">
-        <div class="stat-item"><b>Behavior:</b> {{frequency_total_html | safe}}</div>
+        <div class="stat-item"><b>Behavior</b> {{frequency_total_html | safe}}</div>
         <div class="stat-item"><b>Behavior-Function:</b> {{unique_bf_count | safe}}</div>
-        <div class="stat-item"><b>Antecedent-Behavior:</b> {{unique_ab_count | safe}}</div>
+        <div class="stat-item"><b>Behavior:</b> {{unique_ab_count | safe}}</div>
       </div>
 
       <div class="stats-row">
-        <div class="stat-item"><b>Behavior-Antecedent-Consequence Sequence:</b> {{unique_abc_count | safe}}</div>
-        <div class="stat-item"><b>Behavior-Antecedent-Consequence-Function Sequence:</b> {{unique_abcf_count | safe}}</div>
+        <div class="stat-item"><b>Behavior Sequence</b> {{unique_abc_count | safe}}</div>
+        <div class="stat-item"><b>Behavior Sequence</b> {{unique_abcf_count | safe}}</div>
       </div>
 
       <div class="stats-row">
 
         {% if unique_bs_count %}
-        <div class="stat-item"><b>Behavior-Setting Frequency:</b> {{unique_bs_count | safe}}</div>
+        <div class="stat-item"><b>Behavior-Setting Frequency</b> {{unique_bs_count | safe}}</div>
         {% endif %}
 
         {% if intensity_html  %}
-        <div class="stat-item"><b>Average Intensity of Behavior:</b> {{intensity_html | safe}}</div>
+        <div class="stat-item"><b>Average Intensity of Behavior</b> {{intensity_html | safe}}</div>
             {% endif %}
           
-        <div class="stat-item"><b>Behavior Average per Incident:</b> {{frequency_behavior | safe}}</div>
+        <div class="stat-item"><b>Behavior Average per Incident</b> {{frequency_behavior | safe}}</div>
         {% if unique_hour_html %}
-          <div class="stat-item"><b>Behavior-Hour Frequency:</b> {{unique_hour_html | safe}}</div>
+          <div class="stat-item"><b>Behavior-Hour Frequency</b> {{unique_hour_html | safe}}</div>
         {% endif %} 
       {% if duration_html  %}
-       <div class="stat-item"><b>Average Duration of Behavior:</b> {{duration_html | safe}}</div>
+       <div class="stat-item"><b>Average Duration of Behavior</b> {{duration_html | safe}}</div>
         {% endif %}
       </div>
 
