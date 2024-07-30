@@ -222,6 +222,7 @@ urlpatterns = [
 
     path('contingency_view/<pk>/', views.contingency_view, name='contingency_view'),
     path('contingency_view_function/<pk>/', views.contingency_view_function, name='contingency_view_function'),
+    path('setting_table/<pk>/', views.contingency_view_setting, name='setting_table'),
 
     path('donations/', views.donations, name="donations"),
 

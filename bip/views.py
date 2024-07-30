@@ -1872,65 +1872,157 @@ def contingency_view(request, pk):
 
 
 
+# this includes setting with pie
+def calculate_setting_proportions(cases_df):
+    # Create a contingency table
+    contingency_table = pd.crosstab(cases_df['Behavior'], cases_df['Setting'])
 
-def enviroment_view(request,pk):
-     
-    student = get_object_or_404(Student, pk=pk)
-    student_cases = student.case_set.all() 
-    data = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','anticedent__anticedentincident','function__behaviorfunction', 'enviroment__behaviorenviroment','date_created','time','id')
-    cases_df = pd.DataFrame(data)   
+    # Normalize the contingency table to get the proportions
+    proportions_behavior_given_setting = contingency_table.div(contingency_table.sum(axis=1), axis=0)
+    proportions_setting_given_behavior = contingency_table.div(contingency_table.sum(axis=0), axis=1)
 
-    try:
-        cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
-        cases_df.columns = cases_df.columns.str.replace('anticedent__anticedentincident', 'Anticedent')
-        cases_df.columns = cases_df.columns.str.replace('function__behaviorfunction', 'Function')
-        cases_df.columns = cases_df.columns.str.replace('enviroment__behaviorenviroment', 'Enviroment')
-        cases_df.columns = cases_df.columns.str.replace('date_created', 'Date')
-        cases_df.columns = cases_df.columns.str.replace('time', 'Time')
-        cases_df.columns = cases_df.columns.str.replace('id', 'ID')
-    except:
-        return redirect("bip:error_page", student.id)
+    return contingency_table, proportions_behavior_given_setting, proportions_setting_given_behavior
 
-    df_enviroment = cases_df['Enviroment']
-    box_graph_setting = get_box_plot_setting( x= df_enviroment, data=cases_df) 
-
-    # correationxxxxxxxxxxxxxx
+def generate_pie_chart(data, title):
+    # Convert percentages to floats
+    numeric_data = {k: float(v.strip('%')) for k, v in data.items()}
     
-    behavior = pd.get_dummies(cases_df['Behavior'])
-    anticedent = pd.get_dummies(cases_df['Anticedent'])
-    function = pd.get_dummies(cases_df['Function'])
-    enviroment = pd.get_dummies(cases_df['Enviroment'])
-    df_matrix = pd.concat([cases_df,behavior,enviroment], axis=1)
-    df_matrix.drop(['Behavior','Anticedent','Function', 'Enviroment','Date','Time','ID'],axis=1,inplace=True)
-    matrix = df_matrix.corr().round(2) 
-  
-    try:
-        filterDX = matrix[((matrix > 0.0)) & (matrix != 1.000)]
+    # Create a pie chart
+    fig, ax = plt.subplots()
+    ax.pie(numeric_data.values(), labels=numeric_data.keys(), autopct='%1.1f%%', startangle=90)
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.title(title)
     
-        iheat_graph_setting = get_heatmap_setting(data=filterDX)
-    except:
-        pass
-    
+    # Save the pie chart to a bytes buffer
+    buf = BytesIO()
+    plt.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+    image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+    return image_base64
 
-    iclustermap_graph_setting = None
+def enviroment_view(request, pk):
+    student = get_object_or_404(models.Student, pk=pk)
     
-    try:
-        iclustermap_graph_setting = get_clustermap_setting(data=matrix)
+    # Retrieve data related to the student's cases
+    cases_data = models.Case.objects.filter(student__id=pk).values(
+        'behavior__behaviorincident',
+        'anticedent__anticedentincident',
+        'function__behaviorfunction',
+        'enviroment__behaviorenviroment',
+        'date_created',
+        'time',
+        'id'
+    )
+    
+    # Create a DataFrame from the cases data
+    cases_df = pd.DataFrame(cases_data)
+    
+    # Renaming columns for readability
+    rename_mapping = {
+        'behavior__behaviorincident': 'Behavior',
+        'anticedent__anticedentincident': 'Antecedent',
+        'function__behaviorfunction': 'Function',
+        'enviroment__behaviorenviroment': 'Setting',
+        'date_created': 'Date',
+        'time': 'Time',
+        'id': 'ID'
+    }
+    cases_df.rename(columns=rename_mapping, inplace=True)
+    
+    # Generate box plot data for Settings
+    box_graph_setting = get_box_plot(x='Setting', data=cases_df)
+    
+    # Calculate the contingency table and proportions
+    contingency_table, proportions_behavior_given_setting, proportions_setting_given_behavior = calculate_setting_proportions(cases_df)
 
-    except:
-        pass
-  
-  
-    context= {'student':student,
-        'iclustermap_graph_setting':iclustermap_graph_setting, 
-    'iheat_graph_setting':iheat_graph_setting, 
-    'box_graph_setting':box_graph_setting,}
-    
+    # Generate pie charts
+    pie_charts = {}
+    for behavior, settings in proportions_setting_given_behavior.iterrows():
+        # Exclude 0.00% values
+        filtered_settings = {k: f"{v * 100:.2f}%" for k, v in settings.items() if v != 0}
+        if filtered_settings:
+            pie_charts[behavior] = generate_pie_chart(filtered_settings, f'Proportion of Settings for {behavior}')
+
+    # Prepare the context for rendering
+    context = {
+        'student': student,
+        'box_graph_setting': box_graph_setting,
+        'behavior_proportions': proportions_behavior_given_setting,
+        'setting_proportions': proportions_setting_given_behavior,
+        'pie_charts': pie_charts,
+    }
     
     return render(request, 'bip/setting.html', context)
 
 
+
 # end of enviroment setting
+
+
+
+# new setting contentency:
+def calculate_behavior_proportions_table_setting(cases_df):
+    # Create a contingency table
+    contingency_table = pd.crosstab(cases_df['Behavior'], cases_df['Setting'])
+
+    # Normalize the contingency table to get the proportions
+    proportions_setting_given_behavior = contingency_table.div(contingency_table.sum(axis=1), axis=0)
+
+    # Normalize and format the contingency table to get the proportions with percentages
+    contingency_table_normalized = contingency_table.div(contingency_table.sum(axis=1), axis=0)
+
+    proportions = {}
+    for behavior, settings in contingency_table_normalized.iterrows():
+            proportions[behavior] = {setting: f"{value * 100:.0f}%" for setting, value in settings.items() if value > 0}
+    return proportions, contingency_table, proportions_setting_given_behavior
+
+def contingency_view_setting(request, pk):
+    # Fetch the student or return a 404 error if not found
+    student = get_object_or_404(models.Student, pk=pk)
+    
+    # Retrieve data related to the student's cases
+    cases_data = models.Case.objects.filter(student__id=pk).values(
+        'behavior__behaviorincident',
+        'enviroment__behaviorenviroment',
+        'date_created',
+        'time',
+        'id'
+    )
+    
+    # Create a DataFrame from the cases data
+    cases_df = pd.DataFrame(cases_data)
+    
+    # Renaming columns for readability
+    rename_mapping = {
+        'behavior__behaviorincident': 'Behavior',
+        'enviroment__behaviorenviroment': 'Setting',
+        'date_created': 'Date',
+        'time': 'Time',
+        'id': 'ID'
+    }
+    cases_df.rename(columns=rename_mapping, inplace=True)
+    
+    # Calculate the contingency table and proportions
+    proportions, contingency_table, proportions_setting_given_behavior = calculate_behavior_proportions_table_setting(cases_df)
+
+    # Format the contingency table and proportions to display values with two decimal places
+    proportions_setting_given_behavior = proportions_setting_given_behavior.applymap(lambda x: f"{x * 100:.0f}%")
+
+    # Prepare the context for rendering
+    context = {
+        'student': student,
+        'contingency_table': contingency_table.to_html(),  # Converting the contingency table to HTML
+        'proportions_setting_given_behavior': proportions_setting_given_behavior.to_html(),
+        'proportions': proportions  # Include this if needed in the template
+    }
+    
+    return render(request, 'bip/setting_table.html', context)
+
+# end of setting table
+
+
+
 
 def is_valid_queryparam(param):
     return param != '' and param is not None
