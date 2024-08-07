@@ -1239,18 +1239,26 @@ def snapshot_view(request, pk):
 
     # intensitiy formula:
     box_intensity_graph = None
-    
+
     try:
-        intensity_behavior = cases_df_intensity.groupby('behavior__behaviorincident')['intensity'].mean().round(1) 
-        intensity_behavior = intensity_behavior.to_frame().reset_index()        
+        # Group by behavior and calculate the mean intensity, rounding to 1 decimal place
+        intensity_behavior = cases_df_intensity.groupby('behavior__behaviorincident')['intensity'].mean().round(1)
+        
+        # Convert to DataFrame and reset index
+        intensity_behavior = intensity_behavior.to_frame().reset_index()
+        
+        # Sort the DataFrame by intensity in descending order
+        intensity_behavior = intensity_behavior.sort_values(by='intensity', ascending=False)
+        
+        # Extract the sorted data
         df_intensity = intensity_behavior['behavior__behaviorincident']
         dfy_intensity = intensity_behavior['intensity']
-      
-        box_intensity_graph = get_intensity_bar_chart ( x= df_intensity, y= dfy_intensity, data=intensity_behavior)  
-                
-    except:
         
-        pass
+        # Create the bar chart
+        box_intensity_graph = get_intensity_bar_chart(x=df_intensity, y=dfy_intensity, data=intensity_behavior)
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
     try:
