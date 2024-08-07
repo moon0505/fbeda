@@ -1214,22 +1214,32 @@ def snapshot_view(request, pk):
     box_duration_graph = None
     
     try:
-    # duration begiing
-        data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident','duration')
+        # Fetch data
+        data_duration = models.Case.objects.filter(student__id=pk).values('behavior__behaviorincident', 'duration')
         cases_df_duration = pd.DataFrame(data_duration)
 
+        # Group by behavior and calculate the mean duration, rounding to 1 decimal place
+        duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1)
         
-    
-        duration_behavior = cases_df_duration.groupby('behavior__behaviorincident')['duration'].mean().round(1) 
-        duration_behavior = duration_behavior.to_frame().reset_index()        
+        # Convert to DataFrame and reset index
+        duration_behavior = duration_behavior.to_frame().reset_index()
+        
+        # Sort the DataFrame by duration in descending order
+        duration_behavior = duration_behavior.sort_values(by='duration', ascending=False)
+        
+        # Extract the sorted data
         df_duration = duration_behavior['behavior__behaviorincident']
         dfy_duration = duration_behavior['duration']
-      
-        box_duration_graph = get_duration_bar_chart ( x= df_duration, y= dfy_duration, data=duration_behavior)  
-                
-    except:
         
-        pass
+        # Create the bar chart
+        box_duration_graph = get_duration_bar_chart(x=df_duration, y=dfy_duration, data=duration_behavior)
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Display the graph
+    if box_duration_graph:
+        display(box_duration_graph)
 
 
      # intensity charts
@@ -1257,9 +1267,8 @@ def snapshot_view(request, pk):
         # Create the bar chart
         box_intensity_graph = get_intensity_bar_chart(x=df_intensity, y=dfy_intensity, data=intensity_behavior)
 
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
+    except:
+        pass
 
     try:
         cases_df.columns = cases_df.columns.str.replace('behavior__behaviorincident', 'Behavior')
