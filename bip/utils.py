@@ -894,7 +894,7 @@ def get_count_beh_plot(*args, **kwargs):
     y = kwargs.get('y')
     data = kwargs.get('data')
     
-    sns.barplot(x=x, y=y, data=data, palette='viridis')
+    sns.barplot(x=x, y=y, data=data)
     plt.xticks(rotation=45)
     plt.xlabel('Behavior')
     plt.ylabel('Total Frequency')
