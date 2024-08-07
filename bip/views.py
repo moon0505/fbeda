@@ -1234,12 +1234,8 @@ def snapshot_view(request, pk):
         # Create the bar chart
         box_duration_graph = get_duration_bar_chart(x=df_duration, y=dfy_duration, data=duration_behavior)
 
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-# Display the graph
-    if box_duration_graph:
-        display(box_duration_graph)
+    except:
+        pass
 
 
      # intensity charts
